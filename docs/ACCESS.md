@@ -1,0 +1,66 @@
+# EnAbleton beta read/write access
+
+This extension expands the 1.8.1 server rather than enabling an unrestricted
+Python interpreter inside Live. Every bridge command runs on Live's main
+thread. Writes are explicit; installing the extension never changes a song.
+Tool count: 191 (156 upstream, 35 additions). Recipes are retained.
+
+| Area | Read | Write |
+| --- | --- | --- |
+| Main, returns, regular tracks | Device trees, all nested parameters and formatted values | Named parameter batches with readback, rollback and Undo |
+| Nested rack chains | Name, mute/solo, devices, mixer volume/pan/sends | Name/mute/solo and mixer controls |
+| Song | Exposed tempo, swing, loop, metronome, time signature | Allowlisted scalar properties |
+| Tracks and scenes | Names, colors, mute/solo/arm where applicable | Supported scalar properties |
+| Session and Arrangement clips | Properties; complete MIDI notes and note IDs | Properties and existing-note modifications by ID |
+| Existing upstream coverage | Routing, transport, meters, browser, rack macros, pads, take lanes, offline sets | Existing creation/deletion, recording, routing, note-generation and device controls |
+
+## Target schema
+
+```json
+{
+  "track_type": "master",
+  "track_index": 0,
+  "expected_track_name": "Master",
+  "device_path": [0, 0, 4],
+  "expected_device_name": "Limiter"
+}
+```
+
+Read the tree first. Paths alternate device index, chain index, device index.
+The example means device 0, its chain 0, then device 4 in that chain. Nested
+paths support up to eight rack levels. `track_type` is `track`, `return` or
+`master`; the master ignores `track_index`.
+
+Chain mixers use a path to the parent rack, a `chain_index`, and
+`expected_chain_name`. `volume`, `pan`, and `send:N` use the inspected native
+range, not an assumed dB-to-normalized conversion. Automated controls are
+refused rather than overridden.
+
+Clip targets use `clip_view=session|arrangement` and `clip_index` in the
+corresponding collection. Writes require track and clip name guards;
+Arrangement writes also require `expected_start_time` in arrangement beats.
+MIDI note times remain in the clip's own coordinate system. Offset loop
+regions do not truncate the new full-range reader. Note-ID edits retain the
+clip, note identities and expression data; they do not add/delete notes or
+rewrite MPE curves. Read back after every edit. Runtime API differences can
+still fail; use Live Undo if rollback reports incomplete.
+
+## Boundaries
+
+There is no promise of read/write access to literally every part of Live.
+Preferences, arbitrary UI actions, plug-in window controls, audio-to-MIDI
+conversion, and hidden third-party plug-in parameters remain outside this
+bridge. Track reordering and direct Arrangement automation are not added.
+Session envelope tools keep their existing documented behavior. Audio
+measurements, rendered true peak and perceived sound require separate checks.
+
+The access command wrappers are tested with fake Live objects and through MCP
+transport. A real Live restart is required to load EnAbleton beta. Until readbacks from
+that version are available, do not claim the new controls are runtime-verified.
+No tests modify the user's current set.
+
+Primary API references:
+- https://docs.cycling74.com/apiref/lom/track/
+- https://docs.cycling74.com/apiref/lom/clip/
+- https://docs.cycling74.com/apiref/lom/deviceparameter/
+- https://docs.cycling74.com/apiref/lom/chain/

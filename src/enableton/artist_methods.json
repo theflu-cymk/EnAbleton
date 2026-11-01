@@ -1,0 +1,487 @@
+{
+  "version": 1,
+  "researched": "2026-10-28",
+  "sources": {
+    "alley_interview": {
+      "title": "ALLEYCVT: FEEL IT interview — EDM Identity",
+      "url": "https://edmidentity.com/2024/08/15/alleycvt-hard-summer-interview/",
+      "supports": "Direct interview: melody-first and drop-first writing, vocals, collaboration and testing unfinished ideas live; no synth parameters."
+    },
+    "sub_headliner": {
+      "title": "Subtronics: FIBONACCI studio interview — Headliner",
+      "url": "https://www.headlinerhub.com/subtronics-fibonacci-coachella-rehab-edm-stardom.html",
+      "supports": "Indexed direct interview excerpt: Ableton, Serum 2, Operator, tonal delay, saturation, spectral processing and granular audio exploration. Retrieved through search; direct page fetch unavailable."
+    },
+    "sub_musictech": {
+      "title": "Subtronics: sound contrast and minimal sources — MusicTech",
+      "url": "https://musictech.com/features/interviews/subtronics-interview-fibonacci-studio-monitors/",
+      "supports": "Indexed direct interview: loud/quiet contrast, spectrum contrast, and a square wave with Xfer OTT for Black Ice. Retrieved through search; direct page fetch returned 403."
+    },
+    "ray_musicradar": {
+      "title": "Ray Volpe: SEE YOU DROP production interview — MusicRadar",
+      "url": "https://www.musicradar.com/news/ray-volpe-interview",
+      "supports": "Direct interview: chopped vocal phrase, extended fakeout, writing the second drop first, Serum bass, and mixing while producing."
+    },
+    "ray_hooks": {
+      "title": "Ray Volpe: memorable hook writing — EDM.com",
+      "url": "https://edm.com/interviews/ray-volpe-song-request-laserbeam-interview/",
+      "supports": "Direct interview: concise and memorable songwriting instead of sound-design complexity alone."
+    },
+    "ray_identity": {
+      "title": "Ray Volpe: Legend of the Volpetron interview — Run The Trap",
+      "url": "https://runthetrap.com/2022/09/21/qa-with-ray-volpe-laserbeam-touring-and-more/",
+      "supports": "Direct interview connects Volpetron branding and EP concepts to Ray Volpe; not a separate artist."
+    },
+    "vulper_dream": {
+      "title": "VULPER — DREAM VAULT (artist Bandcamp)",
+      "url": "https://vulper.bandcamp.com/album/dream-vault",
+      "supports": "Artist-owned release identifies electronic, dark electro, darkwave and witch house tags. Does not document instruments, processing or production settings."
+    },
+    "vulper_moon": {
+      "title": "VULPER — FULL MOON DOGMA (artist Bandcamp)",
+      "url": "https://vulper.bandcamp.com/album/full-moon-dogma",
+      "supports": "Artist-owned release confirms the requested artist/catalog. No production chain or sound-design parameters supplied."
+    }
+  },
+  "artists": {
+    "alleycvt": {
+      "id": "alleycvt",
+      "name": "ALLEYCVT",
+      "aliases": [
+        "ALLEYCVT",
+        "AlleyCVT"
+      ],
+      "scope": "Documented songwriting workflow; native sound choices are original adaptations.",
+      "methods": [
+        {
+          "id": "alleycvt-hook-drop-dialogue",
+          "title": "ALLEYCVT — hook/drop dialogue",
+          "category": "Workflow",
+          "summary": "Let the vocal idea and bass phrase develop together while preserving a clear lead role.",
+          "documented_findings": [
+            "ALLEYCVT describes starting with melody on some songs and the drop on others, then building lyrics around that choice."
+          ],
+          "steps": [
+            "Write an original two-bar melody or vocal idea.",
+            "Make a bass answer in the spaces between important syllables.",
+            "Keep the rhythm identifiable when the vocal is muted; remove competing layers.",
+            "Alternate melody-first and drop-first sketches, then keep the stronger hook."
+          ],
+          "settings": {
+            "original_exercise": {
+              "phrase_bars": 2,
+              "answer_length_beats": [
+                0.25,
+                0.75
+              ]
+            },
+            "native_options": [
+              "Operator",
+              "Auto Filter",
+              "Saturator"
+            ],
+            "mapping": "Use vocal_space_wobble as an original bass starting point."
+          },
+          "sources": [
+            "alley_interview"
+          ],
+          "evidence": "Documented artist principle; original implementation exercise",
+          "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+          "status": "Reference"
+        },
+        {
+          "id": "alleycvt-contrast-and-revision",
+          "title": "ALLEYCVT — contrast and revision",
+          "category": "Workflow",
+          "summary": "Compare a sparse vocal-led sketch and a heavier drop before committing to the arrangement.",
+          "documented_findings": [
+            "The interview describes introducing unfinished IDs in live sets to gauge response."
+          ],
+          "steps": [
+            "Export two versions with one deliberate difference: bass density, hook placement or transition length.",
+            "Match playback loudness and compare on the same system.",
+            "Keep notes about recall and pacing; revise the composition before adding more effects."
+          ],
+          "settings": {
+            "original_test": "A/B one arrangement change at a time",
+            "level_matching": "External listening/metering required"
+          },
+          "sources": [
+            "alley_interview"
+          ],
+          "evidence": "Documented artist principle; original implementation exercise",
+          "limits": "This comparison protocol is an original exercise, not a documented ALLEYCVT measurement workflow.",
+          "status": "Reference"
+        }
+      ]
+    },
+    "subtronics": {
+      "id": "subtronics",
+      "name": "Subtronics",
+      "aliases": [
+        "Subtronics"
+      ],
+      "scope": "Direct-interview excerpts support processing families and contrast principles, not exact presets.",
+      "methods": [
+        {
+          "id": "subtronics-tonal-delay-lab",
+          "title": "Subtronics — tonal-delay laboratory",
+          "category": "Sound design",
+          "summary": "Explore pitch from short delay feedback, then reshape the printed mid-bass texture.",
+          "documented_findings": [
+            "Subtronics names tonal delay, saturation, spectral processing and granular audio exploration in a studio interview."
+          ],
+          "steps": [
+            "Start with a quiet, short FM sound and keep sub on a separate path.",
+            "For an original unsynced tonal-delay experiment, compute milliseconds as 1000 / desired frequency in Hz; confirm the device can reach it.",
+            "Start with low feedback and wet level, add restrained saturation and trim the output.",
+            "Record manually and edit useful slices; crossfade boundaries and audition pitch.",
+            "Compare against the source at equal loudness."
+          ],
+          "settings": {
+            "original_delay_example": {
+              "target_hz": 220,
+              "delay_ms": 4.545,
+              "feedback_percent_start": [
+                10,
+                30
+              ],
+              "wet_percent_start": [
+                5,
+                20
+              ]
+            },
+            "native_options": [
+              "Operator",
+              "Delay if its time range permits",
+              "Saturator"
+            ],
+            "not_automatic": "No tonal delay or spectral/granular processor is built by the native patch."
+          },
+          "sources": [
+            "sub_headliner"
+          ],
+          "evidence": "Documented artist principle; original implementation exercise",
+          "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+          "status": "Reference"
+        },
+        {
+          "id": "subtronics-register-dynamics-contrast",
+          "title": "Subtronics — register and dynamics contrast",
+          "category": "Rhythm",
+          "summary": "Answer a forceful mid-bass gesture with a quieter or differently voiced event.",
+          "documented_findings": [
+            "The MusicTech interview describes alternating loud and quiet events and contrasting parts of the frequency spectrum; it also recounts a minimal square-wave/OTT source for Black Ice."
+          ],
+          "steps": [
+            "Write an original call and response on separate phrases.",
+            "Make the answer shorter or quieter; move only the texture layer into a contrasting register.",
+            "Preserve the sub root instead of transposing the entire low foundation.",
+            "For a separate minimal-source study, select a square wave manually and audition multiband compression before adding extra oscillators."
+          ],
+          "settings": {
+            "original_example": {
+              "response_gain_offset_db": [
+                -3,
+                -6
+              ],
+              "texture_octave_shift": 12
+            },
+            "native_options": [
+              "Operator",
+              "Multiband Dynamics",
+              "Utility"
+            ],
+            "not_equivalent": "Native multiband processing is an adaptation, not the exact Xfer OTT chain."
+          },
+          "sources": [
+            "sub_musictech"
+          ],
+          "evidence": "Documented artist principle; original implementation exercise",
+          "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+          "status": "Reference"
+        }
+      ]
+    },
+    "ray-volpe": {
+      "id": "ray-volpe",
+      "name": "Ray Volpe / Volpetron",
+      "aliases": [
+        "Ray Volpe",
+        "Volpetron",
+        "RayVolpe"
+      ],
+      "scope": "Volpetron is indexed with Ray Volpe; hook and fakeout techniques are documented, native patch settings are original.",
+      "methods": [
+        {
+          "id": "volpetron-vocal-hook-fakeout",
+          "title": "Ray Volpe / Volpetron — vocal-hook fakeout",
+          "category": "Rhythm",
+          "summary": "Build anticipation by repeating a small vocal hook before releasing into the bass drop.",
+          "documented_findings": [
+            "Ray Volpe describes chopping a full vocal phrase into a catchy motif and extending the fakeout on SEE YOU DROP."
+          ],
+          "steps": [
+            "Record your own or use a properly licensed short vocal phrase.",
+            "Slice around clean syllable boundaries; add short fades and retune only when useful.",
+            "Repeat a compact original motif through a deliberately extended fakeout.",
+            "Remove competing bass hits until the hook has established its rhythm.",
+            "Introduce pitch_hook_stab as an original answer; compare timing variations."
+          ],
+          "settings": {
+            "original_exercise": {
+              "fakeout_bars": [
+                1,
+                2
+              ],
+              "slice_fade_ms": [
+                2,
+                8
+              ]
+            },
+            "manual_stage": "Audio slicing, licensing, pitch editing and arrangement are manual."
+          },
+          "sources": [
+            "ray_musicradar",
+            "ray_hooks"
+          ],
+          "evidence": "Documented artist principle; original implementation exercise",
+          "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+          "status": "Reference"
+        },
+        {
+          "id": "volpetron-drop-two-first",
+          "title": "Ray Volpe / Volpetron — write drop two first",
+          "category": "Workflow",
+          "summary": "Start with the most intense section, then design a catchier first drop around its core motif.",
+          "documented_findings": [
+            "The SEE YOU DROP interview describes building the second drop first, working backwards toward a catchier first drop, and mixing as production proceeds."
+          ],
+          "steps": [
+            "Sketch a strong second-drop idea before building a long intro.",
+            "Reduce density for the first drop while retaining a memorable rhythmic identity.",
+            "Check kick/sub balance while composing; compare master processing bypassed at equal loudness.",
+            "Preserve an unmastered render for later revision instead of copying another producer's gain structure."
+          ],
+          "settings": {
+            "native_options": [
+              "Operator",
+              "Utility",
+              "Limiter"
+            ],
+            "levels": "No exact Ray Volpe kick, sub or master gain settings were supplied."
+          },
+          "sources": [
+            "ray_musicradar",
+            "ray_hooks"
+          ],
+          "evidence": "Documented artist principle; original implementation exercise",
+          "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+          "status": "Reference"
+        }
+      ]
+    },
+    "vulper": {
+      "id": "vulper",
+      "name": "VULPER",
+      "aliases": [
+        "VULPER",
+        "Vulper"
+      ],
+      "scope": "Artist identity and release tags confirmed. No detailed first-person production methods found; exercises are genre adaptations only. Specific processing is undocumented.",
+      "methods": [
+        {
+          "id": "vulper-dark-space-study",
+          "title": "VULPER — dark-space production study",
+          "category": "Layering",
+          "summary": "Original darkwave/witch-house exercise pairing a restrained detuned bass with a separate atmospheric layer.",
+          "documented_findings": [
+            "DREAM VAULT carries artist-published dark electro, darkwave and witch house tags."
+          ],
+          "steps": [
+            "Use shadow_reese for an original dark bass foundation.",
+            "Keep long reverb on a separate filtered pad or texture rather than flooding the sub.",
+            "Try a sparse half-time phrase and leave gaps for ambience.",
+            "Audition mono and trim long tails where they obscure the next attack."
+          ],
+          "settings": {
+            "original_exercise": {
+              "texture_highpass_hz": [
+                180,
+                350
+              ],
+              "reverb_decay_s": [
+                2,
+                5
+              ],
+              "tempo_bpm_trial": [
+                90,
+                120
+              ]
+            },
+            "not_biographical": "These ranges are not measurements or settings from a VULPER track."
+          },
+          "sources": [
+            "vulper_dream"
+          ],
+          "evidence": "Original genre adaptation; only release tags are documented",
+          "limits": "No direct listening analysis or artist patch documentation. Not a VULPER production-chain claim.",
+          "status": "Reference"
+        },
+        {
+          "id": "vulper-source-boundaries",
+          "title": "VULPER — source and attribution notes",
+          "category": "Tutorial",
+          "summary": "Identify the requested artist while keeping undocumented production claims out of the library.",
+          "documented_findings": [
+            "The artist-owned DREAM VAULT and FULL MOON DOGMA pages identify the same VULPER catalog."
+          ],
+          "steps": [
+            "Use the artist release pages as reference links.",
+            "Treat instrument, sample source, distortion chain and mastering settings as unknown.",
+            "Add a future first-person tutorial or breakdown before labeling a technique as artist-verified."
+          ],
+          "settings": {
+            "confirmed": "Artist/catalog identity and release metadata",
+            "unknown": [
+              "DAW",
+              "synths",
+              "processing chain",
+              "exact settings"
+            ]
+          },
+          "sources": [
+            "vulper_dream",
+            "vulper_moon"
+          ],
+          "evidence": "Artist-owned release metadata only",
+          "limits": "No technical production method can be inferred from release titles or genre tags alone.",
+          "status": "Limited evidence"
+        }
+      ]
+    }
+  },
+  "patches": {
+    "vocal_space_wobble": {
+      "artist": "alleycvt",
+      "base": "dubstep_wobble",
+      "title": "Vocal-space wobble",
+      "method": "Original restrained FM wobble for answering a vocal hook; inspired by songwriting contrast, not a verified ALLEYCVT patch.",
+      "overrides": {
+        "Operator": {
+          "Osc-B Level": 0.32,
+          "Ae Decay": 0.3,
+          "Ae Sustain": 0.4,
+          "Ae Release": 0.12
+        },
+        "Saturator": {
+          "Dry/Wet": 0.45,
+          "Output": 0.72
+        }
+      },
+      "movement": {
+        "shape": "wobble",
+        "device": "Auto Filter",
+        "parameter": "Frequency",
+        "low": 0.25,
+        "high": 0.62,
+        "cycle_beats": 1
+      },
+      "sources": [
+        "alley_interview"
+      ]
+    },
+    "robot_fm_bounce": {
+      "artist": "subtronics",
+      "base": "tearout_fm",
+      "title": "Robot FM bounce",
+      "method": "Original short FM burst with contrasting articulation for a robotic call; no exact Subtronics preset is reproduced.",
+      "overrides": {
+        "Operator": {
+          "B Coarse": 5,
+          "Osc-B Level": 0.62,
+          "Be Decay": 0.22,
+          "Be Sustain": 0.2,
+          "Ae Decay": 0.25,
+          "Ae Sustain": 0.18,
+          "Ae Release": 0.1
+        }
+      },
+      "movement": {
+        "shape": "growl",
+        "device": "Operator",
+        "parameter": "Osc-B Level",
+        "low": 0.25,
+        "high": 0.7,
+        "cycle_beats": 0.5
+      },
+      "sources": [
+        "sub_headliner",
+        "sub_musictech"
+      ]
+    },
+    "pitch_hook_stab": {
+      "artist": "ray-volpe",
+      "base": "808_sub",
+      "title": "Pitch-hook stab",
+      "method": "Original percussive pitched bass answer for a concise hook/fakeout arrangement; not the Laserbeam or SEE YOU DROP patch.",
+      "role": "midbass",
+      "style": "brostep",
+      "overrides": {
+        "Operator": {
+          "Ae Decay": 0.32,
+          "Ae Sustain": 0.05,
+          "Ae Release": 0.1,
+          "Pe Init": 24,
+          "Pe Peak": 24,
+          "Pe Decay": 0.12
+        },
+        "Saturator": {
+          "Dry/Wet": 0.5
+        }
+      },
+      "movement": {
+        "shape": "pluck",
+        "device": "808 Shaper",
+        "parameter": "Drive",
+        "low": 0.5,
+        "high": 0.58,
+        "cycle_beats": 0.5
+      },
+      "sources": [
+        "ray_musicradar",
+        "ray_hooks"
+      ]
+    },
+    "shadow_reese": {
+      "artist": "vulper",
+      "base": "wavetable_reese",
+      "title": "Shadow Reese",
+      "method": "Original darker detuned wavetable bass for a witch-house/darkwave study; VULPER synth choices are undocumented.",
+      "overrides": {
+        "Wavetable": {
+          "Filter 1 Freq": 0.4,
+          "Amp Attack": 0.12,
+          "Amp Release": 0.38,
+          "Volume": 0.2
+        },
+        "Saturator": {
+          "Dry/Wet": 0.45,
+          "Output": 0.7
+        }
+      },
+      "movement": {
+        "shape": "wobble",
+        "device": "Wavetable",
+        "parameter": "Osc 1 Pos",
+        "low": 0.35,
+        "high": 0.6,
+        "cycle_beats": 8
+      },
+      "sources": [
+        "vulper_dream",
+        "vulper_moon"
+      ]
+    }
+  }
+}

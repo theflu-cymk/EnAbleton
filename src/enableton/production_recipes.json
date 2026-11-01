@@ -1,0 +1,3912 @@
+{
+  "version": 1,
+  "updated": "2026-10-28",
+  "entries": [
+    {
+      "id": "clean-sub",
+      "title": "Clean Sub",
+      "category": "Sound design",
+      "summary": "Single sine carrier, phase retrigger, mono image, short click-reducing edges.",
+      "tags": [
+        "dubstep",
+        "sub",
+        "Operator",
+        "Utility"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.24,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0,
+              "Osc-C Level": 0,
+              "Osc-D Level": 0,
+              "Ae Attack": 0.08,
+              "Ae Decay": 0.4,
+              "Ae Sustain": 1,
+              "Ae Release": 0.2,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1
+            }
+          },
+          {
+            "name": "Utility",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Stereo Width": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "duck",
+          "target": "volume",
+          "note": "Feed real kick hit positions; duck envelopes are rhythmic gain automation, not a compressor sidechain."
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "clean_sub"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "dubstep-wobble",
+      "title": "Dubstep Wobble",
+      "category": "Sound design",
+      "summary": "Harmonic FM into saturation and a moving low-pass filter.",
+      "tags": [
+        "dubstep",
+        "midbass",
+        "Operator",
+        "Saturator",
+        "Auto Filter",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.18,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0.48,
+              "Osc-C Level": 0,
+              "Osc-D Level": 0,
+              "Ae Attack": 0.03,
+              "Ae Decay": 0.4,
+              "Ae Sustain": 0.75,
+              "Ae Release": 0.18,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "B Coarse": 2,
+              "Be Decay": 0.4,
+              "Be Sustain": 0.32
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.57,
+              "Output": 0.8,
+              "Dry/Wet": 0.7
+            }
+          },
+          {
+            "name": "Auto Filter",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Type": 0,
+              "Frequency": 0.55,
+              "Resonance": 0.3,
+              "LFO Amount": 0
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "wobble",
+          "device": "Auto Filter",
+          "parameter": "Frequency",
+          "low": 0.35,
+          "high": 0.76,
+          "cycle_beats": 1
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "dubstep_wobble"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "brostep-growl",
+      "title": "Brostep Growl",
+      "category": "Sound design",
+      "summary": "Serial FM with different modulator envelopes; vowel filtering turns timbre changes into a growl.",
+      "tags": [
+        "brostep",
+        "midbass",
+        "Operator",
+        "Saturator",
+        "Auto Filter",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.18,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0.72,
+              "Osc-C Level": 0.52,
+              "Osc-D Level": 0.24,
+              "Ae Attack": 0.03,
+              "Ae Decay": 0.4,
+              "Ae Sustain": 0.75,
+              "Ae Release": 0.18,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "B Coarse": 2,
+              "C Coarse": 3,
+              "D Coarse": 1,
+              "Be Decay": 0.36,
+              "Be Sustain": 0.2,
+              "Ce Attack": 0.08,
+              "Ce Decay": 0.3,
+              "Ce Sustain": 0.15
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.65,
+              "Output": 0.6,
+              "Dry/Wet": 0.8
+            }
+          },
+          {
+            "name": "Auto Filter",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Type": 9,
+              "Formant": 0.42,
+              "Morph": 0.25,
+              "Pitch": -7
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "yoi",
+          "device": "Auto Filter",
+          "parameter": "Formant",
+          "low": 0.12,
+          "high": 0.85,
+          "cycle_beats": 1
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        },
+        {
+          "id": "brostep",
+          "title": "Ableton: Get the Drop",
+          "url": "https://www.ableton.com/en/blog/get-drop-sound-skrillex-ableton-live/",
+          "supports": "Producer tutorial showing distorted bass sound design in Live"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "brostep_growl"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "tearout-fm",
+      "title": "Tearout Fm",
+      "category": "Sound design",
+      "summary": "High-ratio serial FM, fast modulator decays, staged distortion and a clean low-end split.",
+      "tags": [
+        "tearout",
+        "midbass",
+        "Operator",
+        "Roar",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.14,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0.8,
+              "Osc-C Level": 0.6,
+              "Osc-D Level": 0.3,
+              "Ae Attack": 0.03,
+              "Ae Decay": 0.34,
+              "Ae Sustain": 0.65,
+              "Ae Release": 0.18,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "B Coarse": 2,
+              "C Coarse": 7,
+              "D Coarse": 11,
+              "Be Decay": 0.28,
+              "Be Sustain": 0.12,
+              "Ce Decay": 0.24,
+              "Ce Sustain": 0.1,
+              "De Decay": 0.2,
+              "De Sustain": 0.05
+            }
+          },
+          {
+            "name": "Roar",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.62,
+              "Shaper 1 Amt": 0.42,
+              "Shaper 2 Amt": 0.25,
+              "Fb Amt": 0.06,
+              "Fb Gate On": 1,
+              "Output": 0.54,
+              "Dry/Wet": 0.65
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "growl",
+          "device": "Operator",
+          "parameter": "Osc-B Level",
+          "low": 0.45,
+          "high": 0.83,
+          "cycle_beats": 1
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "roar",
+          "title": "Ableton: Roar",
+          "url": "https://www.ableton.com/en/packs/roar/",
+          "supports": "Multiple distortion stages, filtering, modulation, feedback and compression"
+        },
+        {
+          "id": "tearout",
+          "title": "NIMDA: public Dubstep/Tearout tutorial index",
+          "url": "https://www.patreon.com/nimda_uk/sitemap",
+          "supports": "Topics include FM8, screech/noise oscillators and unconventional source material. Public titles only; gated lessons were not accessed."
+        },
+        {
+          "id": "machinegun",
+          "title": "Letsynthesize: public tutorial index",
+          "url": "https://www.patreon.com/cw/letsynthesize/sitemap",
+          "supports": "Topics include tearout FM, scream/screech and machine-gun bass. Public titles only; no claim to reproduce gated recipes."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "tearout_fm"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "metallic-screech",
+      "title": "Metallic Screech",
+      "category": "Sound design",
+      "summary": "Inharmonic FM using Fine tuning, resonant band-pass motion, distortion and low-cut cleanup.",
+      "tags": [
+        "tearout",
+        "response",
+        "Operator",
+        "Roar",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.12,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0.84,
+              "Osc-C Level": 0.64,
+              "Osc-D Level": 0.38,
+              "Ae Attack": 0.03,
+              "Ae Decay": 0.3,
+              "Ae Sustain": 0.5,
+              "Ae Release": 0.18,
+              "Filter On": 1,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "B Coarse": 1,
+              "B Fine": 500,
+              "C Coarse": 3,
+              "C Fine": 166,
+              "D Coarse": 11,
+              "Filter Type": 2,
+              "Filter Freq": 0.62,
+              "Filter Res": 0.42
+            }
+          },
+          {
+            "name": "Roar",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.6,
+              "Shaper 1 Amt": 0.45,
+              "Output": 0.52,
+              "Dry/Wet": 0.6
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "sweep",
+          "device": "Operator",
+          "parameter": "Filter Freq",
+          "low": 0.45,
+          "high": 0.8,
+          "cycle_beats": 2
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        },
+        {
+          "id": "tearout",
+          "title": "NIMDA: public Dubstep/Tearout tutorial index",
+          "url": "https://www.patreon.com/nimda_uk/sitemap",
+          "supports": "Topics include FM8, screech/noise oscillators and unconventional source material. Public titles only; gated lessons were not accessed."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "metallic_screech"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "wavetable-reese",
+      "title": "Wavetable Reese",
+      "category": "Sound design",
+      "summary": "Two detuned wavetable oscillators form beating movement; saturation and low cutting separate the sub.",
+      "tags": [
+        "dubstep",
+        "midbass",
+        "Wavetable",
+        "Saturator",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Wavetable",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Osc 1 On": 1,
+              "Osc 1 Pos": 0.66,
+              "Osc 1 Detune": 0.495,
+              "Osc 1 Gain": 0.65,
+              "Osc 2 On": 1,
+              "Osc 2 Pos": 0.66,
+              "Osc 2 Detune": 0.505,
+              "Osc 2 Gain": 0.65,
+              "Sub On": 0,
+              "Filter 1 Freq": 0.7,
+              "Amp Attack": 0.06,
+              "Amp Release": 0.24,
+              "Volume": 0.25
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.59,
+              "Output": 0.74,
+              "Dry/Wet": 0.7
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "wobble",
+          "device": "Wavetable",
+          "parameter": "Osc 1 Pos",
+          "low": 0.45,
+          "high": 0.75,
+          "cycle_beats": 4
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "wavetable_reese"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "808-sub",
+      "title": "808 Sub",
+      "category": "Sound design",
+      "summary": "Sine bass with a short pitch drop and decaying amplitude; 808 Shaper adds controlled harmonics.",
+      "tags": [
+        "dubstep",
+        "sub",
+        "Operator",
+        "Saturator",
+        "Utility"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.2,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0,
+              "Osc-C Level": 0,
+              "Osc-D Level": 0,
+              "Ae Attack": 0.04,
+              "Ae Decay": 0.62,
+              "Ae Sustain": 0.15,
+              "Ae Release": 0.22,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "Pe On": 1,
+              "Pe Init": 12,
+              "Pe Peak": 12,
+              "Pe Decay": 0.2,
+              "Pe Sustain": 0
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": "808 Shaper.adv",
+            "parameters": {
+              "Drive": 0.54,
+              "Output": 0.8,
+              "Dry/Wet": 0.65
+            }
+          },
+          {
+            "name": "Utility",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Stereo Width": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "pluck",
+          "device": "808 Shaper",
+          "parameter": "Drive",
+          "low": 0.5,
+          "high": 0.58,
+          "cycle_beats": 1
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "808_sub"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "yoi-bass",
+      "title": "Yoi Bass",
+      "category": "Sound design",
+      "summary": "FM harmonics through a scanning vowel filter; brief repeated envelopes make talking accents.",
+      "tags": [
+        "brostep",
+        "response",
+        "Operator",
+        "Saturator",
+        "Auto Filter",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview the recipe and create it on a new track.",
+        "Audition the patch before changing its movement.",
+        "Refine filter/FM/distortion movement in a Session clip; gain-match comparisons."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.18,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0.58,
+              "Osc-C Level": 0.3,
+              "Osc-D Level": 0,
+              "Ae Attack": 0.03,
+              "Ae Decay": 0.35,
+              "Ae Sustain": 0.5,
+              "Ae Release": 0.18,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "B Coarse": 2,
+              "C Coarse": 5
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.6,
+              "Output": 0.65,
+              "Dry/Wet": 0.75
+            }
+          },
+          {
+            "name": "Auto Filter",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Type": 9,
+              "Formant": 0.3,
+              "Morph": 0.25,
+              "Pitch": -5
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "yoi",
+          "device": "Auto Filter",
+          "parameter": "Formant",
+          "low": 0.1,
+          "high": 0.9,
+          "cycle_beats": 0.5
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        },
+        {
+          "id": "brostep",
+          "title": "Ableton: Get the Drop",
+          "url": "https://www.ableton.com/en/blog/get-drop-sound-skrillex-ableton-live/",
+          "supports": "Producer tutorial showing distorted bass sound design in Live"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original starting patch informed by sources, not an artist preset or guaranteed sonic match",
+      "limits": "API numbers are not displayed Hz/dB/ms. No sonic result was measured.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "yoi_bass"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "mastering-ms-tonal-cleanup",
+      "title": "Ms Tonal Cleanup",
+      "category": "Mastering",
+      "summary": "Stereo ambience or sides consume headroom or mask the centered kick/sub.",
+      "tags": [
+        "mastering",
+        "EQ Eight in M/S mode; Utility for mono audition"
+      ],
+      "steps": [
+        "Compare mid, side and full stereo at matched loudness.",
+        "If needed, remove only unnecessary side lows; preserve the centered fundamental.",
+        "Check mono after every change; use broad small corrections before narrow boosts."
+      ],
+      "settings": {
+        "starting_points": {
+          "side_low_cut_hz": [
+            60,
+            120
+          ],
+          "broad_eq_db": [
+            -1,
+            1
+          ],
+          "initial_state": "Bypass all filters until a specific problem is heard."
+        },
+        "back_off_when": "Bass weight or width collapses, or the mono balance gets worse."
+      },
+      "sources": [
+        {
+          "title": "live_fx",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Native device capabilities: M/S EQ, detector filtering, multiband dynamics, oversampling and true-peak limiting."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Primary-source methods; original numeric audition ranges",
+      "limits": "Displayed Hz, dB, ms, ratio and percent; not raw Live API values. Numeric ranges are original audition starting points, not source-prescribed settings. Read-only recipes. No devices, routing, automation, gain or export settings are changed. No audio is measured or auditioned.",
+      "details": {
+        "tool": "mastering_recipe_catalog",
+        "recipe": "ms_tonal_cleanup"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "mastering-selective-band-control",
+      "title": "Selective Band Control",
+      "category": "Mastering",
+      "summary": "Only particular bass notes or harsh midrange bursts overload an otherwise balanced mix.",
+      "tags": [
+        "mastering",
+        "Multiband Dynamics; a dedicated dynamic EQ for true dynamic bell/shelf cuts"
+      ],
+      "steps": [
+        "Start with unity dynamics and no upward compression; move crossovers around the actual problem.",
+        "Compress only the offending band and match output level.",
+        "For isolated narrow resonances, use a dedicated dynamic EQ or repair the source; static EQ Eight is not dynamic EQ."
+      ],
+      "settings": {
+        "starting_points": {
+          "low_band_crossover_hz": [
+            70,
+            120
+          ],
+          "high_band_crossover_hz": [
+            2500,
+            5000
+          ],
+          "downward_ratio": [
+            1.2,
+            1.6
+          ],
+          "gain_reduction_db": [
+            0.5,
+            2
+          ],
+          "attack_ms": [
+            10,
+            40
+          ],
+          "release_ms": [
+            80,
+            200
+          ]
+        },
+        "back_off_when": "Crossover coloration, pumping, dulled snares, or newly raised noise."
+      },
+      "sources": [
+        {
+          "title": "live_fx",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Native device capabilities: M/S EQ, detector filtering, multiband dynamics, oversampling and true-peak limiting."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Primary-source methods; original numeric audition ranges",
+      "limits": "Displayed Hz, dB, ms, ratio and percent; not raw Live API values. Numeric ranges are original audition starting points, not source-prescribed settings. Read-only recipes. No devices, routing, automation, gain or export settings are changed. No audio is measured or auditioned.",
+      "details": {
+        "tool": "mastering_recipe_catalog",
+        "recipe": "selective_band_control"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "mastering-sub-aware-glue",
+      "title": "Sub Aware Glue",
+      "category": "Mastering",
+      "summary": "The mix needs slight cohesion but full-band compression pumps on long sub notes.",
+      "tags": [
+        "mastering",
+        "Glue Compressor with internal detector EQ"
+      ],
+      "steps": [
+        "Filter the detector rather than cutting the audible bass.",
+        "Set threshold from observed gain reduction on the loudest drop.",
+        "Check the kick still has impact and the bass recovers between hits; bypass if cohesion does not improve."
+      ],
+      "settings": {
+        "starting_points": {
+          "ratio": 2,
+          "attack_ms": 30,
+          "release": "Auto or audition 0.1–0.3 seconds",
+          "detector_highpass_hz": [
+            60,
+            120
+          ],
+          "gain_reduction_db": [
+            0.5,
+            1.5
+          ],
+          "makeup": "Manual and loudness matched"
+        },
+        "back_off_when": "Kick/sub surges escape control, groove flattens, or the drop breathes unnaturally."
+      },
+      "sources": [
+        {
+          "title": "live_fx",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Native device capabilities: M/S EQ, detector filtering, multiband dynamics, oversampling and true-peak limiting."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Primary-source methods; original numeric audition ranges",
+      "limits": "Displayed Hz, dB, ms, ratio and percent; not raw Live API values. Numeric ranges are original audition starting points, not source-prescribed settings. Read-only recipes. No devices, routing, automation, gain or export settings are changed. No audio is measured or auditioned.",
+      "details": {
+        "tool": "mastering_recipe_catalog",
+        "recipe": "sub_aware_glue"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "mastering-staged-peak-control",
+      "title": "Staged Peak Control",
+      "category": "Mastering",
+      "summary": "Sparse drum spikes force excessive final limiting; keep this optional on already distorted tearout.",
+      "tags": [
+        "mastering",
+        "Saturator or Glue soft clip, followed by a separate Limiter in True Peak mode",
+        "tearout"
+      ],
+      "steps": [
+        "Start with the clipper bypassed; inspect isolated spikes and audition very small peak shaving.",
+        "Enable available high-quality/oversampling modes after inspecting the actual device; compare at equal loudness.",
+        "Follow with a separate true-peak limiter; soft clip and true peak are alternative modes on one Live Limiter, not simultaneous modes.",
+        "Set final drive by audible tolerance and external meters, not by an assumed LUFS target."
+      ],
+      "settings": {
+        "starting_points": {
+          "initial_clip_drive_db": 0,
+          "clip_peak_shaving_trial_db": [
+            0.5,
+            1.5
+          ],
+          "final_limiter_gain_reduction_trial_db": [
+            0.5,
+            2
+          ],
+          "limiter_lookahead_ms": [
+            3,
+            6
+          ],
+          "ceiling": "Set by delivery profile, then verify the rendered file."
+        },
+        "back_off_when": "Crackling sub, papery transients, harsher cymbals, or no benefit at matched loudness."
+      },
+      "sources": [
+        {
+          "title": "live_fx",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Native device capabilities: M/S EQ, detector filtering, multiband dynamics, oversampling and true-peak limiting."
+        },
+        {
+          "title": "izotope",
+          "url": "https://www.izotope.com/community/blog/an-introduction-to-limiters-and-how-to-use-them",
+          "supports": "Final peak control and checking distortion with level-matched comparisons."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Primary-source methods; original numeric audition ranges",
+      "limits": "Displayed Hz, dB, ms, ratio and percent; not raw Live API values. Numeric ranges are original audition starting points, not source-prescribed settings. Read-only recipes. No devices, routing, automation, gain or export settings are changed. No audio is measured or auditioned.",
+      "details": {
+        "tool": "mastering_recipe_catalog",
+        "recipe": "staged_peak_control"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "mastering-stereo-translation",
+      "title": "Stereo Translation",
+      "category": "Mastering",
+      "summary": "Wide bass texture or aggressive M/S processing changes the drop across playback systems.",
+      "tags": [
+        "mastering",
+        "Utility, EQ Eight, external correlation/spectrum meter"
+      ],
+      "steps": [
+        "Audition stereo, mono, left and right; bypass each width change at matched loudness.",
+        "Use bass mono only when it solves an observed problem; it can alter cancellation and level.",
+        "Prefer fixing individual wide bass layers over forcing the whole master."
+      ],
+      "settings": {
+        "starting_points": {
+          "width_percent": 100,
+          "optional_bass_mono_hz": [
+            70,
+            120
+          ],
+          "default": "No automatic widening or forced bass mono."
+        },
+        "back_off_when": "Center energy weakens, mono loses instruments, or width shifts when limiting."
+      },
+      "sources": [
+        {
+          "title": "live_fx",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Native device capabilities: M/S EQ, detector filtering, multiband dynamics, oversampling and true-peak limiting."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Primary-source methods; original numeric audition ranges",
+      "limits": "Displayed Hz, dB, ms, ratio and percent; not raw Live API values. Numeric ranges are original audition starting points, not source-prescribed settings. Read-only recipes. No devices, routing, automation, gain or export settings are changed. No audio is measured or auditioned.",
+      "details": {
+        "tool": "mastering_recipe_catalog",
+        "recipe": "stereo_translation"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "mastering-section-consistency",
+      "title": "Section Consistency",
+      "category": "Mastering",
+      "summary": "Half-time sections, fakeouts or transitions hit the limiter differently from the main drop.",
+      "tags": [
+        "mastering",
+        "Pre-limiter Utility gain automation plus external loudness meter"
+      ],
+      "steps": [
+        "Measure the full song and compare corresponding musical sections with references at equal loudness.",
+        "Make small pre-limiter gain changes only if needed; preserve intentional breakdown/drop contrast.",
+        "Recheck limiter gain reduction after automation; do not flatten every section to equal LUFS."
+      ],
+      "settings": {
+        "starting_points": {
+          "automation_trial_db": [
+            -0.5,
+            0.5
+          ],
+          "measurement": "Full-track integrated LUFS plus section short-term loudness and peak/GR observations"
+        },
+        "back_off_when": "Builds lose anticipation or half-time loses its intended weight."
+      },
+      "sources": [
+        {
+          "title": "izotope",
+          "url": "https://www.izotope.com/community/blog/an-introduction-to-limiters-and-how-to-use-them",
+          "supports": "Final peak control and checking distortion with level-matched comparisons."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Primary-source methods; original numeric audition ranges",
+      "limits": "Displayed Hz, dB, ms, ratio and percent; not raw Live API values. Numeric ranges are original audition starting points, not source-prescribed settings. Read-only recipes. No devices, routing, automation, gain or export settings are changed. No audio is measured or auditioned.",
+      "details": {
+        "tool": "mastering_recipe_catalog",
+        "recipe": "section_consistency"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "mastering-delivery-qc",
+      "title": "Delivery Qc",
+      "category": "Mastering",
+      "summary": "Preparing release or comparison renders.",
+      "tags": [
+        "mastering",
+        "Final true-peak limiter, external BS.1770 loudness/true-peak meter, Live export"
+      ],
+      "steps": [
+        "Measure the final render, not only the input or Live sample-peak meter.",
+        "Check starts, tails, clicks, mono balance and loudest drops; audition a representative lossy encode when applicable.",
+        "Resample before the final limiting stage where feasible, then verify delivered-rate peaks.",
+        "Keep a less-limited alternative and level-match it against the loud version."
+      ],
+      "settings": {
+        "starting_points": {
+          "intermediate": "32-bit float, no dither",
+          "final_pcm": "24-bit or requested destination format; dither once on final bit-depth reduction",
+          "normalize_export": false
+        },
+        "back_off_when": "Rendered/encoded overs, damaged transients or final format mismatch."
+      },
+      "sources": [
+        {
+          "title": "live_audio",
+          "url": "https://www.ableton.com/en/manual/audio-fact-sheet/",
+          "supports": "Render precision and final bit-depth reduction/dither."
+        },
+        {
+          "title": "spotify",
+          "url": "https://support.spotify.com/us/artists/article/loudness-normalization/",
+          "supports": "Playback normalization and platform-specific true-peak delivery guidance; checked 2026-10-28."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Primary-source methods; original numeric audition ranges",
+      "limits": "Displayed Hz, dB, ms, ratio and percent; not raw Live API values. Numeric ranges are original audition starting points, not source-prescribed settings. Read-only recipes. No devices, routing, automation, gain or export settings are changed. No audio is measured or auditioned.",
+      "details": {
+        "tool": "mastering_recipe_catalog",
+        "recipe": "delivery_qc"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "movement-wobble",
+      "title": "Wobble envelope",
+      "category": "Movement",
+      "summary": "Smooth repeating filter or FM movement.",
+      "tags": [
+        "wobble",
+        "automation",
+        "Session clips"
+      ],
+      "steps": [
+        "Inspect the target parameter and existing clip automation.",
+        "Choose cycle length, normalized low/high bounds, and clip time span.",
+        "Generate the envelope; preserve existing automation unless explicitly replacing it.",
+        "Audition at matched volume and check recovery."
+      ],
+      "settings": {
+        "cycle_units": "Quarter-note beats",
+        "cycle_examples": {
+          "quarter": 1,
+          "eighth": 0.5,
+          "sixteenth": 0.25
+        },
+        "normalized_bounds": [
+          0,
+          1
+        ],
+        "kick_events": "Required for duck; clip-relative beat times"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original curve generator",
+      "limits": "Prewritten Session automation, not audio-reactive modulation. Normalized values map to native min/max, not perceptually linear units.",
+      "details": {
+        "tool": "apply_bass_movement",
+        "shape": "wobble"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "movement-growl",
+      "title": "Growl envelope",
+      "category": "Movement",
+      "summary": "Fast attack and uneven decay for growl articulation.",
+      "tags": [
+        "growl",
+        "automation",
+        "Session clips"
+      ],
+      "steps": [
+        "Inspect the target parameter and existing clip automation.",
+        "Choose cycle length, normalized low/high bounds, and clip time span.",
+        "Generate the envelope; preserve existing automation unless explicitly replacing it.",
+        "Audition at matched volume and check recovery."
+      ],
+      "settings": {
+        "cycle_units": "Quarter-note beats",
+        "cycle_examples": {
+          "quarter": 1,
+          "eighth": 0.5,
+          "sixteenth": 0.25
+        },
+        "normalized_bounds": [
+          0,
+          1
+        ],
+        "kick_events": "Required for duck; clip-relative beat times"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original curve generator",
+      "limits": "Prewritten Session automation, not audio-reactive modulation. Normalized values map to native min/max, not perceptually linear units.",
+      "details": {
+        "tool": "apply_bass_movement",
+        "shape": "growl"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "movement-yoi",
+      "title": "Yoi envelope",
+      "category": "Movement",
+      "summary": "Repeated asymmetric vowel gestures.",
+      "tags": [
+        "yoi",
+        "automation",
+        "Session clips"
+      ],
+      "steps": [
+        "Inspect the target parameter and existing clip automation.",
+        "Choose cycle length, normalized low/high bounds, and clip time span.",
+        "Generate the envelope; preserve existing automation unless explicitly replacing it.",
+        "Audition at matched volume and check recovery."
+      ],
+      "settings": {
+        "cycle_units": "Quarter-note beats",
+        "cycle_examples": {
+          "quarter": 1,
+          "eighth": 0.5,
+          "sixteenth": 0.25
+        },
+        "normalized_bounds": [
+          0,
+          1
+        ],
+        "kick_events": "Required for duck; clip-relative beat times"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original curve generator",
+      "limits": "Prewritten Session automation, not audio-reactive modulation. Normalized values map to native min/max, not perceptually linear units.",
+      "details": {
+        "tool": "apply_bass_movement",
+        "shape": "yoi"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "movement-pluck",
+      "title": "Pluck envelope",
+      "category": "Movement",
+      "summary": "Short decay gesture for percussive bass.",
+      "tags": [
+        "pluck",
+        "automation",
+        "Session clips"
+      ],
+      "steps": [
+        "Inspect the target parameter and existing clip automation.",
+        "Choose cycle length, normalized low/high bounds, and clip time span.",
+        "Generate the envelope; preserve existing automation unless explicitly replacing it.",
+        "Audition at matched volume and check recovery."
+      ],
+      "settings": {
+        "cycle_units": "Quarter-note beats",
+        "cycle_examples": {
+          "quarter": 1,
+          "eighth": 0.5,
+          "sixteenth": 0.25
+        },
+        "normalized_bounds": [
+          0,
+          1
+        ],
+        "kick_events": "Required for duck; clip-relative beat times"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original curve generator",
+      "limits": "Prewritten Session automation, not audio-reactive modulation. Normalized values map to native min/max, not perceptually linear units.",
+      "details": {
+        "tool": "apply_bass_movement",
+        "shape": "pluck"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "movement-sweep",
+      "title": "Sweep envelope",
+      "category": "Movement",
+      "summary": "One gradual movement across the clip.",
+      "tags": [
+        "sweep",
+        "automation",
+        "Session clips"
+      ],
+      "steps": [
+        "Inspect the target parameter and existing clip automation.",
+        "Choose cycle length, normalized low/high bounds, and clip time span.",
+        "Generate the envelope; preserve existing automation unless explicitly replacing it.",
+        "Audition at matched volume and check recovery."
+      ],
+      "settings": {
+        "cycle_units": "Quarter-note beats",
+        "cycle_examples": {
+          "quarter": 1,
+          "eighth": 0.5,
+          "sixteenth": 0.25
+        },
+        "normalized_bounds": [
+          0,
+          1
+        ],
+        "kick_events": "Required for duck; clip-relative beat times"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original curve generator",
+      "limits": "Prewritten Session automation, not audio-reactive modulation. Normalized values map to native min/max, not perceptually linear units.",
+      "details": {
+        "tool": "apply_bass_movement",
+        "shape": "sweep"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "movement-machinegun",
+      "title": "Machinegun envelope",
+      "category": "Movement",
+      "summary": "Repeated gate-shaped bursts for gun articulation.",
+      "tags": [
+        "machinegun",
+        "automation",
+        "Session clips"
+      ],
+      "steps": [
+        "Inspect the target parameter and existing clip automation.",
+        "Choose cycle length, normalized low/high bounds, and clip time span.",
+        "Generate the envelope; preserve existing automation unless explicitly replacing it.",
+        "Audition at matched volume and check recovery."
+      ],
+      "settings": {
+        "cycle_units": "Quarter-note beats",
+        "cycle_examples": {
+          "quarter": 1,
+          "eighth": 0.5,
+          "sixteenth": 0.25
+        },
+        "normalized_bounds": [
+          0,
+          1
+        ],
+        "kick_events": "Required for duck; clip-relative beat times"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original curve generator",
+      "limits": "Prewritten Session automation, not audio-reactive modulation. Normalized values map to native min/max, not perceptually linear units.",
+      "details": {
+        "tool": "apply_bass_movement",
+        "shape": "machinegun"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "movement-duck",
+      "title": "Duck envelope",
+      "category": "Movement",
+      "summary": "Kick-timed gain reduction with hold and recovery.",
+      "tags": [
+        "duck",
+        "automation",
+        "Session clips"
+      ],
+      "steps": [
+        "Inspect the target parameter and existing clip automation.",
+        "Choose cycle length, normalized low/high bounds, and clip time span.",
+        "Generate the envelope; preserve existing automation unless explicitly replacing it.",
+        "Audition at matched volume and check recovery."
+      ],
+      "settings": {
+        "cycle_units": "Quarter-note beats",
+        "cycle_examples": {
+          "quarter": 1,
+          "eighth": 0.5,
+          "sixteenth": 0.25
+        },
+        "normalized_bounds": [
+          0,
+          1
+        ],
+        "kick_events": "Required for duck; clip-relative beat times"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original curve generator",
+      "limits": "Prewritten Session automation, not audio-reactive modulation. Normalized values map to native min/max, not perceptually linear units.",
+      "details": {
+        "tool": "apply_bass_movement",
+        "shape": "duck"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "phrase-tearout",
+      "title": "Tearout phrases",
+      "category": "Rhythm",
+      "summary": "Original seeded MIDI calls, responses and matching sub rhythm.",
+      "tags": [
+        "MIDI",
+        "rhythm",
+        "tearout"
+      ],
+      "steps": [
+        "Choose root note, bar count, seed and call/response/sub role.",
+        "Generate into an empty Session slot.",
+        "Check overlaps and arrange rests around the backbeat."
+      ],
+      "settings": {
+        "style": "tearout",
+        "root_example": {
+          "midi": 29,
+          "note_in_live": "F0"
+        },
+        "roles": [
+          "call",
+          "response",
+          "sub"
+        ],
+        "meter": "4/4; does not change song signature"
+      },
+      "sources": [],
+      "status": "MCP ready",
+      "evidence": "Original generative rhythm",
+      "limits": "Not a tutorial MIDI transcription; does not set project tempo or arrange a complete song.",
+      "details": {
+        "tool": "create_bass_phrase",
+        "style": "tearout"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "phrase-tearout-triplet",
+      "title": "Tearout Triplet phrases",
+      "category": "Rhythm",
+      "summary": "Original seeded MIDI calls, responses and matching sub rhythm.",
+      "tags": [
+        "MIDI",
+        "rhythm",
+        "tearout_triplet"
+      ],
+      "steps": [
+        "Choose root note, bar count, seed and call/response/sub role.",
+        "Generate into an empty Session slot.",
+        "Check overlaps and arrange rests around the backbeat."
+      ],
+      "settings": {
+        "style": "tearout_triplet",
+        "root_example": {
+          "midi": 29,
+          "note_in_live": "F0"
+        },
+        "roles": [
+          "call",
+          "response",
+          "sub"
+        ],
+        "meter": "4/4; does not change song signature"
+      },
+      "sources": [],
+      "status": "MCP ready",
+      "evidence": "Original generative rhythm",
+      "limits": "Not a tutorial MIDI transcription; does not set project tempo or arrange a complete song.",
+      "details": {
+        "tool": "create_bass_phrase",
+        "style": "tearout_triplet"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "phrase-brostep",
+      "title": "Brostep phrases",
+      "category": "Rhythm",
+      "summary": "Original seeded MIDI calls, responses and matching sub rhythm.",
+      "tags": [
+        "MIDI",
+        "rhythm",
+        "brostep"
+      ],
+      "steps": [
+        "Choose root note, bar count, seed and call/response/sub role.",
+        "Generate into an empty Session slot.",
+        "Check overlaps and arrange rests around the backbeat."
+      ],
+      "settings": {
+        "style": "brostep",
+        "root_example": {
+          "midi": 29,
+          "note_in_live": "F0"
+        },
+        "roles": [
+          "call",
+          "response",
+          "sub"
+        ],
+        "meter": "4/4; does not change song signature"
+      },
+      "sources": [],
+      "status": "MCP ready",
+      "evidence": "Original generative rhythm",
+      "limits": "Not a tutorial MIDI transcription; does not set project tempo or arrange a complete song.",
+      "details": {
+        "tool": "create_bass_phrase",
+        "style": "brostep"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "phrase-dubstep",
+      "title": "Dubstep phrases",
+      "category": "Rhythm",
+      "summary": "Original seeded MIDI calls, responses and matching sub rhythm.",
+      "tags": [
+        "MIDI",
+        "rhythm",
+        "dubstep"
+      ],
+      "steps": [
+        "Choose root note, bar count, seed and call/response/sub role.",
+        "Generate into an empty Session slot.",
+        "Check overlaps and arrange rests around the backbeat."
+      ],
+      "settings": {
+        "style": "dubstep",
+        "root_example": {
+          "midi": 29,
+          "note_in_live": "F0"
+        },
+        "roles": [
+          "call",
+          "response",
+          "sub"
+        ],
+        "meter": "4/4; does not change song signature"
+      },
+      "sources": [],
+      "status": "MCP ready",
+      "evidence": "Original generative rhythm",
+      "limits": "Not a tutorial MIDI transcription; does not set project tempo or arrange a complete song.",
+      "details": {
+        "tool": "create_bass_phrase",
+        "style": "dubstep"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "phrase-halftime",
+      "title": "Halftime phrases",
+      "category": "Rhythm",
+      "summary": "Original seeded MIDI calls, responses and matching sub rhythm.",
+      "tags": [
+        "MIDI",
+        "rhythm",
+        "halftime"
+      ],
+      "steps": [
+        "Choose root note, bar count, seed and call/response/sub role.",
+        "Generate into an empty Session slot.",
+        "Check overlaps and arrange rests around the backbeat."
+      ],
+      "settings": {
+        "style": "halftime",
+        "root_example": {
+          "midi": 29,
+          "note_in_live": "F0"
+        },
+        "roles": [
+          "call",
+          "response",
+          "sub"
+        ],
+        "meter": "4/4; does not change song signature"
+      },
+      "sources": [],
+      "status": "MCP ready",
+      "evidence": "Original generative rhythm",
+      "limits": "Not a tutorial MIDI transcription; does not set project tempo or arrange a complete song.",
+      "details": {
+        "tool": "create_bass_phrase",
+        "style": "halftime"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "four-layer-gun",
+      "title": "Four-layer tearout gun",
+      "category": "Layering",
+      "summary": "Combine sub, transient, body and noise with synchronized triplet rhythm.",
+      "tags": [
+        "tearout",
+        "gun",
+        "triplets",
+        "layering",
+        "BassTi"
+      ],
+      "steps": [
+        "02:18 — Triplet-grid rhythm underpins the gun pattern.",
+        "02:52 — The sub is cleaned, dispersed and processed with a tuned Corpus Kick Tight preset.",
+        "03:31 — A kick-derived transient is low-cut, frequency-shifted, distorted and shortened with transient shaping.",
+        "04:02 — The body layer uses sample-following modulation to move a filter-table position.",
+        "04:38 — A separate noise layer supplies heavily processed upper-frequency texture.",
+        "06:24 — Sub, transient, body and noise feed a shared processing group.",
+        "07:26 — Parallel low/high lanes allow the low foundation and upper texture to be treated separately.",
+        "08:52 — A parallel self-ring-modulated high-frequency lane is blended with the main signal.",
+        "09:43 — A short whole-signal delay changes timing feel; the exact millisecond value is not stated."
+      ],
+      "settings": {
+        "sub": "Operator sine or a cleared 808 sample; optional 808 Shaper, mono Utility, carefully tuned Corpus.",
+        "transient": "Short kick-derived hit into EQ Eight, Shifter, Saturator and transient shaping with Drum Buss.",
+        "body": "Existing FM recipe or sample; Auto Filter envelope follower for audio-reactive movement. A drawn envelope is only a rhythmic approximation.",
+        "noise": "Short filtered noise or textured sample; separate low-cut and restrained distortion.",
+        "bus": "An Audio Effect Rack can provide separate low/high processing lanes; audition and gain-match their recombination."
+      },
+      "sources": [
+        {
+          "title": "BassTi — The Last TEAROUT Tutorial You Need (2026 Step-By-Step)",
+          "url": "https://www.youtube.com/watch?v=FGXP_8URE5w",
+          "evidence": "English auto-generated captions and public description; video controls and audio were not directly inspected",
+          "limits": "Auto-captioned product names can be wrong. Exact filter frequencies, gains and time offsets were not inferred."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "English automatic captions and public description; no direct audio or visual inspection",
+      "limits": "Blueprint only. Native Shifter is not self-ring modulation; no exact Disperser substitute is claimed.",
+      "details": {
+        "tool": "tearout_gun_blueprint",
+        "original_example_material": {
+          "style": "tearout_triplet",
+          "layers": [
+            {
+              "role": "sub",
+              "length": 16,
+              "notes": [
+                {
+                  "pitch": 29,
+                  "start_time": 0,
+                  "duration": 0.22,
+                  "velocity": 105,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 0.3333333333333333,
+                  "duration": 0.2,
+                  "velocity": 98,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 0.6666666666666666,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 1.3333333333333333,
+                  "duration": 0.3,
+                  "velocity": 98,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 2.3333333333333335,
+                  "duration": 0.25,
+                  "velocity": 92,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 2.6666666666666665,
+                  "duration": 0.2,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 3.3333333333333335,
+                  "duration": 0.2,
+                  "velocity": 100,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 4,
+                  "duration": 0.22,
+                  "velocity": 99,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 4.333333333333333,
+                  "duration": 0.2,
+                  "velocity": 98,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 4.666666666666667,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 5.333333333333333,
+                  "duration": 0.3,
+                  "velocity": 105,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 6.333333333333334,
+                  "duration": 0.25,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 6.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 99,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 7.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 97,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 8,
+                  "duration": 0.22,
+                  "velocity": 101,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 8.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 95,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 8.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 100,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 9.333333333333334,
+                  "duration": 0.3,
+                  "velocity": 94,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 10.333333333333334,
+                  "duration": 0.25,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 10.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 94,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 11.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 12,
+                  "duration": 0.22,
+                  "velocity": 93,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 12.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 101,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 12.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 13.333333333333334,
+                  "duration": 0.3,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 14.333333333333334,
+                  "duration": 0.25,
+                  "velocity": 100,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 14.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 103,
+                  "mute": false
+                },
+                {
+                  "pitch": 29,
+                  "start_time": 15.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                }
+              ]
+            },
+            {
+              "role": "transient",
+              "length": 16,
+              "notes": [
+                {
+                  "pitch": 36,
+                  "start_time": 0,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 0.3333333333333333,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 0.6666666666666666,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 1.3333333333333333,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 2.3333333333333335,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 2.6666666666666665,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 3.3333333333333335,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 4,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 4.333333333333333,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 4.666666666666667,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 5.333333333333333,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 6.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 6.666666666666666,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 7.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 8,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 8.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 8.666666666666666,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 9.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 10.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 10.666666666666666,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 11.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 12,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 12.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 12.666666666666666,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 13.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 14.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 14.666666666666666,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                },
+                {
+                  "pitch": 36,
+                  "start_time": 15.333333333333334,
+                  "duration": 0.055,
+                  "velocity": 116,
+                  "mute": false
+                }
+              ]
+            },
+            {
+              "role": "body",
+              "length": 16,
+              "notes": [
+                {
+                  "pitch": 41,
+                  "start_time": 0,
+                  "duration": 0.22,
+                  "velocity": 105,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 0.3333333333333333,
+                  "duration": 0.2,
+                  "velocity": 98,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 0.6666666666666666,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 1.3333333333333333,
+                  "duration": 0.3,
+                  "velocity": 98,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 2.3333333333333335,
+                  "duration": 0.25,
+                  "velocity": 92,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 2.6666666666666665,
+                  "duration": 0.2,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 3.3333333333333335,
+                  "duration": 0.2,
+                  "velocity": 100,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 4,
+                  "duration": 0.22,
+                  "velocity": 99,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 4.333333333333333,
+                  "duration": 0.2,
+                  "velocity": 98,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 4.666666666666667,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 5.333333333333333,
+                  "duration": 0.3,
+                  "velocity": 105,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 6.333333333333334,
+                  "duration": 0.25,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 6.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 99,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 7.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 97,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 8,
+                  "duration": 0.22,
+                  "velocity": 101,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 8.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 95,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 8.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 100,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 9.333333333333334,
+                  "duration": 0.3,
+                  "velocity": 94,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 10.333333333333334,
+                  "duration": 0.25,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 10.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 94,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 11.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 12,
+                  "duration": 0.22,
+                  "velocity": 93,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 12.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 101,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 12.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 13.333333333333334,
+                  "duration": 0.3,
+                  "velocity": 96,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 14.333333333333334,
+                  "duration": 0.25,
+                  "velocity": 100,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 14.666666666666666,
+                  "duration": 0.2,
+                  "velocity": 103,
+                  "mute": false
+                },
+                {
+                  "pitch": 41,
+                  "start_time": 15.333333333333334,
+                  "duration": 0.2,
+                  "velocity": 104,
+                  "mute": false
+                }
+              ]
+            },
+            {
+              "role": "noise",
+              "length": 16,
+              "notes": [
+                {
+                  "pitch": 60,
+                  "start_time": 0,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 0.3333333333333333,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 0.6666666666666666,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 1.3333333333333333,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 2.3333333333333335,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 2.6666666666666665,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 3.3333333333333335,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 4,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 4.333333333333333,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 4.666666666666667,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 5.333333333333333,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 6.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 6.666666666666666,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 7.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 8,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 8.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 8.666666666666666,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 9.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 10.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 10.666666666666666,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 11.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 12,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 12.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 12.666666666666666,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 13.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 14.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 14.666666666666666,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                },
+                {
+                  "pitch": 60,
+                  "start_time": 15.333333333333334,
+                  "duration": 0.09,
+                  "velocity": 65,
+                  "mute": false
+                }
+              ]
+            }
+          ],
+          "note": "Original synchronized MIDI example, not a transcription of the tutorial pattern"
+        }
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "tutorial-ayjinplates",
+      "title": "Fast preset-led tearout workflow",
+      "category": "Tutorial",
+      "summary": "AYJINPLATES describes a fast workflow using Serum presets, distorted bass, clean low end and drums.",
+      "tags": [
+        "tearout",
+        "Serum",
+        "AYJINPLATES",
+        "sound selection"
+      ],
+      "steps": [
+        "Choose compatible bass and drum sounds.",
+        "Balance distorted bass against a clean low foundation.",
+        "Arrange contrasts for drop energy."
+      ],
+      "settings": {},
+      "sources": [
+        {
+          "title": "How to Make TEAROUT Dubstep in 2 Minutes",
+          "url": "https://www.youtube.com/watch?v=-l4jY9vKf1o"
+        }
+      ],
+      "status": "Limited evidence",
+      "evidence": "Public description and sparse automatic captions",
+      "limits": "Captions contain vocal cues, not technical instructions. These steps summarize stated topics; no exact patches, chains or settings were established.",
+      "details": {},
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "resampling",
+      "title": "Resampling and call-response editing",
+      "category": "Workflow",
+      "summary": "Print moving mid-bass material, select useful moments and arrange purposeful contrasts.",
+      "tags": [
+        "resampling",
+        "audio",
+        "tearout",
+        "arrangement"
+      ],
+      "steps": [
+        "Keep sub separate from the distorted mid-bass.",
+        "Create and automate a sustained phrase.",
+        "Record to audio manually in Live.",
+        "Choose useful moments, add fades, then arrange with rests and contrasting responses."
+      ],
+      "settings": {
+        "automation_scope": "Session clips",
+        "recording": "Manual routing and recording"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Original production workflow",
+      "limits": "The current MCP does not render, listen to audio, or set up resampling routes.",
+      "details": {
+        "tool": "bass_resampling_workflow"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "sub-inspection",
+      "title": "Sub MIDI overlap inspection",
+      "category": "Workflow",
+      "summary": "Find overlapping sub notes and inspect note register and fundamental frequency.",
+      "tags": [
+        "sub",
+        "808",
+        "MIDI",
+        "phase"
+      ],
+      "steps": [
+        "Inspect sub clip MIDI.",
+        "Remove accidental overlaps where a monophonic foundation is intended.",
+        "Audition note transitions with the kick."
+      ],
+      "settings": {
+        "live_midi_29": "F0 ≈ 43.65 Hz at standard tuning"
+      },
+      "sources": [
+        {
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "MIDI-based checks; no audio inference",
+      "limits": "Cannot diagnose waveform phase, clipping, LUFS or loudness.",
+      "details": {
+        "tool": "inspect_sub_clip"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "vocal-space-wobble",
+      "title": "Vocal-space wobble",
+      "category": "Sound design",
+      "summary": "Original restrained FM wobble for answering a vocal hook; inspired by songwriting contrast, not a verified ALLEYCVT patch.",
+      "tags": [
+        "ALLEYCVT",
+        "AlleyCVT",
+        "dubstep",
+        "midbass",
+        "Operator",
+        "Saturator",
+        "Auto Filter",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview this original adaptation before creating it.",
+        "Build on a new track with create_native_bass; keep an independent sub if needed.",
+        "Audition against the vocal or contrasting phrase and refine movement at matched loudness."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.18,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0.32,
+              "Osc-C Level": 0,
+              "Osc-D Level": 0,
+              "Ae Attack": 0.03,
+              "Ae Decay": 0.3,
+              "Ae Sustain": 0.4,
+              "Ae Release": 0.12,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "B Coarse": 2,
+              "Be Decay": 0.4,
+              "Be Sustain": 0.32
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.57,
+              "Output": 0.72,
+              "Dry/Wet": 0.45
+            }
+          },
+          {
+            "name": "Auto Filter",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Type": 0,
+              "Frequency": 0.55,
+              "Resonance": 0.3,
+              "LFO Amount": 0
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "wobble",
+          "device": "Auto Filter",
+          "parameter": "Frequency",
+          "low": 0.25,
+          "high": 0.62,
+          "cycle_beats": 1
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        },
+        {
+          "id": "alley_interview",
+          "title": "ALLEYCVT: FEEL IT interview — EDM Identity",
+          "url": "https://edmidentity.com/2024/08/15/alleycvt-hard-summer-interview/",
+          "supports": "Direct interview: melody-first and drop-first writing, vocals, collaboration and testing unfinished ideas live; no synth parameters."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original artist-informed adaptation; all numeric settings are our own audition starting points, not artist presets or measured track settings. Documented songwriting workflow; native sound choices are original adaptations.",
+      "limits": "Original patch; not an artist preset or track reconstruction. Numeric settings are native API units, not displayed Hz/dB/ms. No audio audition or measurements were performed.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "vocal_space_wobble",
+        "artist_context": "ALLEYCVT"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "robot-fm-bounce",
+      "title": "Robot FM bounce",
+      "category": "Sound design",
+      "summary": "Original short FM burst with contrasting articulation for a robotic call; no exact Subtronics preset is reproduced.",
+      "tags": [
+        "Subtronics",
+        "tearout",
+        "midbass",
+        "Operator",
+        "Roar",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview this original adaptation before creating it.",
+        "Build on a new track with create_native_bass; keep an independent sub if needed.",
+        "Audition against the vocal or contrasting phrase and refine movement at matched loudness."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.14,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0.62,
+              "Osc-C Level": 0.6,
+              "Osc-D Level": 0.3,
+              "Ae Attack": 0.03,
+              "Ae Decay": 0.25,
+              "Ae Sustain": 0.18,
+              "Ae Release": 0.1,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "B Coarse": 5,
+              "C Coarse": 7,
+              "D Coarse": 11,
+              "Be Decay": 0.22,
+              "Be Sustain": 0.2,
+              "Ce Decay": 0.24,
+              "Ce Sustain": 0.1,
+              "De Decay": 0.2,
+              "De Sustain": 0.05
+            }
+          },
+          {
+            "name": "Roar",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.62,
+              "Shaper 1 Amt": 0.42,
+              "Shaper 2 Amt": 0.25,
+              "Fb Amt": 0.06,
+              "Fb Gate On": 1,
+              "Output": 0.54,
+              "Dry/Wet": 0.65
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "growl",
+          "device": "Operator",
+          "parameter": "Osc-B Level",
+          "low": 0.25,
+          "high": 0.7,
+          "cycle_beats": 0.5
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "roar",
+          "title": "Ableton: Roar",
+          "url": "https://www.ableton.com/en/packs/roar/",
+          "supports": "Multiple distortion stages, filtering, modulation, feedback and compression"
+        },
+        {
+          "id": "sub_headliner",
+          "title": "Subtronics: FIBONACCI studio interview — Headliner",
+          "url": "https://www.headlinerhub.com/subtronics-fibonacci-coachella-rehab-edm-stardom.html",
+          "supports": "Indexed direct interview excerpt: Ableton, Serum 2, Operator, tonal delay, saturation, spectral processing and granular audio exploration. Retrieved through search; direct page fetch unavailable."
+        },
+        {
+          "id": "sub_musictech",
+          "title": "Subtronics: sound contrast and minimal sources — MusicTech",
+          "url": "https://musictech.com/features/interviews/subtronics-interview-fibonacci-studio-monitors/",
+          "supports": "Indexed direct interview: loud/quiet contrast, spectrum contrast, and a square wave with Xfer OTT for Black Ice. Retrieved through search; direct page fetch returned 403."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original artist-informed adaptation; all numeric settings are our own audition starting points, not artist presets or measured track settings. Direct-interview excerpts support processing families and contrast principles, not exact presets.",
+      "limits": "Original patch; not an artist preset or track reconstruction. Numeric settings are native API units, not displayed Hz/dB/ms. No audio audition or measurements were performed.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "robot_fm_bounce",
+        "artist_context": "Subtronics"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "pitch-hook-stab",
+      "title": "Pitch-hook stab",
+      "category": "Sound design",
+      "summary": "Original percussive pitched bass answer for a concise hook/fakeout arrangement; not the Laserbeam or SEE YOU DROP patch.",
+      "tags": [
+        "Ray Volpe",
+        "Volpetron",
+        "RayVolpe",
+        "brostep",
+        "midbass",
+        "Operator",
+        "Saturator",
+        "Utility"
+      ],
+      "steps": [
+        "Preview this original adaptation before creating it.",
+        "Build on a new track with create_native_bass; keep an independent sub if needed.",
+        "Audition against the vocal or contrasting phrase and refine movement at matched loudness."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Operator",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Algorithm": 0,
+              "Volume": 0.2,
+              "A Coarse": 1,
+              "A Fine": 0,
+              "Osc-A On": 1,
+              "Osc-B On": 1,
+              "Osc-C On": 1,
+              "Osc-D On": 1,
+              "Osc-A Wave": 0,
+              "Osc-A Level": 1,
+              "Osc-B Level": 0,
+              "Osc-C Level": 0,
+              "Osc-D Level": 0,
+              "Ae Attack": 0.04,
+              "Ae Decay": 0.32,
+              "Ae Sustain": 0.05,
+              "Ae Release": 0.1,
+              "Filter On": 0,
+              "Spread": 0,
+              "Osc-A Retrig": 1,
+              "Pe On": 1,
+              "Pe Init": 24,
+              "Pe Peak": 24,
+              "Pe Decay": 0.12,
+              "Pe Sustain": 0
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": "808 Shaper.adv",
+            "parameters": {
+              "Drive": 0.54,
+              "Output": 0.8,
+              "Dry/Wet": 0.5
+            }
+          },
+          {
+            "name": "Utility",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Stereo Width": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "pluck",
+          "device": "808 Shaper",
+          "parameter": "Drive",
+          "low": 0.5,
+          "high": 0.58,
+          "cycle_beats": 0.5
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        },
+        {
+          "id": "ray_musicradar",
+          "title": "Ray Volpe: SEE YOU DROP production interview — MusicRadar",
+          "url": "https://www.musicradar.com/news/ray-volpe-interview",
+          "supports": "Direct interview: chopped vocal phrase, extended fakeout, writing the second drop first, Serum bass, and mixing while producing."
+        },
+        {
+          "id": "ray_hooks",
+          "title": "Ray Volpe: memorable hook writing — EDM.com",
+          "url": "https://edm.com/interviews/ray-volpe-song-request-laserbeam-interview/",
+          "supports": "Direct interview: concise and memorable songwriting instead of sound-design complexity alone."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original artist-informed adaptation; all numeric settings are our own audition starting points, not artist presets or measured track settings. Volpetron is indexed with Ray Volpe; hook and fakeout techniques are documented, native patch settings are original.",
+      "limits": "Original patch; not an artist preset or track reconstruction. Numeric settings are native API units, not displayed Hz/dB/ms. No audio audition or measurements were performed.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "pitch_hook_stab",
+        "artist_context": "Ray Volpe / Volpetron"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "shadow-reese",
+      "title": "Shadow Reese",
+      "category": "Sound design",
+      "summary": "Original darker detuned wavetable bass for a witch-house/darkwave study; VULPER synth choices are undocumented.",
+      "tags": [
+        "VULPER",
+        "Vulper",
+        "dubstep",
+        "midbass",
+        "Wavetable",
+        "Saturator",
+        "EQ Eight"
+      ],
+      "steps": [
+        "Preview this original adaptation before creating it.",
+        "Build on a new track with create_native_bass; keep an independent sub if needed.",
+        "Audition against the vocal or contrasting phrase and refine movement at matched loudness."
+      ],
+      "settings": {
+        "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms",
+        "chain": [
+          {
+            "name": "Wavetable",
+            "category": "instruments",
+            "preset": null,
+            "parameters": {
+              "Osc 1 On": 1,
+              "Osc 1 Pos": 0.66,
+              "Osc 1 Detune": 0.495,
+              "Osc 1 Gain": 0.65,
+              "Osc 2 On": 1,
+              "Osc 2 Pos": 0.66,
+              "Osc 2 Detune": 0.505,
+              "Osc 2 Gain": 0.65,
+              "Sub On": 0,
+              "Filter 1 Freq": 0.4,
+              "Amp Attack": 0.12,
+              "Amp Release": 0.38,
+              "Volume": 0.2
+            }
+          },
+          {
+            "name": "Saturator",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "Drive": 0.59,
+              "Output": 0.7,
+              "Dry/Wet": 0.45
+            }
+          },
+          {
+            "name": "EQ Eight",
+            "category": "audio_effects",
+            "preset": null,
+            "parameters": {
+              "1 Filter On A": 1,
+              "1 Filter Type A": 1,
+              "1 Frequency A": 0.29,
+              "2 Gain A": 0,
+              "3 Gain A": 0
+            }
+          }
+        ],
+        "movement": {
+          "shape": "wobble",
+          "device": "Wavetable",
+          "parameter": "Osc 1 Pos",
+          "low": 0.35,
+          "high": 0.6,
+          "cycle_beats": 8
+        }
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        },
+        {
+          "id": "vulper_dream",
+          "title": "VULPER — DREAM VAULT (artist Bandcamp)",
+          "url": "https://vulper.bandcamp.com/album/dream-vault",
+          "supports": "Artist-owned release identifies electronic, dark electro, darkwave and witch house tags. Does not document instruments, processing or production settings."
+        },
+        {
+          "id": "vulper_moon",
+          "title": "VULPER — FULL MOON DOGMA (artist Bandcamp)",
+          "url": "https://vulper.bandcamp.com/album/full-moon-dogma",
+          "supports": "Artist-owned release confirms the requested artist/catalog. No production chain or sound-design parameters supplied."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original artist-informed adaptation; all numeric settings are our own audition starting points, not artist presets or measured track settings. Artist identity and release tags confirmed. No detailed first-person production methods found; exercises are genre adaptations only. Specific processing is undocumented.",
+      "limits": "Original patch; not an artist preset or track reconstruction. Numeric settings are native API units, not displayed Hz/dB/ms. No audio audition or measurements were performed.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "shadow_reese",
+        "artist_context": "VULPER"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "alleycvt-hook-drop-dialogue",
+      "title": "ALLEYCVT — hook/drop dialogue",
+      "category": "Workflow",
+      "summary": "Let the vocal idea and bass phrase develop together while preserving a clear lead role.",
+      "tags": [
+        "ALLEYCVT",
+        "AlleyCVT",
+        "artist research",
+        "Workflow"
+      ],
+      "steps": [
+        "Write an original two-bar melody or vocal idea.",
+        "Make a bass answer in the spaces between important syllables.",
+        "Keep the rhythm identifiable when the vocal is muted; remove competing layers.",
+        "Alternate melody-first and drop-first sketches, then keep the stronger hook."
+      ],
+      "settings": {
+        "documented_findings": [
+          "ALLEYCVT describes starting with melody on some songs and the drop on others, then building lyrics around that choice."
+        ],
+        "original_exercise": {
+          "original_exercise": {
+            "phrase_bars": 2,
+            "answer_length_beats": [
+              0.25,
+              0.75
+            ]
+          },
+          "native_options": [
+            "Operator",
+            "Auto Filter",
+            "Saturator"
+          ],
+          "mapping": "Use vocal_space_wobble as an original bass starting point."
+        }
+      },
+      "sources": [
+        {
+          "title": "ALLEYCVT: FEEL IT interview — EDM Identity",
+          "url": "https://edmidentity.com/2024/08/15/alleycvt-hard-summer-interview/",
+          "supports": "Direct interview: melody-first and drop-first writing, vocals, collaboration and testing unfinished ideas live; no synth parameters."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Documented artist principle; original implementation exercise",
+      "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "alleycvt",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "alleycvt-contrast-and-revision",
+      "title": "ALLEYCVT — contrast and revision",
+      "category": "Workflow",
+      "summary": "Compare a sparse vocal-led sketch and a heavier drop before committing to the arrangement.",
+      "tags": [
+        "ALLEYCVT",
+        "AlleyCVT",
+        "artist research",
+        "Workflow"
+      ],
+      "steps": [
+        "Export two versions with one deliberate difference: bass density, hook placement or transition length.",
+        "Match playback loudness and compare on the same system.",
+        "Keep notes about recall and pacing; revise the composition before adding more effects."
+      ],
+      "settings": {
+        "documented_findings": [
+          "The interview describes introducing unfinished IDs in live sets to gauge response."
+        ],
+        "original_exercise": {
+          "original_test": "A/B one arrangement change at a time",
+          "level_matching": "External listening/metering required"
+        }
+      },
+      "sources": [
+        {
+          "title": "ALLEYCVT: FEEL IT interview — EDM Identity",
+          "url": "https://edmidentity.com/2024/08/15/alleycvt-hard-summer-interview/",
+          "supports": "Direct interview: melody-first and drop-first writing, vocals, collaboration and testing unfinished ideas live; no synth parameters."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Documented artist principle; original implementation exercise",
+      "limits": "This comparison protocol is an original exercise, not a documented ALLEYCVT measurement workflow.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "alleycvt",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "subtronics-tonal-delay-lab",
+      "title": "Subtronics — tonal-delay laboratory",
+      "category": "Sound design",
+      "summary": "Explore pitch from short delay feedback, then reshape the printed mid-bass texture.",
+      "tags": [
+        "Subtronics",
+        "artist research",
+        "Sound design"
+      ],
+      "steps": [
+        "Start with a quiet, short FM sound and keep sub on a separate path.",
+        "For an original unsynced tonal-delay experiment, compute milliseconds as 1000 / desired frequency in Hz; confirm the device can reach it.",
+        "Start with low feedback and wet level, add restrained saturation and trim the output.",
+        "Record manually and edit useful slices; crossfade boundaries and audition pitch.",
+        "Compare against the source at equal loudness."
+      ],
+      "settings": {
+        "documented_findings": [
+          "Subtronics names tonal delay, saturation, spectral processing and granular audio exploration in a studio interview."
+        ],
+        "original_exercise": {
+          "original_delay_example": {
+            "target_hz": 220,
+            "delay_ms": 4.545,
+            "feedback_percent_start": [
+              10,
+              30
+            ],
+            "wet_percent_start": [
+              5,
+              20
+            ]
+          },
+          "native_options": [
+            "Operator",
+            "Delay if its time range permits",
+            "Saturator"
+          ],
+          "not_automatic": "No tonal delay or spectral/granular processor is built by the native patch."
+        }
+      },
+      "sources": [
+        {
+          "title": "Subtronics: FIBONACCI studio interview — Headliner",
+          "url": "https://www.headlinerhub.com/subtronics-fibonacci-coachella-rehab-edm-stardom.html",
+          "supports": "Indexed direct interview excerpt: Ableton, Serum 2, Operator, tonal delay, saturation, spectral processing and granular audio exploration. Retrieved through search; direct page fetch unavailable."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Documented artist principle; original implementation exercise",
+      "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "subtronics",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "subtronics-register-dynamics-contrast",
+      "title": "Subtronics — register and dynamics contrast",
+      "category": "Rhythm",
+      "summary": "Answer a forceful mid-bass gesture with a quieter or differently voiced event.",
+      "tags": [
+        "Subtronics",
+        "artist research",
+        "Rhythm"
+      ],
+      "steps": [
+        "Write an original call and response on separate phrases.",
+        "Make the answer shorter or quieter; move only the texture layer into a contrasting register.",
+        "Preserve the sub root instead of transposing the entire low foundation.",
+        "For a separate minimal-source study, select a square wave manually and audition multiband compression before adding extra oscillators."
+      ],
+      "settings": {
+        "documented_findings": [
+          "The MusicTech interview describes alternating loud and quiet events and contrasting parts of the frequency spectrum; it also recounts a minimal square-wave/OTT source for Black Ice."
+        ],
+        "original_exercise": {
+          "original_example": {
+            "response_gain_offset_db": [
+              -3,
+              -6
+            ],
+            "texture_octave_shift": 12
+          },
+          "native_options": [
+            "Operator",
+            "Multiband Dynamics",
+            "Utility"
+          ],
+          "not_equivalent": "Native multiband processing is an adaptation, not the exact Xfer OTT chain."
+        }
+      },
+      "sources": [
+        {
+          "title": "Subtronics: sound contrast and minimal sources — MusicTech",
+          "url": "https://musictech.com/features/interviews/subtronics-interview-fibonacci-studio-monitors/",
+          "supports": "Indexed direct interview: loud/quiet contrast, spectrum contrast, and a square wave with Xfer OTT for Black Ice. Retrieved through search; direct page fetch returned 403."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Documented artist principle; original implementation exercise",
+      "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "subtronics",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "volpetron-vocal-hook-fakeout",
+      "title": "Ray Volpe / Volpetron — vocal-hook fakeout",
+      "category": "Rhythm",
+      "summary": "Build anticipation by repeating a small vocal hook before releasing into the bass drop.",
+      "tags": [
+        "Ray Volpe",
+        "Volpetron",
+        "RayVolpe",
+        "artist research",
+        "Rhythm"
+      ],
+      "steps": [
+        "Record your own or use a properly licensed short vocal phrase.",
+        "Slice around clean syllable boundaries; add short fades and retune only when useful.",
+        "Repeat a compact original motif through a deliberately extended fakeout.",
+        "Remove competing bass hits until the hook has established its rhythm.",
+        "Introduce pitch_hook_stab as an original answer; compare timing variations."
+      ],
+      "settings": {
+        "documented_findings": [
+          "Ray Volpe describes chopping a full vocal phrase into a catchy motif and extending the fakeout on SEE YOU DROP."
+        ],
+        "original_exercise": {
+          "original_exercise": {
+            "fakeout_bars": [
+              1,
+              2
+            ],
+            "slice_fade_ms": [
+              2,
+              8
+            ]
+          },
+          "manual_stage": "Audio slicing, licensing, pitch editing and arrangement are manual."
+        }
+      },
+      "sources": [
+        {
+          "title": "Ray Volpe: SEE YOU DROP production interview — MusicRadar",
+          "url": "https://www.musicradar.com/news/ray-volpe-interview",
+          "supports": "Direct interview: chopped vocal phrase, extended fakeout, writing the second drop first, Serum bass, and mixing while producing."
+        },
+        {
+          "title": "Ray Volpe: memorable hook writing — EDM.com",
+          "url": "https://edm.com/interviews/ray-volpe-song-request-laserbeam-interview/",
+          "supports": "Direct interview: concise and memorable songwriting instead of sound-design complexity alone."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Documented artist principle; original implementation exercise",
+      "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "ray-volpe",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "volpetron-drop-two-first",
+      "title": "Ray Volpe / Volpetron — write drop two first",
+      "category": "Workflow",
+      "summary": "Start with the most intense section, then design a catchier first drop around its core motif.",
+      "tags": [
+        "Ray Volpe",
+        "Volpetron",
+        "RayVolpe",
+        "artist research",
+        "Workflow"
+      ],
+      "steps": [
+        "Sketch a strong second-drop idea before building a long intro.",
+        "Reduce density for the first drop while retaining a memorable rhythmic identity.",
+        "Check kick/sub balance while composing; compare master processing bypassed at equal loudness.",
+        "Preserve an unmastered render for later revision instead of copying another producer's gain structure."
+      ],
+      "settings": {
+        "documented_findings": [
+          "The SEE YOU DROP interview describes building the second drop first, working backwards toward a catchier first drop, and mixing as production proceeds."
+        ],
+        "original_exercise": {
+          "native_options": [
+            "Operator",
+            "Utility",
+            "Limiter"
+          ],
+          "levels": "No exact Ray Volpe kick, sub or master gain settings were supplied."
+        }
+      },
+      "sources": [
+        {
+          "title": "Ray Volpe: SEE YOU DROP production interview — MusicRadar",
+          "url": "https://www.musicradar.com/news/ray-volpe-interview",
+          "supports": "Direct interview: chopped vocal phrase, extended fakeout, writing the second drop first, Serum bass, and mixing while producing."
+        },
+        {
+          "title": "Ray Volpe: memorable hook writing — EDM.com",
+          "url": "https://edm.com/interviews/ray-volpe-song-request-laserbeam-interview/",
+          "supports": "Direct interview: concise and memorable songwriting instead of sound-design complexity alone."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Documented artist principle; original implementation exercise",
+      "limits": "Exact artist settings and a track-specific reconstruction are not established.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "ray-volpe",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "vulper-dark-space-study",
+      "title": "VULPER — dark-space production study",
+      "category": "Layering",
+      "summary": "Original darkwave/witch-house exercise pairing a restrained detuned bass with a separate atmospheric layer.",
+      "tags": [
+        "VULPER",
+        "Vulper",
+        "artist research",
+        "Layering"
+      ],
+      "steps": [
+        "Use shadow_reese for an original dark bass foundation.",
+        "Keep long reverb on a separate filtered pad or texture rather than flooding the sub.",
+        "Try a sparse half-time phrase and leave gaps for ambience.",
+        "Audition mono and trim long tails where they obscure the next attack."
+      ],
+      "settings": {
+        "documented_findings": [
+          "DREAM VAULT carries artist-published dark electro, darkwave and witch house tags."
+        ],
+        "original_exercise": {
+          "original_exercise": {
+            "texture_highpass_hz": [
+              180,
+              350
+            ],
+            "reverb_decay_s": [
+              2,
+              5
+            ],
+            "tempo_bpm_trial": [
+              90,
+              120
+            ]
+          },
+          "not_biographical": "These ranges are not measurements or settings from a VULPER track."
+        }
+      },
+      "sources": [
+        {
+          "title": "VULPER — DREAM VAULT (artist Bandcamp)",
+          "url": "https://vulper.bandcamp.com/album/dream-vault",
+          "supports": "Artist-owned release identifies electronic, dark electro, darkwave and witch house tags. Does not document instruments, processing or production settings."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Original genre adaptation; only release tags are documented",
+      "limits": "No direct listening analysis or artist patch documentation. Not a VULPER production-chain claim.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "vulper",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "vulper-source-boundaries",
+      "title": "VULPER — source and attribution notes",
+      "category": "Tutorial",
+      "summary": "Identify the requested artist while keeping undocumented production claims out of the library.",
+      "tags": [
+        "VULPER",
+        "Vulper",
+        "artist research",
+        "Tutorial"
+      ],
+      "steps": [
+        "Use the artist release pages as reference links.",
+        "Treat instrument, sample source, distortion chain and mastering settings as unknown.",
+        "Add a future first-person tutorial or breakdown before labeling a technique as artist-verified."
+      ],
+      "settings": {
+        "documented_findings": [
+          "The artist-owned DREAM VAULT and FULL MOON DOGMA pages identify the same VULPER catalog."
+        ],
+        "original_exercise": {
+          "confirmed": "Artist/catalog identity and release metadata",
+          "unknown": [
+            "DAW",
+            "synths",
+            "processing chain",
+            "exact settings"
+          ]
+        }
+      },
+      "sources": [
+        {
+          "title": "VULPER — DREAM VAULT (artist Bandcamp)",
+          "url": "https://vulper.bandcamp.com/album/dream-vault",
+          "supports": "Artist-owned release identifies electronic, dark electro, darkwave and witch house tags. Does not document instruments, processing or production settings."
+        },
+        {
+          "title": "VULPER — FULL MOON DOGMA (artist Bandcamp)",
+          "url": "https://vulper.bandcamp.com/album/full-moon-dogma",
+          "supports": "Artist-owned release confirms the requested artist/catalog. No production chain or sound-design parameters supplied."
+        }
+      ],
+      "status": "Limited evidence",
+      "evidence": "Artist-owned release metadata only",
+      "limits": "No technical production method can be inferred from release titles or genre tags alone.",
+      "details": {
+        "tool": "artist_bass_catalog",
+        "artist": "vulper",
+        "execution": "Reference only. Procedures and settings are original exercises unless explicitly identified as documented findings."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "riddim-square-fm",
+      "title": "Riddim square-wave FM — Operator setup",
+      "category": "Sound design",
+      "summary": "A concrete B-to-A Square D FM voice with sustained harmonic density, driven filtering and a separate sub.",
+      "tags": [
+        "riddim",
+        "Operator",
+        "square FM",
+        "dubstep"
+      ],
+      "steps": [
+        "Choose the dual-pair routing shown in the cited diagrams: B into A and D into C. Silence the C/D pair.",
+        "Set A and B to Square D at a 1:1 coarse ratio; retain high B envelope sustain.",
+        "Use the MIDI gates for articulation and align FM depth/cutoff gestures with note attacks.",
+        "Add restrained drive, high-pass the texture layer and keep the sine sub separate."
+      ],
+      "settings": {
+        "native_api_recipe": {
+          "style": "dubstep",
+          "role": "midbass",
+          "method": "Square D carrier/modulator at 1:1 in a B-to-A pair, high sustained modulation and a driven low-pass; separate sub required. Original riddim-oriented adaptation, not a track recreation.",
+          "chain": [
+            {
+              "name": "Operator",
+              "category": "instruments",
+              "preset": null,
+              "parameters": {
+                "Algorithm": 6,
+                "Volume": 0.53,
+                "A Coarse": 1,
+                "A Fine": 0,
+                "Osc-A On": 1,
+                "Osc-B On": 1,
+                "Osc-C On": 1,
+                "Osc-D On": 1,
+                "Osc-A Wave": 18,
+                "Osc-A Level": 1,
+                "Osc-B Level": 0.75,
+                "Osc-C Level": 0,
+                "Osc-D Level": 0,
+                "Ae Attack": 0.12,
+                "Ae Decay": 0.4,
+                "Ae Sustain": 0.95,
+                "Ae Release": 0.28,
+                "Filter On": 1,
+                "Spread": 0,
+                "Osc-A Retrig": 1,
+                "Osc-B Wave": 18,
+                "B Coarse": 1,
+                "Be Attack": 0.03,
+                "Be Decay": 0.4,
+                "Be Sustain": 1,
+                "Be Release": 0.28,
+                "Filter Type": 0,
+                "Filter Circuit - LP/HP": 1,
+                "Filter Drive": 0.25,
+                "Filter Freq": 0.53,
+                "Filter Res": 0.28
+              }
+            },
+            {
+              "name": "Roar",
+              "category": "audio_effects",
+              "preset": null,
+              "parameters": {
+                "Drive": 0.6666666666666666,
+                "Output": 0.7,
+                "Dry/Wet": 0.6
+              }
+            },
+            {
+              "name": "EQ Eight",
+              "category": "audio_effects",
+              "preset": null,
+              "parameters": {
+                "1 Filter On A": 1,
+                "1 Filter Type A": 1,
+                "1 Frequency A": 0.29,
+                "2 Gain A": 0,
+                "3 Gain A": 0
+              }
+            }
+          ],
+          "movement": {
+            "shape": "pluck",
+            "device": "Operator",
+            "parameter": "Filter Freq",
+            "low": 0.3828125,
+            "high": 0.6875,
+            "cycle_beats": 0.5,
+            "note": "Default builder motion is periodic; manually align FM-level/cutoff gestures to MIDI attacks for a retriggered result."
+          },
+          "sources": [
+            {
+              "id": "operator",
+              "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+              "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+              "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+            },
+            {
+              "id": "effects",
+              "title": "Ableton Live 12 audio effect reference",
+              "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+              "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+            },
+            {
+              "id": "aulart_square_fm",
+              "title": "Steve Angstrom / Aulart: stock Operator square-wave FM",
+              "url": "https://www.aulart.com/blog/create-unique-rhythmic-sounds-in-ableton/",
+              "supports": "Dual-pair B-to-A routing, Square D waveforms, FM-level modulation, high sustain and animated filtering. Numeric settings below are original adaptations."
+            }
+          ],
+          "provenance": "Documented square-wave FM topology with original patch values. Algorithm 6 is displayed Alg. 7; silent C/D pair. Parameter readback is not audio audition.",
+          "id": "riddim_square_fm",
+          "parameter_units": "Live API native values; 0..1 controls may be nonlinear, not Hz/dB/ms"
+        },
+        "instance_displayed_targets": {
+          "FM_cutoff_hz": [
+            350,
+            2500
+          ],
+          "Roar_drive_db": 8,
+          "Roar_output_db": -6
+        },
+        "note": "Square D is not a claim to recreate Reason Maelstrom Square*4. Default recipe-builder movement is periodic; note-aligned gestures are an additional automation step."
+      },
+      "sources": [
+        {
+          "id": "operator",
+          "title": "Ableton Live 12 instrument reference: Operator, Analog, Wavetable",
+          "url": "https://www.ableton.com/en/manual/live-instrument-reference/",
+          "supports": "FM topology, modulator level and envelopes, integer coarse/fractional fine tuning, detune, wavetable scanning"
+        },
+        {
+          "id": "effects",
+          "title": "Ableton Live 12 audio effect reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Auto Filter vowel/formant and cutoff modulation, Saturator, Roar, EQ, Utility"
+        },
+        {
+          "id": "aulart_square_fm",
+          "title": "Steve Angstrom / Aulart: stock Operator square-wave FM",
+          "url": "https://www.aulart.com/blog/create-unique-rhythmic-sounds-in-ableton/",
+          "supports": "Dual-pair B-to-A routing, Square D waveforms, FM-level modulation, high sustain and animated filtering. Numeric settings below are original adaptations."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Primary tutorial and inspected routing diagrams; applied parameter/envelope readback in Live. All numeric starting values are adaptations.",
+      "limits": "Not audio auditioned or a sonic match certification. Sine FM is valid; the change targets a different, square/PWM character.",
+      "details": {
+        "tool": "create_native_bass",
+        "recipe": "riddim_square_fm"
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "808-drive-ramp",
+      "title": "808 Shaper — rising Drive per note",
+      "category": "Movement",
+      "summary": "Raise saturation during each 808 note, reset at its end, and apply a coordinated output trim.",
+      "tags": [
+        "808",
+        "808 Shaper",
+        "Drive",
+        "envelopes"
+      ],
+      "steps": [
+        "Keep the existing kick-timed volume ducking.",
+        "Start a fresh Drive ramp at each MIDI onset and reach the peak late in the note.",
+        "Return to the low value before the next note.",
+        "Use a related output trim and compare at equal loudness before increasing wet mix."
+      ],
+      "settings": {
+        "instance_drive_db": [
+          -0.72,
+          8.64
+        ],
+        "instance_wet_percent": 45,
+        "instance_output_trim_db": [
+          -1.8,
+          -7.884
+        ],
+        "scope": "Native Saturator preset named 808 Shaper. Output compensation is approximate, not a loudness measurement.",
+        "midbass_extension_drive_db": [
+          2,
+          12
+        ],
+        "midbass_extension_output_trim_db": [
+          -4,
+          -10
+        ]
+      },
+      "sources": [
+        {
+          "title": "Ableton Live audio effects reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Saturator, filter and distortion controls; examples are original parameter choices, not source-prescribed settings."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Technique supplied by the user; original note-aligned envelope implementation verified in Live.",
+      "limits": "Changing drive also changes the waveform and fundamental. Check kick/sub interaction and rendered peaks; do not assume constant loudness.",
+      "details": {
+        "tools": [
+          "get_clip_envelope",
+          "write_clip_envelope"
+        ],
+        "execution": "Separate device targets for Drive and Output; preserve the volume envelope."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "midrange-punch-gestures",
+      "title": "Punchy midrange — linked FM, cutoff and vowels",
+      "category": "Movement",
+      "summary": "Use contrasting note-aligned timbral gestures instead of running every modulation at the same free-running phase.",
+      "tags": [
+        "midrange",
+        "FM",
+        "formant",
+        "punch",
+        "YOI"
+      ],
+      "steps": [
+        "For the attack, open FM depth and cutoff quickly, then decay toward a darker body.",
+        "For the response, sweep vowel position upward while a separate morph gesture emphasizes the attack.",
+        "Apply shorter, contrasting band-pass sweeps to metallic fills.",
+        "Retain rests and a clean low-frequency foundation; level-match the result."
+      ],
+      "settings": {
+        "instance_FM_level_native": [
+          0.52,
+          0.87
+        ],
+        "instance_FM_cutoff_hz": [
+          350,
+          2500
+        ],
+        "instance_formant_percent": [
+          8,
+          92
+        ],
+        "instance_morph_percent": [
+          15,
+          75
+        ],
+        "envelope_resolution_beats": 0.0625
+      },
+      "sources": [
+        {
+          "title": "Ableton Live audio effects reference",
+          "url": "https://www.ableton.com/en/manual/live-audio-effect-reference/",
+          "supports": "Saturator, filter and distortion controls; examples are original parameter choices, not source-prescribed settings."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "Original implementation exercise. Actual parameter names and envelope readback verified; inspired by documented FM-level modulation and filter methods.",
+      "limits": "Settings do not establish perceived punch or pleasantness. Check harshness and modulation depth by audition.",
+      "details": {
+        "tool": "write_clip_envelope",
+        "execution": "Absolute Session automation copied to Arrangement, not audio-following modulation."
+      },
+      "updated": "2026-10-28"
+    },
+    {
+      "id": "foley-transient-layering",
+      "title": "Found-sound layering — door, snap, demon and laser",
+      "category": "Layering",
+      "summary": "Give separate layers a body, crack or attack role instead of stacking full-range sounds on every hit.",
+      "tags": [
+        "foley",
+        "snare",
+        "808",
+        "laser",
+        "layering"
+      ],
+      "steps": [
+        "Layer a short car-door impact under a snare and a dry snap above it.",
+        "Trim leading silence, align attacks, add fades and remove unnecessary low frequencies from texture layers.",
+        "Keep the mono 808 separate from distorted midrange, and use a short laser/demon composite on selected bass attacks.",
+        "Check phase, headroom and the result in context; remove layers that blur the primary hit."
+      ],
+      "settings": {
+        "instance_one_shot_seconds": 0.4,
+        "door_layer_highpass_hz": 180,
+        "snap_highpass_hz": 1800,
+        "demon_highpass_hz": 450,
+        "laser_highpass_hz": 700,
+        "instance_layout": "32 main snare accents and 32 selected bass attacks. Unwarped, non-looping audio."
+      },
+      "sources": [
+        {
+          "title": "Ableton: parallel Rack signal flow",
+          "url": "https://www.ableton.com/en/manual/instrument-drum-and-effect-racks/",
+          "supports": "Parallel chains can combine independent sound layers. The foley choices and implementation here came from the user and this project."
+        }
+      ],
+      "status": "Reference",
+      "evidence": "User-supplied technique; local sample composites were onset-aligned and placement verified. A dry snap was used because no branch recording was found.",
+      "limits": "Filenames identify candidate sources; audio was not auditioned. User-owned samples and rendered composites remain outside this repository.",
+      "details": {
+        "implementation": "Separate audio layers in the Live arrangement; no claim that a Rack was automatically constructed."
+      },
+      "updated": "2026-10-28"
+    }
+  ]
+}

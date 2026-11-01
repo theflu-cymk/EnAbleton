@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "EnAbleton": {
+      "command": "uv",
+      "args": ["--directory", "E:\\projects\\Ableton", "run", "--locked", "enableton", "serve"]
+    }
+  }
+}
