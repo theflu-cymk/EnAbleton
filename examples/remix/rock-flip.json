@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "recipe_version": "1.0.0",
+  "style": "rock_dubstep",
+  "tempo": 140,
+  "meter": [4, 4],
+  "drop_bar": 26,
+  "drop_bars": 16,
+  "lead_in_bars": 4,
+  "source_section_start_beat": 96,
+  "source_notes": [],
+  "source_roles": {},
+  "source_mode": "hybrid",
+  "riff_voice": "lowest_per_onset",
+  "sub_octave_shift": -12,
+  "sub_range": [24, 47],
+  "vocal_mode": "continuous",
+  "link_mode": "rendered_gain",
+  "overrides": {}
+}

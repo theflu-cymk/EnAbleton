@@ -33,12 +33,18 @@ AbletonConnection.send_command = _version_checked_send
 
 def dispatch(command, args):
     connection = get_ableton_connection()
-    info = connection.send_command("get_script_info", {})
-    if info.get("upstream_version") != "1.8.1" or command not in info.get("capabilities", []):
+    # One fresh capability/version check; bypass the wrapper's duplicate check only
+    # after validating the same compatibility conditions here. Never cache writes.
+    info = _upstream_send(connection, "get_script_info", {})
+    if (
+        info.get("version") not in COMPATIBLE_VERSIONS
+        or info.get("upstream_version") != UPSTREAM_VERSION
+        or command not in info.get("capabilities", [])
+    ):
         raise RuntimeError(
             "This bridge capability is not loaded. Save and fully restart Ableton Live, then retry; no command was sent."
         )
-    return connection.send_command(command, args)
+    return _upstream_send(connection, command, args)
 
 
 @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False})
@@ -86,6 +92,21 @@ register_access(mcp, dispatch)
 from .warp_tools import register_warp
 
 register_warp(mcp, dispatch)
+from .audio_scan_tools import register_audio_scan
+
+register_audio_scan(mcp, dispatch)
+
+from .remix_workflow import register_remix
+
+register_remix(mcp)
+
+from .remix_tools import register_remix_session
+
+register_remix_session(mcp, dispatch)
+
+from .remix_midi import register_midi_cleanup
+
+register_midi_cleanup(mcp, dispatch)
 
 
 @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False})

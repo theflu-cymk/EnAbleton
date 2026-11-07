@@ -1,0 +1,65 @@
+{
+  "session": {
+    "tempo": 141,
+    "numerator": 4,
+    "denominator": 4
+  },
+  "tracks": [
+    {
+      "id": "midi-bass",
+      "name": "1-MIDI",
+      "type": "midi",
+      "role": "bass",
+      "devices": [],
+      "has_automation": false,
+      "armed": false,
+      "clips": [
+        {
+          "id": "bass-phrase",
+          "name": "Track 1",
+          "type": "midi",
+          "view": "arrangement",
+          "start_beats": 0,
+          "end_beats": 8,
+          "notes": [
+            {
+              "pitch": 29,
+              "start_time": 0.1,
+              "duration": 1.2,
+              "velocity": 127,
+              "mute": false
+            },
+            {
+              "pitch": 29,
+              "start_time": 1.0,
+              "duration": 0.8,
+              "velocity": 100,
+              "mute": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reference",
+      "name": "2-Audio",
+      "type": "audio",
+      "role": "reference",
+      "devices": [],
+      "has_automation": false,
+      "clips": [
+        {
+          "id": "reference-audio",
+          "name": "Song",
+          "type": "audio",
+          "view": "arrangement",
+          "audio_path": "example-not-a-real-song.wav",
+          "file_exists": false,
+          "warping": false,
+          "start_beats": 0,
+          "end_beats": 568.606
+        }
+      ]
+    }
+  ]
+}

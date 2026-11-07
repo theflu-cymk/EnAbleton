@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-28",
+  "updated": "2026-11-02",
   "entries": [
     {
       "id": "clean-sub",
@@ -1016,7 +1016,7 @@
         "starting_points": {
           "ratio": 2,
           "attack_ms": 30,
-          "release": "Auto or audition 0.1–0.3 seconds",
+          "release": "Auto or audition 0.1\u00e2\u20ac\u201c0.3 seconds",
           "detector_highpass_hz": [
             60,
             120
@@ -1744,15 +1744,15 @@
         "BassTi"
       ],
       "steps": [
-        "02:18 — Triplet-grid rhythm underpins the gun pattern.",
-        "02:52 — The sub is cleaned, dispersed and processed with a tuned Corpus Kick Tight preset.",
-        "03:31 — A kick-derived transient is low-cut, frequency-shifted, distorted and shortened with transient shaping.",
-        "04:02 — The body layer uses sample-following modulation to move a filter-table position.",
-        "04:38 — A separate noise layer supplies heavily processed upper-frequency texture.",
-        "06:24 — Sub, transient, body and noise feed a shared processing group.",
-        "07:26 — Parallel low/high lanes allow the low foundation and upper texture to be treated separately.",
-        "08:52 — A parallel self-ring-modulated high-frequency lane is blended with the main signal.",
-        "09:43 — A short whole-signal delay changes timing feel; the exact millisecond value is not stated."
+        "02:18 \u00e2\u20ac\u201d Triplet-grid rhythm underpins the gun pattern.",
+        "02:52 \u00e2\u20ac\u201d The sub is cleaned, dispersed and processed with a tuned Corpus Kick Tight preset.",
+        "03:31 \u00e2\u20ac\u201d A kick-derived transient is low-cut, frequency-shifted, distorted and shortened with transient shaping.",
+        "04:02 \u00e2\u20ac\u201d The body layer uses sample-following modulation to move a filter-table position.",
+        "04:38 \u00e2\u20ac\u201d A separate noise layer supplies heavily processed upper-frequency texture.",
+        "06:24 \u00e2\u20ac\u201d Sub, transient, body and noise feed a shared processing group.",
+        "07:26 \u00e2\u20ac\u201d Parallel low/high lanes allow the low foundation and upper texture to be treated separately.",
+        "08:52 \u00e2\u20ac\u201d A parallel self-ring-modulated high-frequency lane is blended with the main signal.",
+        "09:43 \u00e2\u20ac\u201d A short whole-signal delay changes timing feel; the exact millisecond value is not stated."
       ],
       "settings": {
         "sub": "Operator sine or a cleared 808 sample; optional 808 Shaper, mono Utility, carefully tuned Corpus.",
@@ -1763,7 +1763,7 @@
       },
       "sources": [
         {
-          "title": "BassTi — The Last TEAROUT Tutorial You Need (2026 Step-By-Step)",
+          "title": "BassTi \u00e2\u20ac\u201d The Last TEAROUT Tutorial You Need (2026 Step-By-Step)",
           "url": "https://www.youtube.com/watch?v=FGXP_8URE5w",
           "evidence": "English auto-generated captions and public description; video controls and audio were not directly inspected",
           "limits": "Auto-captioned product names can be wrong. Exact filter frequencies, gains and time offsets were not inferred."
@@ -2673,7 +2673,7 @@
         "Audition note transitions with the kick."
       ],
       "settings": {
-        "live_midi_29": "F0 ≈ 43.65 Hz at standard tuning"
+        "live_midi_29": "F0 \u00e2\u2030\u02c6 43.65 Hz at standard tuning"
       },
       "sources": [
         {
@@ -2801,7 +2801,7 @@
         },
         {
           "id": "alley_interview",
-          "title": "ALLEYCVT: FEEL IT interview — EDM Identity",
+          "title": "ALLEYCVT: FEEL IT interview \u00e2\u20ac\u201d EDM Identity",
           "url": "https://edmidentity.com/2024/08/15/alleycvt-hard-summer-interview/",
           "supports": "Direct interview: melody-first and drop-first writing, vocals, collaboration and testing unfinished ideas live; no synth parameters."
         }
@@ -2924,13 +2924,13 @@
         },
         {
           "id": "sub_headliner",
-          "title": "Subtronics: FIBONACCI studio interview — Headliner",
+          "title": "Subtronics: FIBONACCI studio interview \u00e2\u20ac\u201d Headliner",
           "url": "https://www.headlinerhub.com/subtronics-fibonacci-coachella-rehab-edm-stardom.html",
           "supports": "Indexed direct interview excerpt: Ableton, Serum 2, Operator, tonal delay, saturation, spectral processing and granular audio exploration. Retrieved through search; direct page fetch unavailable."
         },
         {
           "id": "sub_musictech",
-          "title": "Subtronics: sound contrast and minimal sources — MusicTech",
+          "title": "Subtronics: sound contrast and minimal sources \u00e2\u20ac\u201d MusicTech",
           "url": "https://musictech.com/features/interviews/subtronics-interview-fibonacci-studio-monitors/",
           "supports": "Indexed direct interview: loud/quiet contrast, spectrum contrast, and a square wave with Xfer OTT for Black Ice. Retrieved through search; direct page fetch returned 403."
         }
@@ -3043,13 +3043,13 @@
         },
         {
           "id": "ray_musicradar",
-          "title": "Ray Volpe: SEE YOU DROP production interview — MusicRadar",
+          "title": "Ray Volpe: SEE YOU DROP production interview \u00e2\u20ac\u201d MusicRadar",
           "url": "https://www.musicradar.com/news/ray-volpe-interview",
           "supports": "Direct interview: chopped vocal phrase, extended fakeout, writing the second drop first, Serum bass, and mixing while producing."
         },
         {
           "id": "ray_hooks",
-          "title": "Ray Volpe: memorable hook writing — EDM.com",
+          "title": "Ray Volpe: memorable hook writing \u00e2\u20ac\u201d EDM.com",
           "url": "https://edm.com/interviews/ray-volpe-song-request-laserbeam-interview/",
           "supports": "Direct interview: concise and memorable songwriting instead of sound-design complexity alone."
         }
@@ -3153,13 +3153,13 @@
         },
         {
           "id": "vulper_dream",
-          "title": "VULPER — DREAM VAULT (artist Bandcamp)",
+          "title": "VULPER \u00e2\u20ac\u201d DREAM VAULT (artist Bandcamp)",
           "url": "https://vulper.bandcamp.com/album/dream-vault",
           "supports": "Artist-owned release identifies electronic, dark electro, darkwave and witch house tags. Does not document instruments, processing or production settings."
         },
         {
           "id": "vulper_moon",
-          "title": "VULPER — FULL MOON DOGMA (artist Bandcamp)",
+          "title": "VULPER \u00e2\u20ac\u201d FULL MOON DOGMA (artist Bandcamp)",
           "url": "https://vulper.bandcamp.com/album/full-moon-dogma",
           "supports": "Artist-owned release confirms the requested artist/catalog. No production chain or sound-design parameters supplied."
         }
@@ -3176,7 +3176,7 @@
     },
     {
       "id": "alleycvt-hook-drop-dialogue",
-      "title": "ALLEYCVT — hook/drop dialogue",
+      "title": "ALLEYCVT \u00e2\u20ac\u201d hook/drop dialogue",
       "category": "Workflow",
       "summary": "Let the vocal idea and bass phrase develop together while preserving a clear lead role.",
       "tags": [
@@ -3213,7 +3213,7 @@
       },
       "sources": [
         {
-          "title": "ALLEYCVT: FEEL IT interview — EDM Identity",
+          "title": "ALLEYCVT: FEEL IT interview \u00e2\u20ac\u201d EDM Identity",
           "url": "https://edmidentity.com/2024/08/15/alleycvt-hard-summer-interview/",
           "supports": "Direct interview: melody-first and drop-first writing, vocals, collaboration and testing unfinished ideas live; no synth parameters."
         }
@@ -3230,7 +3230,7 @@
     },
     {
       "id": "alleycvt-contrast-and-revision",
-      "title": "ALLEYCVT — contrast and revision",
+      "title": "ALLEYCVT \u00e2\u20ac\u201d contrast and revision",
       "category": "Workflow",
       "summary": "Compare a sparse vocal-led sketch and a heavier drop before committing to the arrangement.",
       "tags": [
@@ -3255,7 +3255,7 @@
       },
       "sources": [
         {
-          "title": "ALLEYCVT: FEEL IT interview — EDM Identity",
+          "title": "ALLEYCVT: FEEL IT interview \u00e2\u20ac\u201d EDM Identity",
           "url": "https://edmidentity.com/2024/08/15/alleycvt-hard-summer-interview/",
           "supports": "Direct interview: melody-first and drop-first writing, vocals, collaboration and testing unfinished ideas live; no synth parameters."
         }
@@ -3272,7 +3272,7 @@
     },
     {
       "id": "subtronics-tonal-delay-lab",
-      "title": "Subtronics — tonal-delay laboratory",
+      "title": "Subtronics \u00e2\u20ac\u201d tonal-delay laboratory",
       "category": "Sound design",
       "summary": "Explore pitch from short delay feedback, then reshape the printed mid-bass texture.",
       "tags": [
@@ -3314,7 +3314,7 @@
       },
       "sources": [
         {
-          "title": "Subtronics: FIBONACCI studio interview — Headliner",
+          "title": "Subtronics: FIBONACCI studio interview \u00e2\u20ac\u201d Headliner",
           "url": "https://www.headlinerhub.com/subtronics-fibonacci-coachella-rehab-edm-stardom.html",
           "supports": "Indexed direct interview excerpt: Ableton, Serum 2, Operator, tonal delay, saturation, spectral processing and granular audio exploration. Retrieved through search; direct page fetch unavailable."
         }
@@ -3331,7 +3331,7 @@
     },
     {
       "id": "subtronics-register-dynamics-contrast",
-      "title": "Subtronics — register and dynamics contrast",
+      "title": "Subtronics \u00e2\u20ac\u201d register and dynamics contrast",
       "category": "Rhythm",
       "summary": "Answer a forceful mid-bass gesture with a quieter or differently voiced event.",
       "tags": [
@@ -3367,7 +3367,7 @@
       },
       "sources": [
         {
-          "title": "Subtronics: sound contrast and minimal sources — MusicTech",
+          "title": "Subtronics: sound contrast and minimal sources \u00e2\u20ac\u201d MusicTech",
           "url": "https://musictech.com/features/interviews/subtronics-interview-fibonacci-studio-monitors/",
           "supports": "Indexed direct interview: loud/quiet contrast, spectrum contrast, and a square wave with Xfer OTT for Black Ice. Retrieved through search; direct page fetch returned 403."
         }
@@ -3384,7 +3384,7 @@
     },
     {
       "id": "volpetron-vocal-hook-fakeout",
-      "title": "Ray Volpe / Volpetron — vocal-hook fakeout",
+      "title": "Ray Volpe / Volpetron \u00e2\u20ac\u201d vocal-hook fakeout",
       "category": "Rhythm",
       "summary": "Build anticipation by repeating a small vocal hook before releasing into the bass drop.",
       "tags": [
@@ -3421,12 +3421,12 @@
       },
       "sources": [
         {
-          "title": "Ray Volpe: SEE YOU DROP production interview — MusicRadar",
+          "title": "Ray Volpe: SEE YOU DROP production interview \u00e2\u20ac\u201d MusicRadar",
           "url": "https://www.musicradar.com/news/ray-volpe-interview",
           "supports": "Direct interview: chopped vocal phrase, extended fakeout, writing the second drop first, Serum bass, and mixing while producing."
         },
         {
-          "title": "Ray Volpe: memorable hook writing — EDM.com",
+          "title": "Ray Volpe: memorable hook writing \u00e2\u20ac\u201d EDM.com",
           "url": "https://edm.com/interviews/ray-volpe-song-request-laserbeam-interview/",
           "supports": "Direct interview: concise and memorable songwriting instead of sound-design complexity alone."
         }
@@ -3443,7 +3443,7 @@
     },
     {
       "id": "volpetron-drop-two-first",
-      "title": "Ray Volpe / Volpetron — write drop two first",
+      "title": "Ray Volpe / Volpetron \u00e2\u20ac\u201d write drop two first",
       "category": "Workflow",
       "summary": "Start with the most intense section, then design a catchier first drop around its core motif.",
       "tags": [
@@ -3474,12 +3474,12 @@
       },
       "sources": [
         {
-          "title": "Ray Volpe: SEE YOU DROP production interview — MusicRadar",
+          "title": "Ray Volpe: SEE YOU DROP production interview \u00e2\u20ac\u201d MusicRadar",
           "url": "https://www.musicradar.com/news/ray-volpe-interview",
           "supports": "Direct interview: chopped vocal phrase, extended fakeout, writing the second drop first, Serum bass, and mixing while producing."
         },
         {
-          "title": "Ray Volpe: memorable hook writing — EDM.com",
+          "title": "Ray Volpe: memorable hook writing \u00e2\u20ac\u201d EDM.com",
           "url": "https://edm.com/interviews/ray-volpe-song-request-laserbeam-interview/",
           "supports": "Direct interview: concise and memorable songwriting instead of sound-design complexity alone."
         }
@@ -3496,7 +3496,7 @@
     },
     {
       "id": "vulper-dark-space-study",
-      "title": "VULPER — dark-space production study",
+      "title": "VULPER \u00e2\u20ac\u201d dark-space production study",
       "category": "Layering",
       "summary": "Original darkwave/witch-house exercise pairing a restrained detuned bass with a separate atmospheric layer.",
       "tags": [
@@ -3535,7 +3535,7 @@
       },
       "sources": [
         {
-          "title": "VULPER — DREAM VAULT (artist Bandcamp)",
+          "title": "VULPER \u00e2\u20ac\u201d DREAM VAULT (artist Bandcamp)",
           "url": "https://vulper.bandcamp.com/album/dream-vault",
           "supports": "Artist-owned release identifies electronic, dark electro, darkwave and witch house tags. Does not document instruments, processing or production settings."
         }
@@ -3552,7 +3552,7 @@
     },
     {
       "id": "vulper-source-boundaries",
-      "title": "VULPER — source and attribution notes",
+      "title": "VULPER \u00e2\u20ac\u201d source and attribution notes",
       "category": "Tutorial",
       "summary": "Identify the requested artist while keeping undocumented production claims out of the library.",
       "tags": [
@@ -3582,12 +3582,12 @@
       },
       "sources": [
         {
-          "title": "VULPER — DREAM VAULT (artist Bandcamp)",
+          "title": "VULPER \u00e2\u20ac\u201d DREAM VAULT (artist Bandcamp)",
           "url": "https://vulper.bandcamp.com/album/dream-vault",
           "supports": "Artist-owned release identifies electronic, dark electro, darkwave and witch house tags. Does not document instruments, processing or production settings."
         },
         {
-          "title": "VULPER — FULL MOON DOGMA (artist Bandcamp)",
+          "title": "VULPER \u00e2\u20ac\u201d FULL MOON DOGMA (artist Bandcamp)",
           "url": "https://vulper.bandcamp.com/album/full-moon-dogma",
           "supports": "Artist-owned release confirms the requested artist/catalog. No production chain or sound-design parameters supplied."
         }
@@ -3604,7 +3604,7 @@
     },
     {
       "id": "riddim-square-fm",
-      "title": "Riddim square-wave FM — Operator setup",
+      "title": "Riddim square-wave FM \u00e2\u20ac\u201d Operator setup",
       "category": "Sound design",
       "summary": "A concrete B-to-A Square D FM voice with sustained harmonic density, driven filtering and a separate sub.",
       "tags": [
@@ -3760,7 +3760,7 @@
     },
     {
       "id": "808-drive-ramp",
-      "title": "808 Shaper — rising Drive per note",
+      "title": "808 Shaper \u00e2\u20ac\u201d rising Drive per note",
       "category": "Movement",
       "summary": "Raise saturation during each 808 note, reset at its end, and apply a coordinated output trim.",
       "tags": [
@@ -3816,7 +3816,7 @@
     },
     {
       "id": "midrange-punch-gestures",
-      "title": "Punchy midrange — linked FM, cutoff and vowels",
+      "title": "Punchy midrange \u00e2\u20ac\u201d linked FM, cutoff and vowels",
       "category": "Movement",
       "summary": "Use contrasting note-aligned timbral gestures instead of running every modulation at the same free-running phase.",
       "tags": [
@@ -3869,7 +3869,7 @@
     },
     {
       "id": "foley-transient-layering",
-      "title": "Found-sound layering — door, snap, demon and laser",
+      "title": "Found-sound layering \u00e2\u20ac\u201d door, snap, demon and laser",
       "category": "Layering",
       "summary": "Give separate layers a body, crack or attack role instead of stacking full-range sounds on every hit.",
       "tags": [
@@ -3907,6 +3907,246 @@
         "implementation": "Separate audio layers in the Live arrangement; no claim that a Rack was automatically constructed."
       },
       "updated": "2026-10-28"
+    },
+    {
+      "id": "rock-to-halftime-remix-v1",
+      "title": "Rock-to-half-time remix workflow",
+      "category": "Remix workflow",
+      "summary": "Preserve the riff and singing; plan exact-source MIDI, held roots, half-time drums and original-audio pulses.",
+      "tags": [
+        "remix",
+        "dubstep",
+        "riddim",
+        "half-time",
+        "cut time",
+        "guided",
+        "riff",
+        "vocal",
+        "iteration"
+      ],
+      "steps": [
+        "Select source clips and source-relative alignment.",
+        "Generate and review the layered MIDI/pulse plan.",
+        "Build with existing guarded Live tools and read back the result.",
+        "Audition the whole phrase, specify a problem, and compare a revised plan."
+      ],
+      "settings": {
+        "recipe_version": "1.0.0",
+        "schema_version": 1,
+        "style": "rock_dubstep"
+      },
+      "sources": [
+        {
+          "id": "ableton-remixing-sidebrain",
+          "title": "Ableton / Side Brain: A Step-by-Step Guide to Remixing a Track",
+          "url": "https://www.ableton.com/en/blog/a-step-by-step-guide-to-remixing-a-track/",
+          "supports": "Stem selection, audio-to-MIDI cleanup, sample chopping and rebuilding a rhythm foundation.",
+          "limits": "Read article and tutorial outline; embedded video not auditioned. Demonstration uses Live 12.3 Suite, not proof of capability in Live 12.2.5."
+        },
+        {
+          "id": "ni-dubstep-tim-cant",
+          "title": "Native Instruments / Tim Cant: How to make a dubstep track that hits hard on the dance floor",
+          "url": "https://blog.native-instruments.com/how-to-make-dubstep/",
+          "supports": "140 BPM example, beat-three snares, varying drum velocities and swung subdivisions.",
+          "limits": "Search-indexed article text checked; direct page redirected during research. The recipe's exact patterns are original."
+        },
+        {
+          "id": "wa-riddim-dan-larsson",
+          "title": "W. A. Production / Dan Larsson: Riddim Bass",
+          "url": "https://www.waproduction.com/videos/view/riddim-bass",
+          "supports": "Tutorial descriptions cover a simple single-LFO bass, automated reverb, flange and all-pass filtering as different sound-design options.",
+          "limits": "Course page and indexed descriptions only; lessons not watched. No claim about an exact artist patch."
+        },
+        {
+          "id": "icon-kompany-resampling",
+          "title": "ICON Collective / Kompany: Bass Resampling with Serum in Ableton Live",
+          "url": "https://www.iconcollective.edu/bass-resampling-with-serum",
+          "supports": "Producer demonstration of a synth-to-audio resampling workflow.",
+          "limits": "Indexed tutorial description checked; direct page failed to fetch and video was not auditioned."
+        },
+        {
+          "id": "ableton-warp-manual",
+          "title": "Ableton Live 12 Manual: Audio Clips, Tempo, and Warping",
+          "url": "https://www.ableton.com/en/manual/audio-clips-tempo-and-warping/",
+          "supports": "Distinguishing independent timing/pitch changes from playback-rate changes; preserving source Warp alignment.",
+          "limits": "Read documentation, not proof of connector support for every control."
+        },
+        {
+          "id": "ableton-making-music-tempo",
+          "title": "Ableton / Dennis DeSantis: Making Music, Choosing a Tempo",
+          "url": "https://cdn-resources.ableton.com/resources/uploads/makingmusic/MakingMusic_DennisDeSantis.pdf",
+          "supports": "Creative coexistence of half-time and double-time feels on a fast grid.",
+          "limits": "Indexed passage checked; not a notation change or automatic tempo recommendation."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original configurable starting exercises, informed by primary sources and The Red session readbacks. Not transcriptions of reference artists' sessions.",
+      "limits": "Read-only planner/guidance/refinement; not an automatic Live executor or an audio audition. Rendered audio requires regeneration after MIDI edits.",
+      "details": {
+        "tool": "plan_halftime_remix_workflow",
+        "documentation": "docs/REMIX_WORKFLOW.md"
+      },
+      "updated": "2026-11-02"
+    },
+    {
+      "id": "riddim-remix-guided-v1",
+      "title": "Guided riddim-inspired remix",
+      "category": "Remix workflow",
+      "summary": "Guide source choices and a sparse repeating bass exercise with explicit routing and render limits.",
+      "tags": [
+        "remix",
+        "dubstep",
+        "riddim",
+        "half-time",
+        "cut time",
+        "guided",
+        "riff",
+        "vocal",
+        "iteration"
+      ],
+      "steps": [
+        "Select source clips and source-relative alignment.",
+        "Generate and review the layered MIDI/pulse plan.",
+        "Build with existing guarded Live tools and read back the result.",
+        "Audition the whole phrase, specify a problem, and compare a revised plan."
+      ],
+      "settings": {
+        "recipe_version": "1.0.0",
+        "schema_version": 1,
+        "style": "riddim"
+      },
+      "sources": [
+        {
+          "id": "ableton-remixing-sidebrain",
+          "title": "Ableton / Side Brain: A Step-by-Step Guide to Remixing a Track",
+          "url": "https://www.ableton.com/en/blog/a-step-by-step-guide-to-remixing-a-track/",
+          "supports": "Stem selection, audio-to-MIDI cleanup, sample chopping and rebuilding a rhythm foundation.",
+          "limits": "Read article and tutorial outline; embedded video not auditioned. Demonstration uses Live 12.3 Suite, not proof of capability in Live 12.2.5."
+        },
+        {
+          "id": "ni-dubstep-tim-cant",
+          "title": "Native Instruments / Tim Cant: How to make a dubstep track that hits hard on the dance floor",
+          "url": "https://blog.native-instruments.com/how-to-make-dubstep/",
+          "supports": "140 BPM example, beat-three snares, varying drum velocities and swung subdivisions.",
+          "limits": "Search-indexed article text checked; direct page redirected during research. The recipe's exact patterns are original."
+        },
+        {
+          "id": "wa-riddim-dan-larsson",
+          "title": "W. A. Production / Dan Larsson: Riddim Bass",
+          "url": "https://www.waproduction.com/videos/view/riddim-bass",
+          "supports": "Tutorial descriptions cover a simple single-LFO bass, automated reverb, flange and all-pass filtering as different sound-design options.",
+          "limits": "Course page and indexed descriptions only; lessons not watched. No claim about an exact artist patch."
+        },
+        {
+          "id": "icon-kompany-resampling",
+          "title": "ICON Collective / Kompany: Bass Resampling with Serum in Ableton Live",
+          "url": "https://www.iconcollective.edu/bass-resampling-with-serum",
+          "supports": "Producer demonstration of a synth-to-audio resampling workflow.",
+          "limits": "Indexed tutorial description checked; direct page failed to fetch and video was not auditioned."
+        },
+        {
+          "id": "ableton-warp-manual",
+          "title": "Ableton Live 12 Manual: Audio Clips, Tempo, and Warping",
+          "url": "https://www.ableton.com/en/manual/audio-clips-tempo-and-warping/",
+          "supports": "Distinguishing independent timing/pitch changes from playback-rate changes; preserving source Warp alignment.",
+          "limits": "Read documentation, not proof of connector support for every control."
+        },
+        {
+          "id": "ableton-making-music-tempo",
+          "title": "Ableton / Dennis DeSantis: Making Music, Choosing a Tempo",
+          "url": "https://cdn-resources.ableton.com/resources/uploads/makingmusic/MakingMusic_DennisDeSantis.pdf",
+          "supports": "Creative coexistence of half-time and double-time feels on a fast grid.",
+          "limits": "Indexed passage checked; not a notation change or automatic tempo recommendation."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original configurable starting exercises, informed by primary sources and The Red session readbacks. Not transcriptions of reference artists' sessions.",
+      "limits": "Read-only planner/guidance/refinement; not an automatic Live executor or an audio audition. Rendered audio requires regeneration after MIDI edits.",
+      "details": {
+        "tool": "guide_halftime_remix_workflow",
+        "documentation": "docs/REMIX_WORKFLOW.md"
+      },
+      "updated": "2026-11-02"
+    },
+    {
+      "id": "remix-feedback-refinement-v1",
+      "title": "Refine a remix from listening feedback",
+      "category": "Remix workflow",
+      "summary": "Revise a versioned plan when bass is guttural, vocals are masked, rhythm is busy or seams click.",
+      "tags": [
+        "remix",
+        "dubstep",
+        "riddim",
+        "half-time",
+        "cut time",
+        "guided",
+        "riff",
+        "vocal",
+        "iteration"
+      ],
+      "steps": [
+        "Select source clips and source-relative alignment.",
+        "Generate and review the layered MIDI/pulse plan.",
+        "Build with existing guarded Live tools and read back the result.",
+        "Audition the whole phrase, specify a problem, and compare a revised plan."
+      ],
+      "settings": {
+        "recipe_version": "1.0.0",
+        "schema_version": 1,
+        "style": "smooth_wobble"
+      },
+      "sources": [
+        {
+          "id": "ableton-remixing-sidebrain",
+          "title": "Ableton / Side Brain: A Step-by-Step Guide to Remixing a Track",
+          "url": "https://www.ableton.com/en/blog/a-step-by-step-guide-to-remixing-a-track/",
+          "supports": "Stem selection, audio-to-MIDI cleanup, sample chopping and rebuilding a rhythm foundation.",
+          "limits": "Read article and tutorial outline; embedded video not auditioned. Demonstration uses Live 12.3 Suite, not proof of capability in Live 12.2.5."
+        },
+        {
+          "id": "ni-dubstep-tim-cant",
+          "title": "Native Instruments / Tim Cant: How to make a dubstep track that hits hard on the dance floor",
+          "url": "https://blog.native-instruments.com/how-to-make-dubstep/",
+          "supports": "140 BPM example, beat-three snares, varying drum velocities and swung subdivisions.",
+          "limits": "Search-indexed article text checked; direct page redirected during research. The recipe's exact patterns are original."
+        },
+        {
+          "id": "wa-riddim-dan-larsson",
+          "title": "W. A. Production / Dan Larsson: Riddim Bass",
+          "url": "https://www.waproduction.com/videos/view/riddim-bass",
+          "supports": "Tutorial descriptions cover a simple single-LFO bass, automated reverb, flange and all-pass filtering as different sound-design options.",
+          "limits": "Course page and indexed descriptions only; lessons not watched. No claim about an exact artist patch."
+        },
+        {
+          "id": "icon-kompany-resampling",
+          "title": "ICON Collective / Kompany: Bass Resampling with Serum in Ableton Live",
+          "url": "https://www.iconcollective.edu/bass-resampling-with-serum",
+          "supports": "Producer demonstration of a synth-to-audio resampling workflow.",
+          "limits": "Indexed tutorial description checked; direct page failed to fetch and video was not auditioned."
+        },
+        {
+          "id": "ableton-warp-manual",
+          "title": "Ableton Live 12 Manual: Audio Clips, Tempo, and Warping",
+          "url": "https://www.ableton.com/en/manual/audio-clips-tempo-and-warping/",
+          "supports": "Distinguishing independent timing/pitch changes from playback-rate changes; preserving source Warp alignment.",
+          "limits": "Read documentation, not proof of connector support for every control."
+        },
+        {
+          "id": "ableton-making-music-tempo",
+          "title": "Ableton / Dennis DeSantis: Making Music, Choosing a Tempo",
+          "url": "https://cdn-resources.ableton.com/resources/uploads/makingmusic/MakingMusic_DennisDeSantis.pdf",
+          "supports": "Creative coexistence of half-time and double-time feels on a fast grid.",
+          "limits": "Indexed passage checked; not a notation change or automatic tempo recommendation."
+        }
+      ],
+      "status": "MCP ready",
+      "evidence": "Original configurable starting exercises, informed by primary sources and The Red session readbacks. Not transcriptions of reference artists' sessions.",
+      "limits": "Read-only planner/guidance/refinement; not an automatic Live executor or an audio audition. Rendered audio requires regeneration after MIDI edits.",
+      "details": {
+        "tool": "refine_halftime_remix_workflow",
+        "documentation": "docs/REMIX_WORKFLOW.md"
+      },
+      "updated": "2026-11-02"
     }
   ]
 }

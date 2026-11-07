@@ -1,6 +1,7 @@
 # Additions and abilities — v0.1.0-beta.1
 
-There are 191 MCP tools: 156 from pinned upstream 1.8.1 and 35 additions.
+The first beta shipped 191 MCP tools. The current development catalog has 202:
+156 from pinned upstream 1.8.1 and 46 additions.
 The generated [tool catalog](TOOL_CATALOG.md) includes every tool and annotation.
 
 | Area | Added capabilities | Practical limits |
@@ -44,3 +45,27 @@ Real-loop analysis was exercised during development. The beta does not claim
 every feature has been manually auditioned in every Live version.
 
 See [ACCESS.md](ACCESS.md), [WARP.md](WARP.md), and [LIMITATIONS.md](LIMITATIONS.md).
+
+## Unreleased song workflow and Live lint
+
+[Live lint](LIVE_LINT.md) reads the running set directly and returns structured
+findings, confidence, locations, fix availability and CI-style exit codes. Lint
+rules run independently of disabled cleanup steps. Explicit metadata fixes have
+name/start guards, readback and re-linting. Musical/destructive repairs remain
+reported until verified helpers exist. The [workflow](SONG_INITIATION.md) retains
+configurable song folders and snapshot planning. These are CLI additions; the
+released MCP tool catalog remains 191 tools.
+
+## Unreleased remix creation
+
+[The reusable workflow](REMIX_WORKFLOW.md) now covers a complete bounded loop:
+guided musical plans, conservative transcription cleanup, shared timing for
+aligned stems, cached pitch-preserving renders, repeatable owned-track builds,
+kit-aware half-time drums, held mono sub roots, vocal activity windows, phrase
+variation and bounded Live capture. A/B files use measured integrated loudness
+or an explicit RMS fallback. Source clips/media remain intact.
+
+Synthetic audio and fake-Live tests are distinct from actual Live readback.
+Windows capture releases the recording track before analysis and restores
+transport, mixer and arm states. Stem separation artifacts, semantic lyric timing,
+polyphonic transcription, musical audition and mastering remain separate tasks.

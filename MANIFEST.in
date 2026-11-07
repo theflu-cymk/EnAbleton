@@ -1,6 +1,7 @@
 include README.md LICENSE CHANGELOG.md CONTRIBUTING.md SECURITY.md THIRD_PARTY_NOTICES.md AGENTS.md uv.lock
 recursive-include docs *.md *.json
-recursive-include examples *.json
+recursive-include examples *.json *.yaml
+recursive-include schemas *.json
 recursive-include scripts *.py
 recursive-include tests *.py
 recursive-include data *.json

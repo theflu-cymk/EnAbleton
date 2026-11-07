@@ -1,0 +1,121 @@
+# Run plans by default. Paths below are examples; CLI overrides take precedence.
+schemaVersion: 1
+song:
+  name: 'New Song'
+  root: 'E:\Music\Songs'     # Any absolute folder chosen by the user.
+  # folderName: 'new-song'    # Optional; otherwise generated from song.name.
+  onExists: reuse           # Reuse only this song's folder; never erase contents.
+  subfolders: [audio, midi, originals, exports, reports, configs]
+# Lint checks run independently of whether a cleanup step is enabled below.
+lint:
+  failOn: warning            # Exit 0 clean, 1 findings at threshold, 2 incomplete/error.
+  includeSession: false     # Arrangement by default; ORIGINAL Session backups protected.
+  rules:
+    track_naming: {enabled: true}
+    clip_naming: {enabled: true, severity: info}
+    missing_samples: {enabled: true}
+    midi_validity: {enabled: true}
+    midi_overlaps:
+      enabled: true
+      params: {monophonicRoles: [bass]} # Other roles retain chord polyphony.
+    midi_grid:
+      enabled: true
+      severity: info          # Swing, pickups and fast fills are review hints.
+      params: {gridBeats: 0.25, toleranceBeats: 0.04}
+    midi_dynamics: {enabled: true}
+    harmonic_layering: {enabled: true, severity: info, params: {minOverlapBeats: 0.5}}
+    empty_content: {enabled: true, severity: info}
+    clip_boundaries: {enabled: true, severity: info}
+    arrangement_overlaps: {enabled: true}
+    warp_maps: {enabled: true}
+    stem_sync:
+      enabled: true
+      params: {groups: []}    # Explicit linked-stem track IDs only; no guessing.
+    instrument_assignments: {enabled: true}
+    track_colors: {enabled: true, severity: info}
+    session_settings: {enabled: true} # Optional verified expectedTempo parameter.
+    organization: {enabled: true, severity: info}
+defaults:
+  processes:
+    rename_tracks: {pattern: '{type}_{name}'}
+    quantize_timing: {grid: '1/16', strength: 0.75, toleranceBeats: 0.03}
+    fix_midi_overlaps: {strategy: trim, gapBeats: 0.01, monophonic: false}
+steps:
+  - id: workspace
+    process: create_song_folder
+    enabled: true
+    params: {}
+  - id: missing-media
+    process: check_missing_samples
+    enabled: true
+    params: {}
+    when: {hasAudio: true}
+  - id: session-defaults
+    process: set_session_defaults
+    enabled: true
+    params: {tempo: 140, numerator: 4, denominator: 4, force: false}
+    # Existing tempo/key stay unchanged. This step does NOT detect true BPM/key.
+  - id: inventory
+    process: cleanup_unused
+    enabled: true
+    params: {collect: false, save: false} # Inventory stub; never delete user files.
+  - id: empty-clips
+    process: remove_empty_clips
+    enabled: false          # Review selection first; missing audio is not "empty".
+    params: {}
+  - id: empty-tracks
+    process: remove_empty_tracks
+    enabled: false          # Groups/returns/master, inputs and automation are protected.
+    params: {}
+  - id: names
+    process: rename_tracks
+    enabled: true
+    params: {}
+  - id: clip-names
+    process: normalize_clip_names
+    enabled: true
+    params: {pattern: '{role} | {bpm} BPM | WARP {warp}'}
+  - id: colors
+    process: color_tracks_by_type
+    enabled: true
+    params:
+      colors: {drums: 6, bass: 20, vocals: 11, melodic: 8, reference: 13}
+  - id: midi-grid
+    process: quantize_timing
+    enabled: true
+    params: {}
+    target: {types: [midi]}
+    when: {hasMidi: true}
+  - id: note-overlaps
+    process: fix_midi_overlaps
+    enabled: true
+    params: {}              # Same-pitch only: preserve simultaneous chord tones.
+    target: {types: [midi]}
+  - id: bass-single-voice
+    process: fix_midi_overlaps
+    enabled: false
+    params: {strategy: trim, monophonic: true, gapBeats: 0.02}
+    target: {trackIds: [midi-bass]} # IDs must come from the normalized snapshot.
+  - id: velocities
+    process: normalize_velocities
+    enabled: true
+    params: {mode: clamp, min: 40, max: 112}
+    target: {types: [midi]}
+  - id: lengths
+    process: fix_clip_lengths
+    enabled: true
+    params: {mode: report, toleranceBeats: 0.04, allowTrim: false}
+    # Report by default. Never force all parts to equal length or trim real tails.
+  - id: warp
+    process: set_default_warp
+    enabled: false
+    params: {enabled: false, mode: 4}
+    # No guessed baseTempo. Shared stem maps and start offsets require validation.
+  - id: grouping
+    process: organize_groups
+    enabled: true
+    params: {apply: false}  # Report-only stub until grouping/routing helper exists.
+  - id: arrangement-overlaps
+    process: trim_overlapping_clips
+    enabled: true
+    params: {apply: false}  # Destructive trimming needs a guarded duplicate workflow.

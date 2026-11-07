@@ -1,5 +1,44 @@
 # Changelog
 
+## Unreleased
+
+- Add conservative MIDI cleanup proposals and shared stem timing bindings; preserve source clips and pitch classes.
+
+- Extend remix creation to an end-to-end short-section loop: guarded clip/file
+  bindings, cached pitch-preserving audio, repeatable owned-track builds, actual
+  kit mapping, calibrated gain automation, vocal windows, root overrides and
+  phrase events. Add isolated Live resampling with verified state restoration,
+  measured loudness/peak checks, matched A/B WAVs and partial-build inspection.
+  Recipe 1.1.0 accepts 1.0.0 inputs; no new dependency or automatic mastering.
+
+- Add a reusable half-time remix workflow: three source-linked style profiles,
+  guided planning, exact-source MIDI/held-root generation, continuous pulse-gain
+  evaluation and explicit feedback revisions. Three read-only MCP tools and CLI
+  commands produce plans without silently editing Live or claiming live MIDI/audio
+  linkage. Preserve source offsets, honest capability limits and recipe versions.
+
+- Add read-only PCM audio problem scans via CLI and MCP: bounded full-sample
+  measurements, timestamped review candidates and targeted repair recipes.
+  Clip-source scans recheck timing; unsupported defects stay explicit.
+
+- Remove the duplicate MCP custom-dispatch compatibility preflight while retaining
+  a fresh complete version/capability guard on every operation (three calls to two).
+
+- Batch all live-capture metadata and freshness checks; add scoped Python captures,
+  bridge timing metrics, bounded read-failure isolation and timeout retry suppression.
+  Preserve original readback/guard behavior; no permission or Live-thread changes.
+
+- Replace folder-only initiation claims with real `enableton lint CONFIG --live`:
+  read-only Live capture, independent YAML rule configuration, structured findings,
+  coverage/errors, selected scopes and exit codes; explicit metadata-only fixes
+  perform guarded readback and re-linting. Unsupported musical repairs stay visible.
+
+- Add a YAML song-initiation runner scaffold with 16 registered planners,
+  ordered dry-run projection, capability preflight, selection and step reports.
+- Add user-defined song folders, root/name CLI overrides, safe reuse, manifests
+  and config/report storage. Snapshot CLI does not write to Ableton.
+- Document supported MCP building blocks and missing Live adapter helpers.
+
 Changes follow Semantic Versioning; prereleases are explicitly labeled.
 
 ## [0.1.0-beta.1] - 2026-11-01

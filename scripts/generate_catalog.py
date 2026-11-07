@@ -21,8 +21,8 @@ async def main():
         row["origin"] = "EnAbleton" if module.startswith("enableton") else "upstream"
         row["module"] = module
         rows.append(row)
-    assert len(rows) == 191
-    assert sum(row["origin"] == "EnAbleton" for row in rows) == 35
+    assert len(rows) == 202
+    assert sum(row["origin"] == "EnAbleton" for row in rows) == 46
     document = {
         "enableton_version": __version__,
         "upstream_version": "1.8.1",
@@ -35,7 +35,7 @@ async def main():
     lines = [
         "# MCP tool catalog",
         "",
-        f"Generated from EnAbleton {__version__}: 191 tools (156 upstream, 35 additions).",
+        f"Generated from EnAbleton {__version__}: 202 tools (156 upstream, 46 additions).",
         "",
         "Annotations describe intended effects; always inspect targets before edits.",
         "",
@@ -51,7 +51,7 @@ async def main():
             lines.append(f"| `{row['name']}` | {intent} | {description} |")
         lines.append("")
     (root / "docs" / "TOOL_CATALOG.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print("Generated 191-tool catalog, including 35 additions.")
+    print("Generated 202-tool catalog, including 46 additions.")
 
 
 if __name__ == "__main__":

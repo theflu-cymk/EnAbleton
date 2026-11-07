@@ -18,10 +18,20 @@ with zipfile.ZipFile(wheel) as archive:
     for resource in (
         "enableton/production_recipes.json",
         "enableton/artist_methods.json",
+        "enableton/remix_recipes.json",
+        "enableton/remix_audio.py",
+        "enableton/remix_live.py",
+        "enableton/remix_preview.py",
+        "enableton/remix_midi.py",
+        "enableton/remix_assets.py",
+        "enableton/remix_worker.py",
+        "enableton/remix_arrangement.py",
+        "enableton/remix_tools.py",
+        "enableton/remix_cli.py",
         "enableton/licenses/ableton-live-mcp-MIT.txt",
     ):
         assert resource in names, resource
-    assert len(json.loads(archive.read("enableton/production_recipes.json"))["entries"]) == 47
+    assert len(json.loads(archive.read("enableton/production_recipes.json"))["entries"]) == 50
     assert not any(
         name.lower().endswith(forbidden) and Path(name).name != "setup.cfg" for name in names
     )

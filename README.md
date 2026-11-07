@@ -25,9 +25,36 @@ This is a beta, not an Ableton-endorsed product or an unrestricted Live API.
 - **Operational safeguards:** bounded audio workers, cache invalidation,
   per-clip batch failures, capability/version checks and recoverable installation.
 
-[Feature catalog](docs/FEATURES.md) · [Recipe catalog](docs/RECIPE_CATALOG.md) · [All 191 tools](docs/TOOL_CATALOG.md) ·
+[Next-release roadmap](docs/ROADMAP-v0.2.0.md) · [Feature catalog](docs/FEATURES.md) · [Recipe catalog](docs/RECIPE_CATALOG.md) · [Current tool catalog](docs/TOOL_CATALOG.md) ·
 [Installation](docs/INSTALLATION.md) · [Warp workflow](docs/WARP.md) ·
 [Limitations](docs/LIMITATIONS.md) · [Changelog](CHANGELOG.md)
+
+## Reusable remix creation (unreleased)
+
+[Half-time remix guide](docs/REMIX_WORKFLOW.md) · [Starter config](examples/remix/rock-flip.json)
+
+Ask **“Guide a rock-to-dubstep or riddim flip, keeping the riff and chorus singer.”**
+Plan the musical layers, propose conservative MIDI cleanup, bind aligned stems,
+render smooth audio, build owned Live lanes, capture a preview and compare at
+matched loudness. Changed source MIDI or pulse controls can be prepared and rebuilt
+without duplicate tracks. Start with `uv run enableton remix-guide`; the complete
+loop uses `remix-prepare`, `remix-build`, `remix-preview` and `remix-compare`.
+The current development catalog has 202 tools (156 upstream, 46 additions).
+
+## Song initiation and Live linting (unreleased)
+
+[Live lint guide](docs/LIVE_LINT.md) · [Workflow guide](docs/SONG_INITIATION.md) ·
+[Example YAML](examples/song-init/initiation.yaml) ·
+[Reusable prompt](docs/prompts/SONG_INITIATION_PROMPT.md)
+
+```powershell
+uv run enableton lint "F:\ableton songs\In Hell\configs\initiation.yaml" --live
+```
+
+Reads the running set and reports actual naming, MIDI, media, Warp, timing and
+organization findings. Linting is read-only; explicit `--fix` supports guarded
+names/colors with readback and re-lint. Other repairs are reported, not silently
+pretended complete. Folder creation and cleanup planning remain separate stages.
 
 ## Quick start
 
@@ -95,3 +122,10 @@ uv build
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and [release policy](docs/RELEASING.md).
 MIT licensed; upstream notices are preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Audio problem scan
+
+Use `enableton scan-audio PATH.wav` or the read-only MCP tools
+`scan_audio_problems` / `scan_clip_audio_problems` for timestamped review candidates
+and targeted repair suggestions. See [audio scan coverage and usage](docs/AUDIO_SCAN.md).
+No automatic processing or Live edits.

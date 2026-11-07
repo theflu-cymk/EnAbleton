@@ -1,7 +1,7 @@
 {
   "enableton_version": "0.1.0b1",
   "upstream_version": "1.8.1",
-  "tool_count": 191,
+  "tool_count": 202,
   "tools": [
     {
       "name": "add_notes_to_clip",
@@ -1002,6 +1002,47 @@
       "module": "enableton.warp_tools"
     },
     {
+      "name": "build_remix_session",
+      "description": "Build/update only this private project's named owned tracks in Live. Recheck sources,\n        map the loaded kit's actual pads, create native instruments and bounded automation,\n        and verify MIDI/Arrangement readback. New tracks start muted. Same bounds on rebuild;\n        source tracks stay intact. Requires stopped transport and matching tempo. Partial\n        failures retain a journal and are never blindly replayed. No automatic save.\n        ",
+      "inputSchema": {
+        "properties": {
+          "project_dir": {
+            "title": "Project Dir",
+            "type": "string"
+          },
+          "drum_kit": {
+            "default": "808 Core Kit",
+            "title": "Drum Kit",
+            "type": "string"
+          },
+          "drum_map": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Drum Map"
+          }
+        },
+        "required": [
+          "project_dir"
+        ],
+        "title": "build_remix_sessionArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_tools"
+    },
+    {
       "name": "capture_and_insert_scene",
       "description": "Snapshot the currently playing Session clips into a new scene - the\n    'keep that combination' workflow.",
       "inputSchema": {
@@ -1224,6 +1265,39 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.clips"
+    },
+    {
+      "name": "compare_remix_previews",
+      "description": "Create A/B WAVs matched by measured integrated LUFS, or explicitly labeled RMS\n        fallback. Attenuate only, preserve source files, refuse mismatched durations.\n        Returns source/variant measurements and gain adjustments; no preference claim.\n        ",
+      "inputSchema": {
+        "properties": {
+          "project_dir": {
+            "title": "Project Dir",
+            "type": "string"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "variant": {
+            "title": "Variant",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_dir",
+          "reference",
+          "variant"
+        ],
+        "title": "compare_remix_previewsArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_tools"
     },
     {
       "name": "compare_warp_reference",
@@ -4377,6 +4451,35 @@
       "module": "ableton_live_mcp.tools.tracks"
     },
     {
+      "name": "guide_halftime_remix_workflow",
+      "description": "Guide remix creation in small decision groups. Select source clips, read their\n        MIDI/timing, plan a drop, build through existing Live tools, audition, then refine.\n        Returns pending decisions or a plan; never silently edits the set.\n        ",
+      "inputSchema": {
+        "properties": {
+          "answers": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Answers"
+          }
+        },
+        "title": "guide_halftime_remix_workflowArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_workflow"
+    },
+    {
       "name": "humanize_clip",
       "description": "Read a MIDI clip, apply timing + velocity humanization, and write it back.\n    REPLACES the clip's notes with the jittered version.\n\n    timing: max +/- start-time deviation in beats. velocity: max +/- velocity\n    deviation. Pitches are preserved; times stay non-negative. seed makes it\n    reproducible.\n    ",
       "inputSchema": {
@@ -4478,6 +4581,29 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.server"
+    },
+    {
+      "name": "inspect_remix_session",
+      "description": "Inspect a private remix journal, owned track identities and current source\n        fingerprints without edits. Report stale bindings and uncertain partial creates;\n        never adopt or delete an unverified track automatically.\n        ",
+      "inputSchema": {
+        "properties": {
+          "project_dir": {
+            "title": "Project Dir",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_dir"
+        ],
+        "title": "inspect_remix_sessionArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_tools"
     },
     {
       "name": "inspect_sub_clip",
@@ -4900,6 +5026,112 @@
       "module": "enableton.access_tools"
     },
     {
+      "name": "plan_halftime_remix_workflow",
+      "description": "Plan a reusable rock/dubstep/riddim flip: source-relative riff MIDI, held roots,\n        half-time drums, smooth pulses, audio-link choices and verification. No Live writes.\n        Physical Hz/ms/dB suggestions are not native device values. Read docs/REMIX_WORKFLOW.md.\n        ",
+      "inputSchema": {
+        "properties": {
+          "config": {
+            "additionalProperties": true,
+            "title": "Config",
+            "type": "object"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "title": "plan_halftime_remix_workflowArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_workflow"
+    },
+    {
+      "name": "plan_remix_midi_cleanup",
+      "description": "Propose transcription cleanup on a guarded MIDI clip: exact duplicates,\n        short fragments, overlaps, gentle nearby-grid correction and optional lowest\n        monophonic voice/octave register. Never key-snap or edit the original. Returns\n        proposed notes and counts for building a separate copy; rechecks source notes.\n        ",
+      "inputSchema": {
+        "properties": {
+          "target": {
+            "additionalProperties": true,
+            "title": "Target",
+            "type": "object"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Policy"
+          }
+        },
+        "required": [
+          "target"
+        ],
+        "title": "plan_remix_midi_cleanupArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_midi"
+    },
+    {
+      "name": "prepare_remix_session",
+      "description": "Bind selected riff_midi/riff/vocal/rock_context clips with fresh name/start guards,\n        render immutable private audio assets, and save a rebuildable plan. Each source:\n        {target:{track_index,clip_index,clip_view,expected_track_name,expected_clip_name,\n        expected_start_time},source_start?:number}. source_start uses clip beats if warped,\n        seconds otherwise. Optional timing_reference is a guarded audio target sharing\n        the correct Warp map across aligned stems; source_offset_seconds is a measured\n        constant correction within +/-2 seconds. No Live writes. Optional level-based vocal activity inference;\n        refresh_pulses reads the owned Session Pulse Input MIDI. See REMIX_V2_PLAN.md.\n        ",
+      "inputSchema": {
+        "properties": {
+          "config": {
+            "additionalProperties": true,
+            "title": "Config",
+            "type": "object"
+          },
+          "sources": {
+            "additionalProperties": true,
+            "title": "Sources",
+            "type": "object"
+          },
+          "project_dir": {
+            "title": "Project Dir",
+            "type": "string"
+          },
+          "infer_vocals": {
+            "default": true,
+            "title": "Infer Vocals",
+            "type": "boolean"
+          },
+          "refresh_pulses": {
+            "default": false,
+            "title": "Refresh Pulses",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "config",
+          "sources",
+          "project_dir"
+        ],
+        "title": "prepare_remix_sessionArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_tools"
+    },
+    {
       "name": "preview_bass_design",
       "description": "Preview exact native-device recipe and deterministic MIDI notes without touching Live. MIDI 29 is F0 in Live's octave naming; call is +12 semitones, response +24, sub stays at root.",
       "inputSchema": {
@@ -5024,6 +5256,39 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.bass_tools"
+    },
+    {
+      "name": "preview_remix_session",
+      "description": "Capture a <=60 second preview of owned remix lanes through Live Resampling;\n        temporarily isolate them, disarm others, disable monitoring/feedback and verify\n        transport after start. Restore original mixer/arm/loop/time state. Returns WAV,\n        measured loudness/peaks/low-band correlation and a bounded problem scan. Requires\n        stopped playback and no launched Session clips. Real-time capture is not audition.\n        ",
+      "inputSchema": {
+        "properties": {
+          "project_dir": {
+            "title": "Project Dir",
+            "type": "string"
+          },
+          "bars": {
+            "default": 8,
+            "title": "Bars",
+            "type": "integer"
+          },
+          "include_lead_in": {
+            "default": true,
+            "title": "Include Lead In",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "project_dir"
+        ],
+        "title": "preview_remix_sessionArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_tools"
     },
     {
       "name": "preview_warp_repair",
@@ -5316,6 +5581,38 @@
       "module": "ableton_live_mcp.tools.session"
     },
     {
+      "name": "refine_halftime_remix_workflow",
+      "description": "Revise a remix plan using explicit listening feedback: too_guttural, too_busy,\n        vocal_masked, kick_sub_clash, weak_transition, clicks, more_riddim, smoother.\n        Returns a new config with revision history. No audio audition or Live changes.\n        ",
+      "inputSchema": {
+        "properties": {
+          "config": {
+            "additionalProperties": true,
+            "title": "Config",
+            "type": "object"
+          },
+          "feedback": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Feedback",
+            "type": "array"
+          }
+        },
+        "required": [
+          "config",
+          "feedback"
+        ],
+        "title": "refine_halftime_remix_workflowArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.remix_workflow"
+    },
+    {
       "name": "replace_simpler_sample",
       "description": "Replace a Simpler sample with an absolute local audio-file path. Requires Live 12.4+\n    AND runtime API support; otherwise fails before writing. Replaces musical content:\n    confirm the target and preserve the original set. Readback is not an audio audition.\n    ",
       "inputSchema": {
@@ -5391,6 +5688,68 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.session"
+    },
+    {
+      "name": "scan_audio_problems",
+      "description": "Scan local integer PCM WAV for measured levels/DC and suspected clicks, gaps,\n        near-full-scale peaks and level jumps. Returns source timestamps, evidence,\n        confidence and targeted repair recipes. Bounded window, not audition or automatic\n        smoothing. Other formats and unassessed defects are explicit. No writes.\n        ",
+      "inputSchema": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "start_seconds": {
+            "default": 0,
+            "title": "Start Seconds",
+            "type": "number"
+          },
+          "max_seconds": {
+            "default": 30,
+            "title": "Max Seconds",
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "scan_audio_problemsArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.audio_scan_tools"
+    },
+    {
+      "name": "scan_clip_audio_problems",
+      "description": "Scan the source WAV window of one explicit Session/Arrangement audio clip.\n        target uses track_index, clip_index, clip_view and optional name/start guards.\n        Rechecks clip timing after scan. Reports source seconds; effects, fades and Warp\n        playback are not rendered or analyzed. No edits, playback or automatic repair.\n        ",
+      "inputSchema": {
+        "properties": {
+          "target": {
+            "additionalProperties": true,
+            "title": "Target",
+            "type": "object"
+          },
+          "max_seconds": {
+            "default": 30,
+            "title": "Max Seconds",
+            "type": "number"
+          }
+        },
+        "required": [
+          "target"
+        ],
+        "title": "scan_clip_audio_problemsArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.audio_scan_tools"
     },
     {
       "name": "search_browser",

@@ -18,7 +18,7 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(project["project"]["version"], enableton.__version__)
         packed = Path(enableton.__file__).with_name("production_recipes.json")
         data = json.loads(packed.read_text(encoding="utf-8"))
-        self.assertEqual(len(data["entries"]), 47)
+        self.assertEqual(len(data["entries"]), 50)
         self.assertEqual(
             data, json.loads((root / "data" / "recipes.json").read_text(encoding="utf-8"))
         )

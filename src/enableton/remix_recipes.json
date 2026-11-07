@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "recipe_version": "1.1.0",
+  "evidence": "Original configurable starting exercises, informed by primary sources and The Red session readbacks. Not transcriptions of reference artists' sessions.",
+  "profiles": {
+    "rock_dubstep": {
+      "title": "Recognizable rock riff into a half-time drop",
+      "intent": "Keep the hook and singing; rebuild drums and low end, with source audio plus selected riff MIDI.",
+      "settings": {
+        "pulse_patterns": [
+          [
+            0,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            0.75,
+            1.5,
+            2.5,
+            3.25
+          ]
+        ],
+        "kick_patterns": [
+          [
+            0,
+            2.75
+          ],
+          [
+            0,
+            1.5,
+            3.25
+          ]
+        ],
+        "pulse_duration": 0.28,
+        "attack_ms": 8,
+        "release_ms": 85,
+        "floor": 0.13,
+        "wobble_beats": 1,
+        "hat_step": 0.5,
+        "hat_swing": 0.035,
+        "filter_low_hz": 250,
+        "filter_high_hz": 1800,
+        "mid_highpass_hz": 120,
+        "kick_duck_db": 3,
+        "kick_duck_release_ms": 100,
+        "vocal_duck_db": 0,
+        "transition_gap_beats": 0,
+        "fill_every_bars": 4
+      }
+    },
+    "smooth_wobble": {
+      "title": "Held sub and rounded wobble",
+      "intent": "Sparse motion around the original phrase, with continuous singing and a stable mono root.",
+      "settings": {
+        "pulse_patterns": [
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            1.5,
+            3
+          ]
+        ],
+        "kick_patterns": [
+          [
+            0,
+            2.75
+          ],
+          [
+            0,
+            3.25
+          ]
+        ],
+        "pulse_duration": 0.7,
+        "attack_ms": 12,
+        "release_ms": 110,
+        "floor": 0.22,
+        "wobble_beats": 2,
+        "hat_step": 0.5,
+        "hat_swing": 0.025,
+        "filter_low_hz": 250,
+        "filter_high_hz": 1200,
+        "mid_highpass_hz": 120,
+        "kick_duck_db": 3,
+        "kick_duck_release_ms": 100,
+        "vocal_duck_db": 0,
+        "transition_gap_beats": 0,
+        "fill_every_bars": 8
+      }
+    },
+    "riddim": {
+      "title": "Sparse repeating bass motif with answers",
+      "intent": "An original riddim-inspired exercise with syncopation and selected triplet offsets; not a definition that all riddim must use triplets.",
+      "settings": {
+        "pulse_patterns": [
+          [
+            0,
+            1.5,
+            2.6666666667
+          ],
+          [
+            0,
+            1.5,
+            2.6666666667,
+            3.3333333333
+          ]
+        ],
+        "kick_patterns": [
+          [
+            0
+          ],
+          [
+            0,
+            3.25
+          ]
+        ],
+        "pulse_duration": 0.24,
+        "attack_ms": 6,
+        "release_ms": 65,
+        "floor": 0.04,
+        "wobble_beats": 0.5,
+        "hat_step": 1,
+        "hat_swing": 0,
+        "filter_low_hz": 300,
+        "filter_high_hz": 2400,
+        "mid_highpass_hz": 130,
+        "kick_duck_db": 3,
+        "kick_duck_release_ms": 90,
+        "vocal_duck_db": 0,
+        "transition_gap_beats": 0.5,
+        "fill_every_bars": 8
+      }
+    }
+  },
+  "sources": [
+    {
+      "id": "ableton-remixing-sidebrain",
+      "title": "Ableton / Side Brain: A Step-by-Step Guide to Remixing a Track",
+      "url": "https://www.ableton.com/en/blog/a-step-by-step-guide-to-remixing-a-track/",
+      "supports": "Stem selection, audio-to-MIDI cleanup, sample chopping and rebuilding a rhythm foundation.",
+      "limits": "Read article and tutorial outline; embedded video not auditioned. Demonstration uses Live 12.3 Suite, not proof of capability in Live 12.2.5."
+    },
+    {
+      "id": "ni-dubstep-tim-cant",
+      "title": "Native Instruments / Tim Cant: How to make a dubstep track that hits hard on the dance floor",
+      "url": "https://blog.native-instruments.com/how-to-make-dubstep/",
+      "supports": "140 BPM example, beat-three snares, varying drum velocities and swung subdivisions.",
+      "limits": "Search-indexed article text checked; direct page redirected during research. The recipe's exact patterns are original."
+    },
+    {
+      "id": "wa-riddim-dan-larsson",
+      "title": "W. A. Production / Dan Larsson: Riddim Bass",
+      "url": "https://www.waproduction.com/videos/view/riddim-bass",
+      "supports": "Tutorial descriptions cover a simple single-LFO bass, automated reverb, flange and all-pass filtering as different sound-design options.",
+      "limits": "Course page and indexed descriptions only; lessons not watched. No claim about an exact artist patch."
+    },
+    {
+      "id": "icon-kompany-resampling",
+      "title": "ICON Collective / Kompany: Bass Resampling with Serum in Ableton Live",
+      "url": "https://www.iconcollective.edu/bass-resampling-with-serum",
+      "supports": "Producer demonstration of a synth-to-audio resampling workflow.",
+      "limits": "Indexed tutorial description checked; direct page failed to fetch and video was not auditioned."
+    },
+    {
+      "id": "ableton-warp-manual",
+      "title": "Ableton Live 12 Manual: Audio Clips, Tempo, and Warping",
+      "url": "https://www.ableton.com/en/manual/audio-clips-tempo-and-warping/",
+      "supports": "Distinguishing independent timing/pitch changes from playback-rate changes; preserving source Warp alignment.",
+      "limits": "Read documentation, not proof of connector support for every control."
+    },
+    {
+      "id": "ableton-making-music-tempo",
+      "title": "Ableton / Dennis DeSantis: Making Music, Choosing a Tempo",
+      "url": "https://cdn-resources.ableton.com/resources/uploads/makingmusic/MakingMusic_DennisDeSantis.pdf",
+      "supports": "Creative coexistence of half-time and double-time feels on a fast grid.",
+      "limits": "Indexed passage checked; not a notation change or automatic tempo recommendation."
+    }
+  ]
+}
