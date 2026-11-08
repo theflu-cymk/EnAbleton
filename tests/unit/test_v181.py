@@ -54,7 +54,7 @@ class MigrationTests(unittest.TestCase):
         sys.modules.update({"_Framework": framework, "_Framework.ControlSurface": control})
         try:
             with tempfile.TemporaryDirectory() as temp:
-                target = Path(temp) / "AbletonMCP"
+                target = Path(temp) / "EnAbleton"
                 manifest = build(target)
                 spec = importlib.util.spec_from_file_location(
                     "migration_test_bridge",
@@ -64,7 +64,7 @@ class MigrationTests(unittest.TestCase):
                 module = importlib.util.module_from_spec(spec)
                 sys.modules[spec.name] = module
                 spec.loader.exec_module(module)
-                cls = module.AbletonMCP
+                cls = module.EnAbleton
                 instance = object.__new__(cls)
                 info = cls._ALL_COMMANDS["get_script_info"](instance, {})
                 self.assertEqual(info["upstream_version"], "1.8.1")
@@ -87,8 +87,13 @@ class MigrationTests(unittest.TestCase):
                     cls._ALL_COMMANDS["get_clip_envelope"](instance, {"guard": 1}), {"guard": 1}
                 )
                 self.assertEqual(manifest["upstream_version"], "1.8.1")
-                self.assertEqual(info["version"], "1.8.1-ext.14")
+                self.assertEqual(info["version"], "1.8.1-ext.15")
                 text = (target / "__init__.py").read_text(encoding="utf-8")
+                self.assertNotIn("AbletonMCP", text)
+                self.assertIn("return EnAbleton(c_instance)", text)
+                self.assertIn(
+                    'self.show_message("EnAbleton: Listening for commands on port "', text
+                )
                 self.assertIn(
                     '_COMMAND_TIMEOUTS = {"create_audio_clip": 60.0, '
                     '"create_arrangement_audio_clip": 60.0}',

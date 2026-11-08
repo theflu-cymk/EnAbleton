@@ -1,7 +1,7 @@
-# Additions and abilities — v0.1.0-beta.1
+# Additions and abilities
 
-The first beta shipped 191 MCP tools. The current development catalog has 234:
-156 from pinned upstream 1.8.1 and 78 additions.
+Main is the current install. Its catalog has 234 MCP tools: 156 from pinned
+upstream 1.8.1 and 78 additions. The retired tag `v0.1.0-beta.1` shipped 191.
 The generated [tool catalog](TOOL_CATALOG.md) includes every tool and annotation.
 
 | Area | Added capabilities | Practical limits |
@@ -69,8 +69,8 @@ findings, confidence, locations, fix availability and CI-style exit codes. Lint
 rules run independently of disabled cleanup steps. Explicit metadata fixes have
 name/start guards, readback and re-linting. Musical/destructive repairs remain
 reported until verified helpers exist. The [workflow](SONG_INITIATION.md) retains
-configurable song folders and snapshot planning. These are CLI additions; the
-released MCP tool catalog remains 191 tools.
+configurable song folders and snapshot planning. These workflow commands are
+CLI additions. Main's MCP catalog has 234 tools; the retired beta.1 catalog had 191.
 
 ## Unreleased remix creation
 

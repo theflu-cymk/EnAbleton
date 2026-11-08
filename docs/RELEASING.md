@@ -13,8 +13,9 @@ During 0.x, increase the minor version for incompatible changes; use patch
 versions for compatible fixes. Do not move published tags. A 1.0 release needs
 a documented real-Live compatibility/repair test matrix.
 
-The Python distribution version, pinned upstream `1.8.1`, and legacy bridge
-protocol `1.8.1-ext.8` are distinct. `ext.6` adds note insert/delete; earlier
+The Python distribution version, pinned upstream `1.8.1`, and the bridge
+protocol are distinct. Main generates `1.8.1-ext.15` and still accepts `ext.1`
+through `ext.15`. `ext.6` adds note insert/delete; earlier
 `ext.5` installs lack those commands and report a lower capability count. `ext.7` adds Warp writes and track
 monitoring; `ext.8` exposes clip `warp_mode` in object reads. The generated bridge also reports the
 EnAbleton distribution version; doctor checks that it matches the client.

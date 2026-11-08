@@ -15,10 +15,12 @@ that Ableton is installed or supported on Linux.
 
 ## 1. Clone and install the local client
 
+Install the current **main** branch. Do not check out `v0.1.0-beta.1`. That
+prerelease is retired (191 tools, bridge protocol `1.8.1-ext.5`).
+
 ```powershell
 git clone https://github.com/theflu-cymk/EnAbleton.git E:\projects\Ableton
 cd E:\projects\Ableton
-git checkout v0.1.0-beta.1
 uv sync --locked
 uv run enableton --version
 ```
@@ -45,7 +47,8 @@ locally modified manifest-tracked files are refused for manual review.
 Save your Live set and **fully quit and restart Live**. Toggling a control-surface
 row can reuse cached Python modules. In **Settings → Tempo & MIDI**, select
 **EnAbleton**, Input **None**, Output **None**. Keep hardware-controller rows.
-Disable an old **AbletonMCP** row so only one bridge listens on port 9877.
+The **AbletonMCP** control surface is retired. Remove that Remote Script from
+Live's scan path so it cannot listen on port 9877 beside EnAbleton.
 
 ## 3. Configure your MCP client
 
@@ -90,7 +93,8 @@ Then inspect `describe_live_access` and `describe_warp_workflow`.
 ## Updates and rollback
 
 1. Save the Live set and stop active edits.
-2. Check out a reviewed release tag, then run `uv sync --locked`.
+2. Stay on main for the current bridge, then run `uv sync --locked`. The tag
+   `v0.1.0-beta.1` is retired.
 3. Run `uv run enableton install --user-library "..." --replace`.
 4. Fully restart Live, reconnect the client and rerun doctor.
 

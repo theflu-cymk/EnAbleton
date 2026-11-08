@@ -35,6 +35,15 @@ def build(destination):
         "class AbletonMCP(ControlSurface):",
         "class AbletonMCP(DeviceSupportMixin, WarpSupportMixin, AccessSupportMixin, ClipEditMixin, SoundDesignSupportMixin, EnvelopeSupportMixin, ControlSurface):",
     )
+    # Live logs and the status bar use this class name. The old AbletonMCP
+    # surface is retired; the folder Live loads is EnAbleton.
+    identity_count = source.count("AbletonMCP")
+    if identity_count != 13:
+        raise RuntimeError(
+            "Upstream 1.8.1 source changed: expected 13 AbletonMCP identity strings, "
+            f"found {identity_count}"
+        )
+    source = source.replace("AbletonMCP", "EnAbleton")
     anchor = "    _ALL_COMMANDS = {**_MUTATING_COMMANDS, **_READONLY_COMMANDS}"
     if source.count(anchor) != 1:
         raise RuntimeError("Upstream 1.8.1 source changed: _ALL_COMMANDS anchor is not unique")
@@ -106,7 +115,7 @@ def build(destination):
         if source.count(send_anchor) != 1:
             raise RuntimeError("Upstream 1.8.1 source changed: response sendall is not unique")
         source = source.replace(send_anchor, _with_newline(send_anchor))
-    compile(source, "AbletonMCP/__init__.py", "exec")
+    compile(source, "EnAbleton/__init__.py", "exec")
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
     (destination / "__init__.py").write_bytes(source.encode("utf-8"))

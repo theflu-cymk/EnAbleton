@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Retire the AbletonMCP control surface. Install from main; `v0.1.0-beta.1` is
+  not the install target. The generated script names itself EnAbleton in Live's
+  log and status bar (bridge protocol `1.8.1-ext.15`, still accepting `ext.1`
+  through `ext.14`). Fully quit Live after installing so the renamed script loads.
 - Fix Arrangement audio import so a new Live clip wrapper is not deleted as a
   different clip, and remove an import that does not land on the requested beat
   (bridge protocol `1.8.1-ext.14`). Song-draft tracks, clips and notes are one

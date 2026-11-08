@@ -109,7 +109,7 @@ def install_bridge(stage, remote, backup_root, replace=False):
         "bridge_protocol": manifest["extension_version"],
         "backup": str(backup),
         "installed_files_verified": len(applied),
-        "activation": "Save and fully restart Live. Select EnAbleton only; disable the previous AbletonMCP row. Input/Output: None.",
+        "activation": "Save and fully restart Live. Select only EnAbleton. Input and Output: None. The AbletonMCP control surface is retired and must not listen on port 9877.",
         "song_modified": False,
     }
     (backup / "installation.json").write_text(json.dumps(report, indent=2), encoding="utf-8")

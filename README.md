@@ -3,9 +3,11 @@
 An MCP extension layer for Ableton Live: production recipes, guarded nested
 device control, and warp diagnostics with reversible repair previews.
 
-**First release: v0.1.0-beta.1.** Python version: `0.1.0b1`.
+**Current install: the main branch.** Python version: `0.1.0b1`.
+Bridge protocol: `1.8.1-ext.15`.
 Built on [`mcp-server-ableton-live==1.8.1`](https://github.com/wstierhout/ableton-live-mcp),
-with **191 MCP tools: 156 upstream controls and 35 EnAbleton additions**.
+with **234 MCP tools: 156 upstream controls and 78 EnAbleton additions**.
+The tagged prerelease `v0.1.0-beta.1` (191 tools, protocol `1.8.1-ext.5`) is retired.
 This is a beta, not an Ableton-endorsed product or an unrestricted Live API.
 
 ## What it adds
@@ -75,8 +77,9 @@ uv run enableton install --user-library "C:\path\to\your\actual\User Library"
 
 Use the User Library path shown in Live Settings. Save your set, fully restart
 Live, and select **EnAbleton** as the Control Surface with Input/Output **None**.
-Disable the previous AbletonMCP control-surface row; two bridges must not share
-port 9877. Hardware-controller rows stay as they are.
+The AbletonMCP control surface is retired. Do not enable it, and do not leave
+its Remote Script where Live can select it. Two bridges must not share port
+9877. Hardware-controller rows stay as they are.
 
 Add this stdio server to an MCP client, then restart/reconnect that client:
 
