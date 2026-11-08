@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 from ableton_live_mcp.connection import get_ableton_connection, disconnect_ableton
 from . import __version__
+from .wire import install as install_wire
 
 
 def main(folder):
@@ -38,6 +39,7 @@ def main(folder):
             for name, digest in manifest["files"].items()
         )
     try:
+        install_wire()
         connection = get_ableton_connection()
         info = connection.send_command("get_script_info", {})
         result["running_version"] = info.get("version")

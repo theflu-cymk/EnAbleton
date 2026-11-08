@@ -76,7 +76,9 @@ class SongInitTests(unittest.TestCase):
     def test_complete_example_and_registry(self):
         root = Path(__file__).resolve().parents[2]
         example = load_config(root / "examples/song-init/initiation.yaml")
-        self.assertEqual(len(REGISTRY), 16)
+        self.assertEqual(len(REGISTRY), 18)
+        self.assertIn("apply_layer_naming", REGISTRY)
+        self.assertIn("unwrap_layers", REGISTRY)
         self.assertGreaterEqual(len(example["steps"]), 16)
         self.assertTrue(all(s["process"] in REGISTRY for s in example["steps"]))
 

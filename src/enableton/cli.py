@@ -29,6 +29,20 @@ def main(argv=None):
     workflow.add_argument("workflow_args", nargs=argparse.REMAINDER)
     lint = commands.add_parser("lint", help="Read and lint the current Live set")
     lint.add_argument("workflow_args", nargs=argparse.REMAINDER)
+    initiate = commands.add_parser(
+        "initiate", help="Prepare or lint a song from the default initial-preparation preset"
+    )
+    initiate.add_argument("--song-root", required=True, help="Song folder parent directory")
+    initiate.add_argument("--song-name", required=True)
+    initiate.add_argument("--mode", choices=("lint", "prepare"), help="Ask by omitting this")
+    initiate.add_argument("--song-folder-name")
+    initiate_source = initiate.add_mutually_exclusive_group()
+    initiate_source.add_argument("--snapshot", type=Path, help="Normalized JSON snapshot")
+    initiate_source.add_argument("--live", action="store_true", help="Read the running Ableton set")
+    initiate.add_argument("--include-session", action="store_true")
+    initiate.add_argument("--fail-on", choices=("none", "info", "warning", "error"))
+    initiate.add_argument("--report", type=Path, help="JSON report for the audit pass")
+    initiate.add_argument("--keep-config", type=Path, help="Write the generated YAML here")
     scan = commands.add_parser(
         "scan-audio", help="Scan PCM WAV and suggest targeted repairs; no audio edits"
     )
@@ -100,6 +114,67 @@ def main(argv=None):
         except (ValueError, RuntimeError, OSError) as error:
             print(json.dumps({"error": str(error)}), file=sys.stderr)
             return 2
+    if args.command == "initiate":
+        from . import initial_prep
+        from .song_init import main as workflow_main
+
+        if args.mode is None:
+            phases = {}
+            for item in initial_prep.describe():
+                phases.setdefault(item["phase"], []).append(item["id"])
+            print(
+                json.dumps(
+                    {
+                        "song": {"name": args.song_name, "root": args.song_root},
+                        "question": initial_prep.ENTRY_QUESTION,
+                        "modes": {
+                            "lint": "Read the set and report; no writes.",
+                            "prepare": "Lint, then apply the enabled steps in phase order.",
+                        },
+                        "phases": phases,
+                        "next": "Re-run with --mode lint or --mode prepare.",
+                    },
+                    indent=2,
+                )
+            )
+            return 2
+        if not (args.snapshot or args.live):
+            parser.error("--live or --snapshot is required with --mode")
+        if args.keep_config:
+            config_path = args.keep_config
+        else:
+            config_path = Path(tempfile.mkdtemp(prefix="enableton-initiate-")) / "initiate.yaml"
+        try:
+            initial_prep.write_config(
+                config_path,
+                args.song_root,
+                args.song_name,
+                args.mode,
+                args.song_folder_name,
+            )
+        except (OSError, ValueError) as error:
+            print(json.dumps({"error": str(error)}))
+            return 2
+        common = [str(config_path)] + (
+            ["--snapshot", str(args.snapshot)] if args.snapshot else ["--live"]
+        )
+        session = ["--include-session"] if args.include_session else []
+        if args.mode == "lint":
+            extra = ["--lint"] + session
+            if args.fail_on:
+                extra += ["--fail-on", args.fail_on]
+            if args.report:
+                extra += ["--report", str(args.report)]
+            return workflow_main(common + extra)
+        audit = ["--lint", "--fail-on", "none"] + session
+        if args.report:
+            audit += ["--report", str(args.report)]
+        audit_code = workflow_main(common + audit)
+        if audit_code not in (0, 1):
+            return audit_code
+        return workflow_main(
+            common + ["--apply"] + session + (["--fail-on", args.fail_on] if args.fail_on else [])
+        )
     if args.command in {"song-init", "lint"}:
         from .song_init import main as workflow_main
 

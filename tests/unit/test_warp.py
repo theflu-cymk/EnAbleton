@@ -21,6 +21,7 @@ from enableton.warp_analysis import (
 )
 from test_access import Access, Sound
 from enableton import warp_tools
+from enableton.warp_support import WarpSupportMixin
 
 
 def timing(path="source.wav"):
@@ -327,6 +328,174 @@ class WarpWorkflowTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(RuntimeError, "25 seconds"):
                 warp_tools._analyze(self.file)
+
+
+class RetimeClip(object):
+    def __init__(self, rows, seconds, order="beat,sample", recording=False, warping=True):
+        self.rows = [[beat, sample] for beat, sample in rows]
+        self.is_audio_clip = True
+        self.warping = warping
+        self.is_recording = recording
+        self.looping = False
+        self.loop_start = 0.0
+        self.loop_end = 0.0
+        self.sample_rate = 44100
+        self.sample_length = int(round(seconds * 44100))
+        self.order = order
+        self.calls = []
+        self._sync()
+
+    def _sync(self):
+        self.warp_markers = [NS(beat_time=beat, sample_time=sample) for beat, sample in self.rows]
+
+    def move_warp_marker(self, beat_time, delta):
+        self.calls.append(("move", beat_time, delta))
+        for row in self.rows:
+            if abs(row[0] - beat_time) < 1e-9:
+                row[0] += delta
+                self._sync()
+                return
+        raise ValueError("no marker at beat " + str(beat_time))
+
+    def add_warp_marker(self, *arguments):
+        self.calls.append(("add",) + arguments)
+        if len(arguments) == 1:
+            beat, sample = arguments[0].beat_time, arguments[0].sample_time
+        elif self.order == "beat,sample":
+            beat, sample = arguments
+        else:
+            sample, beat = arguments
+        self.rows.append([beat, sample])
+        self.rows.sort(key=lambda row: row[0])
+        self._sync()
+
+    def remove_warp_marker(self, beat_time):
+        self.calls.append(("remove", beat_time))
+        for row in list(self.rows):
+            if abs(row[0] - beat_time) < 1e-9:
+                self.rows.remove(row)
+                self._sync()
+                return
+        raise ValueError("no marker at beat " + str(beat_time))
+
+
+class RetimeLive(WarpSupportMixin):
+    def __init__(self, clip, name="5-Piano"):
+        self.clip = clip
+        self.name = name
+        self._song = NS(begin_undo_step=lambda: None, end_undo_step=lambda: None)
+
+    def _access_clip(self, target):
+        return NS(name=self.name), self.clip
+
+    def _get_audio_clip_timing(self, target):
+        clip = self.clip
+        return {
+            "track_name": self.name,
+            "clip_name": "Loop",
+            "file_path": "source.mp3",
+            "warping": clip.warping,
+            "warp_mode": 0,
+            "looping": clip.looping,
+            "loop_start": clip.loop_start,
+            "loop_end": clip.loop_end,
+            "start_marker": 0.0,
+            "end_marker": clip.loop_end,
+            "sample_rate": clip.sample_rate,
+            "sample_length": clip.sample_length,
+            "warp_markers": [
+                {"beat_time": m.beat_time, "sample_time": m.sample_time} for m in clip.warp_markers
+            ],
+            "marker_count": len(clip.warp_markers),
+            "available_warp_modes": [0, 4, 6],
+            "marker_api": {
+                "move_warp_marker": True,
+                "add_warp_marker": True,
+                "remove_warp_marker": True,
+            },
+        }
+
+
+class RetimeMarker(object):
+    def __init__(self, beat_time, sample_time):
+        self.beat_time = beat_time
+        self.sample_time = sample_time
+
+
+class RetimeLiveWithMarker(RetimeLive):
+    """Reproduces the Live build that only accepts a WarpMarker object."""
+
+    def _live_warp_marker(self, beat, sample):
+        return RetimeMarker(beat, sample)
+
+
+def retime_target():
+    return {
+        "track_index": 4,
+        "clip_view": "session",
+        "clip_index": 0,
+        "expected_track_name": "5-Piano",
+        "expected_clip_name": "Loop",
+    }
+
+
+VOCAL_ROWS = [(0.0, 2.57), (4.0, 6.29), (8.0, 10.0234), (312.03125, 248.228)]
+PIANO_ROWS = [(0.0, 0.0), (0.03125, 0.015625)]
+SECONDS = 249.4556
+
+
+class WarpRetimeTests(unittest.TestCase):
+    def test_expands_rigid_map_to_requested_rate(self):
+        clip = RetimeClip(VOCAL_ROWS, SECONDS)
+        result = RetimeLive(clip)._retime_warp_clip(
+            {"target": retime_target(), "beats_per_second": 1.6}
+        )
+        self.assertTrue(result["verified"])
+        self.assertAlmostEqual(result["content_beats"], (SECONDS - 2.57) * 1.6, places=2)
+        self.assertAlmostEqual(clip.loop_end, result["content_beats"], places=3)
+        self.assertTrue(clip.looping)
+        self.assertAlmostEqual(clip.rows[0][1], 2.57, places=6)
+        for beat, sample in clip.rows:
+            self.assertAlmostEqual(beat, (sample - 2.57) * 1.6, places=3)
+        self.assertIsNotNone(result["added_marker"])
+
+    def test_degenerate_map_gets_anchor_offset_through_loop_start(self):
+        clip = RetimeClip(PIANO_ROWS, SECONDS)
+        result = RetimeLive(clip)._retime_warp_clip(
+            {"target": retime_target(), "beats_per_second": 1.6, "anchor_sample": 2.41}
+        )
+        self.assertTrue(result["verified"])
+        self.assertAlmostEqual(result["content_beats"], SECONDS * 1.6, places=2)
+        self.assertAlmostEqual(clip.loop_start, 2.41 * 1.6, places=3)
+        self.assertAlmostEqual(result["residual_source_offset_seconds"], 0.0, places=2)
+        self.assertAlmostEqual(clip.rows[-1][1], SECONDS, places=3)
+        self.assertAlmostEqual(clip.rows[-1][0], SECONDS * 1.6, places=2)
+
+    def test_probes_the_marker_argument_order(self):
+        clip = RetimeClip(PIANO_ROWS, SECONDS, order="sample,beat")
+        result = RetimeLive(clip)._retime_warp_clip(
+            {"target": retime_target(), "beats_per_second": 1.6}
+        )
+        self.assertEqual(result["added_marker"]["argument_order"], "sample,beat")
+        self.assertAlmostEqual(clip.rows[-1][1], SECONDS, places=3)
+
+    def test_prefers_warp_marker_objects(self):
+        clip = RetimeClip(PIANO_ROWS, SECONDS)
+        result = RetimeLiveWithMarker(clip)._retime_warp_clip(
+            {"target": retime_target(), "beats_per_second": 1.6}
+        )
+        self.assertEqual(result["added_marker"]["argument_order"], "WarpMarker")
+        self.assertAlmostEqual(clip.rows[-1][1], SECONDS, places=3)
+
+    def test_refuses_unwarped_audio(self):
+        clip = RetimeClip(VOCAL_ROWS, SECONDS, warping=False)
+        with self.assertRaisesRegex(ValueError, "Enable Warp"):
+            RetimeLive(clip)._retime_warp_clip({"target": retime_target(), "beats_per_second": 1.6})
+
+    def test_refuses_mixed_marker_directions(self):
+        clip = RetimeClip([(0.0, 0.0), (5.0, 10.0), (40.0, 20.0)], 20.0)
+        with self.assertRaisesRegex(ValueError, "Mixed marker directions"):
+            RetimeLive(clip)._retime_warp_clip({"target": retime_target(), "beats_per_second": 1.6})
 
 
 if __name__ == "__main__":

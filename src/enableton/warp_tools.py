@@ -253,6 +253,29 @@ def register_warp(mcp, dispatch):
         }
 
     @mcp.tool(annotations={"readOnlyHint": False, "destructiveHint": True})
+    def retime_warp_clip(
+        target: dict, beats_per_second: float, anchor_sample: float | None = None
+    ) -> dict:
+        """Rewrite a warped audio clip's marker map to one uniform source-to-beat
+        rate, verified by readback. Requires track and clip names; Arrangement
+        source requires expected_start_time. Keeps the first marker's sample, sets
+        the loop to the retimed span and reports the constant source offset left for
+        placement to correct. Retime a fresh duplicate: a failed retime leaves that
+        clip part edited, so delete it and start again from the source file.
+        """
+        if not target.get("expected_track_name") or not target.get("expected_clip_name"):
+            raise ValueError("Track and clip name guards required")
+        if target.get("clip_view") == "arrangement" and target.get("expected_start_time") is None:
+            raise ValueError("Arrangement start guard required")
+        params = {
+            "target": target,
+            "beats_per_second": finite(beats_per_second, "beats_per_second"),
+        }
+        if anchor_sample is not None:
+            params["anchor_sample"] = finite(anchor_sample, "anchor_sample")
+        return dispatch("retime_warp_clip", params)
+
+    @mcp.tool(annotations={"readOnlyHint": False, "destructiveHint": True})
     def apply_warp_repair(preview_token: str) -> dict:
         """Apply a reviewed preview to a non-overlapping duplicate ONLY. Saves the
         source timing/plan before writing. Refuses stale/expired tokens and changed

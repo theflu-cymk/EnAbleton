@@ -84,6 +84,9 @@ def role_for(info):
 
 def collect_live(connection=None, include_session=False, track_indices=None):
     """Only documented read commands; never treats a failed read as an empty object."""
+    from .wire import install as install_wire
+
+    install_wire()
     if connection is None:
         from ableton_live_mcp.connection import get_ableton_connection
 
@@ -790,7 +793,9 @@ def instruments(state, params):
 
 @rule("track_colors", "info")
 def colors(state, params):
-    palette = params.get("colors", DEFAULT_COLORS)
+    from .layer_naming import ROLE_COLORS
+
+    palette = params.get("colors", ROLE_COLORS)
     if not isinstance(palette, dict) or any(
         type(v) is not int or not 0 <= v <= 69 for v in palette.values()
     ):
@@ -1211,6 +1216,9 @@ def run_lint(
     if live and connection is None:
         from ableton_live_mcp.connection import get_ableton_connection
 
+        from .wire import install as install_wire
+
+        install_wire()
         try:
             connection = get_ableton_connection()
         except Exception as error:

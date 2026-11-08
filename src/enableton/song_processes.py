@@ -7,6 +7,8 @@ import re
 import string
 
 from .song_init import REGISTRY, Result, clips, register, selected, song_folder
+from .layer_processes import apply_layer_naming
+from .warp_unwrap import unwrap_layers
 
 
 def change(kind, item, patch):
@@ -57,6 +59,8 @@ def cleanup_unused(state, params, target):
 @register("rename_tracks")
 def rename_tracks(state, params, target):
     result = Result()
+    if params.get("convention", False):
+        return apply_layer_naming(state, params, target)
     pattern = params.get("pattern", "{type}_{name}")
     for track in selected(state, target):
         role = track.get("role", track["type"])
@@ -261,6 +265,9 @@ def color_tracks_by_type(state, params, target):
 
 @register("set_default_warp")
 def set_default_warp(state, params, target):
+    if params.get("enabled", False) is False and params.get("method", "render") != "toggle":
+        # Removing Warp defaults to the render-first workflow in warp_unwrap.
+        return unwrap_layers(state, params, target)
     mode = params.get("mode", 4)
     if type(params.get("enabled", False)) is not bool:
         raise ValueError("Warp enabled must be boolean")

@@ -29,11 +29,11 @@ def build(destination):
     source = source.replace(
         anchor,
         anchor
-        + "\nfrom .envelope_support import EnvelopeSupportMixin\nfrom .sound_design_support import SoundDesignSupportMixin\nfrom .access_support import AccessSupportMixin\nfrom .warp_support import WarpSupportMixin",
+        + "\nfrom .envelope_support import EnvelopeSupportMixin\nfrom .sound_design_support import SoundDesignSupportMixin\nfrom .access_support import AccessSupportMixin\nfrom .clip_edit import ClipEditMixin\nfrom .warp_support import WarpSupportMixin\nfrom .device_support import DeviceSupportMixin",
     )
     source = source.replace(
         "class AbletonMCP(ControlSurface):",
-        "class AbletonMCP(WarpSupportMixin, AccessSupportMixin, SoundDesignSupportMixin, EnvelopeSupportMixin, ControlSurface):",
+        "class AbletonMCP(DeviceSupportMixin, WarpSupportMixin, AccessSupportMixin, ClipEditMixin, SoundDesignSupportMixin, EnvelopeSupportMixin, ControlSurface):",
     )
     anchor = "    _ALL_COMMANDS = {**_MUTATING_COMMANDS, **_READONLY_COMMANDS}"
     if source.count(anchor) != 1:
@@ -54,6 +54,8 @@ def build(destination):
         "get_access_mixer": lambda s, p: s._get_access_mixer(p),
         "get_access_notes": lambda s, p: s._get_access_notes(p),
         "get_audio_clip_timing": lambda s, p: s._get_audio_clip_timing(p),
+        "get_scenes": lambda s, p: s._get_scenes(p),
+        "inspect_rack": lambda s, p: s._inspect_rack(p),
     })
     _MUTATING_COMMANDS = dict(_MUTATING_COMMANDS, **{
         "set_sound_design_parameters": lambda s, p: s._set_sound_design_parameters(p),
@@ -62,9 +64,20 @@ def build(destination):
         "set_access_mixer": lambda s, p: s._set_access_mixer(p),
         "modify_access_notes": lambda s, p: s._modify_access_notes(p),
         "repair_warp_duplicate": lambda s, p: s._repair_warp_duplicate(p),
+        "retime_warp_clip": lambda s, p: s._retime_warp_clip(p),
         "insert_access_notes": lambda s, p: s._insert_access_notes(p),
         "delete_access_notes": lambda s, p: s._delete_access_notes(p),
         "set_access_warp": lambda s, p: s._set_access_warp(p),
+        "move_arrangement_clip": lambda s, p: s._move_arrangement_clip(p),
+        "split_arrangement_clip": lambda s, p: s._split_arrangement_clip(p),
+        "delete_arrangement_clip_guarded": lambda s, p: s._delete_arrangement_clip_guarded(p),
+        "set_eq_bands": lambda s, p: s._set_eq_bands(p),
+        "insert_chain": lambda s, p: s._insert_chain(p),
+        "delete_chain": lambda s, p: s._delete_chain(p),
+        "insert_device_to_chain": lambda s, p: s._insert_device_to_chain(p),
+        "delete_cue_point": lambda s, p: s._delete_cue_point(p),
+        "create_arrangement_audio_clip": lambda s, p: s._create_arrangement_audio_clip(p),
+        "map_rack_blend_macro": lambda s, p: s._map_rack_blend_macro(p),
     })
 """
     source = source.replace(
@@ -73,6 +86,26 @@ def build(destination):
         + "\n"
         + anchor,
     )
+    timeout_anchor = '    _COMMAND_TIMEOUTS = {"create_audio_clip": 60.0}'
+    if source.count(timeout_anchor) != 1:
+        raise RuntimeError("Upstream 1.8.1 source changed: _COMMAND_TIMEOUTS anchor is not unique")
+    source = source.replace(
+        timeout_anchor,
+        '    _COMMAND_TIMEOUTS = {"create_audio_clip": 60.0, "create_arrangement_audio_clip": 60.0}',
+    )
+
+    def _with_newline(call):
+        if not call.endswith(")"):
+            raise RuntimeError("Upstream 1.8.1 source changed: sendall anchor is not a call")
+        return call[:-1] + " + " + "b" + repr("\n") + ")"
+
+    for send_anchor in (
+        'client.sendall(payload.encode("utf-8"))',
+        'client.sendall(json.dumps(error_response).encode("utf-8"))',
+    ):
+        if source.count(send_anchor) != 1:
+            raise RuntimeError("Upstream 1.8.1 source changed: response sendall is not unique")
+        source = source.replace(send_anchor, _with_newline(send_anchor))
     compile(source, "AbletonMCP/__init__.py", "exec")
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
@@ -84,6 +117,9 @@ def build(destination):
         "warp_support.py",
         "warp_analysis.py",
         "numbers.py",
+        "clip_geometry.py",
+        "clip_edit.py",
+        "device_support.py",
     ):
         shutil.copy2(Path(__file__).parent / name, destination / name)
     manifest = {

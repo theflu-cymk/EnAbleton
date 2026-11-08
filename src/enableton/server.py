@@ -8,7 +8,11 @@ from ableton_live_mcp.app import mcp
 from ableton_live_mcp.connection import AbletonConnection, get_ableton_connection
 from .bass_tools import register
 from .bridge_version import COMPATIBLE_VERSIONS, UPSTREAM_VERSION
+from .wire import install as install_wire
 
+# Frame the socket before this module replaces send_command. The wrapper below
+# calls that framed sender; installing afterwards would skip the newline.
+install_wire()
 
 # Every upstream Live call must reject an old bridge: note-writing semantics
 # differ between implementations. Catalog and offline tools remain usable.
@@ -23,7 +27,7 @@ def _version_checked_send(self, command_type, params=None):
             or info.get("upstream_version") != UPSTREAM_VERSION
         ):
             raise RuntimeError(
-                "The new server is installed, but Live still has an older bridge loaded. Restart Live or reload the AbletonMCP Control Surface before making Live calls."
+                "The new server is installed, but Live still has an older bridge loaded. Fully quit Live, select only EnAbleton, and set Input and Output to None before making Live calls."
             )
     return _upstream_send(self, command_type, params)
 
@@ -107,6 +111,18 @@ register_remix_session(mcp, dispatch)
 from .remix_midi import register_midi_cleanup
 
 register_midi_cleanup(mcp, dispatch)
+from .groove_tools import register_groove
+
+register_groove(mcp)
+from .extended_tools import register_extended
+
+register_extended(mcp, dispatch)
+from .plugin_aliases import register_plugin_aliases
+
+register_plugin_aliases(mcp, dispatch)
+from .song_draft import register_song_draft
+
+register_song_draft(mcp, dispatch)
 
 
 @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False})

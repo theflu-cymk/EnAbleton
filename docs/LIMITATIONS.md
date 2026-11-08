@@ -20,8 +20,17 @@
   commands. None rewrite MPE expression curves. Upstream tools have separate write
   semantics.
 - Live exposes no API to create a group track or move tracks into one, and
-  Arrangement clip extent is read-only. Grouping is reported as skipped; Session
+- Arrangement clip extents are settable through `loop_end`/`end_marker` (beats when warped, seconds when unwarped); `end_time` is read-only.
   clip resizing writes `loop_end`.
+- Measured against Live 12.2.5 on the development host: `RackDevice` exposes
+  neither `insert_chain` nor `delete_chain`, and a rack or Drum Rack loaded from
+  the browser reports no chains, so `insert_chain`, `delete_chain` and
+  `insert_device_to_chain` refuse with that message; add chains in Live itself.
+  A deleted `CuePoint` handle is dead, and reading its `time` raises a
+  Boost.Python argument error, so `delete_cue_point` moves the playhead with a
+  separate command, verifies the cue count and reports the position recorded
+  before the toggle. An EQ Eight keeps its preset name on load, so EQ
+  bands are matched by device class `Eq8`.
 - Tests with synthetic audio/fake Live objects establish software behavior,
   not perceptual quality or a full Ableton compatibility certification.
 - The server controls Live locally. It does not provide a native hosted-Grok

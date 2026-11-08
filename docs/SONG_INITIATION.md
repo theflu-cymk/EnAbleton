@@ -249,3 +249,108 @@ preflight before folder creation, failure logs, ordered projection, selections,
 extensions, MIDI overlap strategies, quantize tolerance and default idempotence.
 They use synthetic data, not Live. A new Live adapter requires integration tests
 and a saved recoverable test set before production use.
+
+## Layer naming and Warp removal defaults
+
+`apply_layer_naming` is the canonical layer convention: `NN Label` track names
+(`01 Drums`, `09 Lead Vox`) and one distinct colour per role (see
+`src/enableton/layer_naming.py`). Call it directly as a step, or set
+`convention: true` on `rename_tracks`; empty tracks, groups, returns and MIDI
+tracks are skipped.
+
+`unwrap_layers` is the default Warp-removal method and `set_default_warp` with
+`enabled: false` delegates to it. Removing Warp is not a toggle: for a layer whose
+timing lives in its warp markers the runner reports `Render required` instead of
+clearing the flag. Supply `reference` (a track id or role) and `renders`
+(clip/track id to rendered WAV) to record the intended placements. The safe order
+is: align to the reference, render at the project tempo, place the rendered WAV at
+the measured beat, then switch Warp off and verify the readback. `method: toggle`
+exists for clips that carry no marker-based timing.
+
+## Default initial preparation ("initiate the current track")
+
+Starting work on a song, or hearing "initiate the current track", begins with one
+question: **prepare or lint?**
+
+- `lint` reads the running set and reports. It never writes.
+- `prepare` runs the same read, then applies only the enabled steps, in phase
+  order, and re-reads the result.
+
+The preset lives in `src/enableton/initial_prep.py` as `STEPS` (ordered, phased)
+and `LINT` (rule defaults). `build_config()` turns it into a normal `song-init`
+config, so `enableton initiate` takes the same guarded path as any hand-written
+workflow; `lint` merely sets every step `enabled: false`.
+
+```bash
+# ask first, write nothing (exit 2 with the question and both modes)
+uv run enableton initiate --song-root "/path/to/Song" --song-name "Song"
+
+# or name the mode
+uv run enableton initiate --song-root "/path/to/Song" --song-name "Song" --mode lint
+uv run enableton initiate --song-root "/path/to/Song" --song-name "Song" --mode prepare --live
+```
+
+### Phases and defaults
+
+| Phase | Step | Default | What it does |
+| --- | --- | --- | --- |
+| protect | `workspace` | on | Creates the song folder (`audio`, `midi`, `originals`, `exports`, `reports`, `configs`). Never writes the set. |
+| protect | `inventory` | on | Read-only count of tracks, devices, clips and empty Session slots. |
+| audit | `missing-media` | on | Reports offline or unresolved samples; never relinks. |
+| audit | `session-defaults` | **off** | Keep the existing tempo and grid unless a measurement justifies a change. |
+| audit | `empty-clips` / `empty-tracks` | **off** | Destructive; missing media is not the same as empty, and returns, groups and master stay protected. |
+| audit | `note-overlaps` | **off** | Same-pitch overlaps only, and only on a confirmed monophonic part. |
+| audit | `midi-grid` | **off** | Timing is a review finding first; swing, pickups and fast fills are intentional. |
+| audit | `velocities` | **off** | Accents are content; clamping is opt-in. |
+| align | `warp` (`unwrap_layers`) | **off** | Needs a reference layer. Renders at project tempo, places the WAV at the verified beat, then clears Warp. |
+| name | `layers` | on | `NN Label` plus one colour per role, skipping empty tracks. |
+| verify | `lengths` | on | Report only; never trims real tails to equalise lengths. |
+| verify | `grouping` | on | Report only; Live has no group-creation API. |
+| verify | `arrangement-overlaps` | on | Report only; trimming needs a guarded duplicate workflow. |
+
+### Why the defaults are conservative
+
+Section 1 of the run-down is the reason: confirm the set and protect the
+originals before correcting anything. So the preset writes exactly three things
+by default — the song folder, the `NN Label` names/colours, and nothing else —
+and every timing, length, dynamics or deletion step has to be turned on
+deliberately, per part or per song. `warp` stays off until a `reference` exists,
+because clearing Warp without a rendered, aligned replacement is what destroyed
+markers earlier.
+
+### Adding a step
+
+Append one entry to `STEPS`:
+
+```python
+{
+    "id": "trim-tails",            # unique, stable, used by --only
+    "phase": "verify",             # protect | audit | align | name | verify
+    "process": "fix_clip_lengths",  # must exist in song_processes.REGISTRY
+    "enabled": False,               # default to report-only
+    "params": {"mode": "report"},
+    "target": {"types": ["audio"]},  # optional selector
+    "note": "One sentence shown by describe() and the docs.",
+}
+```
+
+Nothing else needs to change: `describe()`, `build_config()`, the CLI and the
+tests read the same list, and `tests/unit/test_initial_prep.py` fails if a process
+is unregistered, an ID repeats, or a report-only step starts applying.
+
+### Safety before alignment edits
+
+Never move or re-render a working track in place. The order is fixed:
+
+1. duplicate the track;
+2. rename the copy `ORIGINAL | <track name>`;
+3. mute the copy;
+4. fold it — Live exposes no fold write, so fold or group it by hand;
+5. verify the readback, then edit the working track;
+6. keep the copy until the layer has been auditioned, then release it.
+
+`src/enableton/align_safety.py` implements steps 1-3 and 5-6 as `protect()` and
+`release()`: `protect()` dups, renames, mutes, re-reads and only reports
+`verified: true` when the readback matches, and `release()` refuses to delete
+anything whose name is not a protection copy. Folding is returned as
+`fold_applied: false` with the manual instruction, never silently skipped.

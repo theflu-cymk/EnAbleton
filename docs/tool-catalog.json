@@ -1,7 +1,7 @@
 {
   "enableton_version": "0.1.0b1",
   "upstream_version": "1.8.1",
-  "tool_count": 204,
+  "tool_count": 234,
   "tools": [
     {
       "name": "add_notes_to_clip",
@@ -452,6 +452,39 @@
       "module": "ableton_live_mcp.tools.offline"
     },
     {
+      "name": "analyze_audio_describe",
+      "description": "Ask the pinned third-party Music Flamingo model on Replicate a question about a\nlocal audio file (harmony, structure, timbre, lyrics). Requires REPLICATE_API_TOKEN and\nuploads the file; nothing else in this package leaves the machine. A language-model\ndescription, not measurement: treat tempo, key and structure claims as unverified.\n",
+      "inputSchema": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "prompt": {
+            "title": "Prompt",
+            "type": "string"
+          },
+          "max_new_tokens": {
+            "default": 512,
+            "title": "Max New Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "path",
+          "prompt"
+        ],
+        "title": "analyze_audio_describeArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "analyze_audio_file",
       "description": "Measure local WAV (integer/float), AIFF/AIFF-C, FLAC, Ogg Vorbis, MP3,\nAAC or M4A/MP4 (AAC/ALAC) without Live: per-channel sample peak/RMS dBFS,\nDC offset, crest factor and full-scale samples. Analyzes the first max_seconds\n(default 30, maximum 120); marks partial results. Not LUFS or true peak. No upload.\nCompressed files are measured after decoding; this does not recover lost audio.\nFiles are read locally without modification, normalization or upload.\n",
       "inputSchema": {
@@ -493,6 +526,92 @@
       "module": "ableton_live_mcp.tools.audio_analysis"
     },
     {
+      "name": "analyze_energy",
+      "description": "Measure RMS, flux and five band envelopes per sixteenth note in a bounded local\nPCM WAV window, each normalized 0..1. The band split is a one-pole cascade, so treat\nthe bands as relative movement, not calibrated spectrum or LUFS. Unsupported formats\nfail explicitly. No Live access or changes.\n",
+      "inputSchema": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "bpm": {
+            "default": 120.0,
+            "title": "Bpm",
+            "type": "number"
+          },
+          "start_seconds": {
+            "default": 0,
+            "title": "Start Seconds",
+            "type": "number"
+          },
+          "max_seconds": {
+            "default": 30,
+            "title": "Max Seconds",
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "analyze_energyArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
+      "name": "analyze_frequency_clash",
+      "description": "Compare two local PCM WAV files band by band and rank where their energy\noverlaps, with EQ Eight band numbers and a starting cut suggestion. Overlap is not\nautomatically a problem: level and arrangement decide, so audition first. Read-only.\n",
+      "inputSchema": {
+        "properties": {
+          "file_a": {
+            "title": "File A",
+            "type": "string"
+          },
+          "file_b": {
+            "title": "File B",
+            "type": "string"
+          },
+          "bpm": {
+            "default": 120.0,
+            "title": "Bpm",
+            "type": "number"
+          },
+          "start_seconds": {
+            "default": 0,
+            "title": "Start Seconds",
+            "type": "number"
+          },
+          "max_seconds": {
+            "default": 30,
+            "title": "Max Seconds",
+            "type": "number"
+          },
+          "top": {
+            "default": 5,
+            "title": "Top",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "file_a",
+          "file_b"
+        ],
+        "title": "analyze_frequency_clashArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "analyze_mix",
       "description": "Heuristic session-state checks, NOT audio, peak, LUFS or headroom measurements.\nScan the current live set for inspection leads: several high faders, a muted\nor empty Session track, or a MIDI track without devices. External routing and\nArrangement audio may explain these states. Returns machine-readable\nfindings so you can decide what to fix. Reads the session; changes nothing.",
       "inputSchema": {
@@ -518,6 +637,51 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.analysis"
+    },
+    {
+      "name": "analyze_song_structure",
+      "description": "Ask the pinned third-party All-In-One model on Replicate for BPM, key, labelled\nsegments, beats and downbeats of a local audio file. Requires REPLICATE_API_TOKEN and\nuploads the file; nothing else in this package leaves the machine. target_bpm pins the\ntempo search. Third-party output: verify every boundary before editing. No Live access.\n",
+      "inputSchema": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "target_bpm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Target Bpm"
+          },
+          "include_beats": {
+            "default": true,
+            "title": "Include Beats",
+            "type": "boolean"
+          },
+          "include_key": {
+            "default": true,
+            "title": "Include Key",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "analyze_song_structureArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
     },
     {
       "name": "analyze_warp_audio",
@@ -563,6 +727,61 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.warp_tools"
+    },
+    {
+      "name": "annotate_arrangement",
+      "description": "Create Arrangement locators at measured level changes in a local PCM WAV, named\nprefix + index + energy class. Refuses while the transport plays. Boundaries are level\nchanges, not confirmed song sections: listen before trusting a split.\n",
+      "inputSchema": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "bpm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Bpm"
+          },
+          "max_seconds": {
+            "default": 120,
+            "title": "Max Seconds",
+            "type": "number"
+          },
+          "min_segment_sixteenths": {
+            "default": 32,
+            "title": "Min Segment Sixteenths",
+            "type": "integer"
+          },
+          "threshold": {
+            "default": 0.12,
+            "title": "Threshold",
+            "type": "number"
+          },
+          "prefix": {
+            "default": "Section",
+            "title": "Prefix",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "annotate_arrangementArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
     },
     {
       "name": "apply_bass_movement",
@@ -744,6 +963,35 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.recipes"
+    },
+    {
+      "name": "apply_song_draft",
+      "description": "Create the planned MIDI tracks at the end of the song, one Session clip\neach, and Arrangement locators that are not already within 0.001 beats.\nRequires confirm=true. Refuses while the transport plays or the meter is\nnot 4/4. Does not start playback, delete Arrangement clips, rename an\nexisting locator, or change the meter. Tempo changes only when the plan\nsets apply_tempo. Tracks, clips and notes are one undo step. Locators\nare separate commands.\n",
+      "inputSchema": {
+        "properties": {
+          "plan": {
+            "additionalProperties": true,
+            "title": "Plan",
+            "type": "object"
+          },
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "plan"
+        ],
+        "title": "apply_song_draftArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.song_draft"
     },
     {
       "name": "apply_warp_repair",
@@ -1366,6 +1614,44 @@
       "module": "ableton_live_mcp.tools.session"
     },
     {
+      "name": "create_arrangement_audio_clip",
+      "description": "Import an audio file onto an audio track's Arrangement at a free beat.\nThe path must already exist. Refuses a position inside an existing clip,\nand removes the import if its length overlaps another clip. Does not start\nplayback. One Live Undo step. Needs the EXT.13 bridge. Session import\nremains create_audio_clip.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "number"
+          },
+          "expected_track_name": {
+            "title": "Expected Track Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "track_index",
+          "path",
+          "position",
+          "expected_track_name"
+        ],
+        "title": "create_arrangement_audio_clipArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "create_audio_clip",
       "description": "\nCreate a new audio clip in an audio track's clip slot by importing a file.\n\nRequires Ableton Live 12.0.5 or newer - the underlying\nClipSlot.create_audio_clip Live API was introduced in 12.0.5 and is not\navailable in earlier 12.0.x releases.\n\nParameters:\n- track_index: The index of the audio track to create the clip in\n- clip_index: The index of the clip slot to create the clip in\n- path: Absolute path to a supported audio file (e.g. a .wav). The target\n  track must be an audio track and the clip slot must be empty.\n",
       "inputSchema": {
@@ -1756,6 +2042,61 @@
       "module": "ableton_live_mcp.tools.session"
     },
     {
+      "name": "create_structure_track",
+      "description": "Build a MIDI structure track whose notes mark measured energy sections of a local\nPCM WAV: pitch 84 high, 79 mid, 74 low, one note per section. Creates a new MIDI track\nand a Session clip, then leaves duplication into the Arrangement to you. Refuses while\nthe transport plays. Energy classes are measured, not musical labels.\n",
+      "inputSchema": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "bpm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Bpm"
+          },
+          "track_name": {
+            "default": "Structure",
+            "title": "Track Name",
+            "type": "string"
+          },
+          "max_seconds": {
+            "default": 120,
+            "title": "Max Seconds",
+            "type": "number"
+          },
+          "min_segment_sixteenths": {
+            "default": 32,
+            "title": "Min Segment Sixteenths",
+            "type": "integer"
+          },
+          "threshold": {
+            "default": 0.12,
+            "title": "Threshold",
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "create_structure_trackArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "create_take_lane",
       "description": "Add a take lane to a track (for comping multiple recorded takes on one\ntrack). Returns the new take-lane count.",
       "inputSchema": {
@@ -1831,6 +2172,51 @@
       "module": "ableton_live_mcp.tools.arrangement"
     },
     {
+      "name": "delete_chain",
+      "description": "Remove one chain from a rack, refusing the last remaining chain and any name\nmismatch, then verify the count shrank by exactly one. One Live Undo step.\nNeeds the EXT.12 bridge.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "chain_index": {
+            "title": "Chain Index",
+            "type": "integer"
+          },
+          "expected_chain_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expected Chain Name"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index",
+          "chain_index"
+        ],
+        "title": "delete_chainArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "delete_clip",
       "description": "Delete the existing Session-view clip in a slot, including its content.\n\nThis leaves the slot empty and does not shift other slot indices. It fails\nfor an empty slot. Use stop_clip if the intent is only to stop playback;\nuse undo immediately if the deletion was accidental.\n",
       "inputSchema": {
@@ -1873,6 +2259,29 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.clips"
+    },
+    {
+      "name": "delete_cue_point",
+      "description": "Delete the single Arrangement locator at that beat position and verify the count\ndropped by one. Live has no direct cue delete, so this moves the playhead to the cue,\ntoggles the cue there and restores the previous playhead. Refuses when no cue sits at\nthat time or when several do. Needs the EXT.12 bridge.\n",
+      "inputSchema": {
+        "properties": {
+          "time": {
+            "title": "Time",
+            "type": "number"
+          }
+        },
+        "required": [
+          "time"
+        ],
+        "title": "delete_cue_pointArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
     },
     {
       "name": "delete_device",
@@ -2128,6 +2537,21 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.access_tools"
+    },
+    {
+      "name": "describe_tool_families",
+      "description": "Group the arrangement, rack, plugin-alias and song-draft tools with the\nexisting names. Read-only map, not a full catalog and not a rename.\n",
+      "inputSchema": {
+        "properties": {},
+        "title": "describe_tool_familiesArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.song_draft"
     },
     {
       "name": "describe_warp_workflow",
@@ -4281,6 +4705,21 @@
       "module": "ableton_live_mcp.tools.session"
     },
     {
+      "name": "get_scenes",
+      "description": "List every scene with its index, name, colour, tempo and how many tracks hold a\nclip in it. Read-only. Needs the EXT.12 bridge.\n",
+      "inputSchema": {
+        "properties": {},
+        "title": "get_scenesArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "get_session_info",
       "description": "Return global Live-set and transport state without modifying the set.\n\nIncludes tempo, song time signature, playback position/state, Arrangement\nloop, track/return/scene counts, scene names, key/scale, record mode, launch\nquantization, Master volume/pan, and Live version. Use get_track_info for a\nsingle track's clips/devices, or get_session_snapshot for a compact overview\nof every track.\n",
       "inputSchema": {
@@ -4484,6 +4923,197 @@
       "module": "ableton_live_mcp.tools.tracks"
     },
     {
+      "name": "groove_alignment_report",
+      "description": "Per-note offset from each source note to its nearest target event, plus mean,\nspread, min and max. notes are {pitch, start_time} in a shared beat timeline.\nNearest-event matching only: different instrument roles can pair by accident, and\nintentional swing is not an error. No Live access or changes.\n",
+      "inputSchema": {
+        "properties": {
+          "source_notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Notes",
+            "type": "array"
+          },
+          "target_notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Target Notes",
+            "type": "array"
+          },
+          "source_offset": {
+            "default": 0,
+            "title": "Source Offset",
+            "type": "number"
+          },
+          "bpm": {
+            "default": 120.0,
+            "title": "Bpm",
+            "type": "number"
+          },
+          "match_by_pitch": {
+            "default": true,
+            "title": "Match By Pitch",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "source_notes",
+          "target_notes"
+        ],
+        "title": "groove_alignment_reportArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.groove_tools"
+    },
+    {
+      "name": "groove_marker_plan",
+      "description": "Plan warp markers from explicit source/target note lists: original_beat,\ntarget_beat and seconds per marker, with minimum offset, spacing, density, pitch\nfilter and caps. Writes nothing. Apply to a fresh duplicate only and audition;\nwrong note pairing or intentional swing can produce musically wrong markers.\n",
+      "inputSchema": {
+        "properties": {
+          "source_notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Notes",
+            "type": "array"
+          },
+          "target_notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Target Notes",
+            "type": "array"
+          },
+          "source_offset": {
+            "default": 0,
+            "title": "Source Offset",
+            "type": "number"
+          },
+          "bpm": {
+            "default": 120.0,
+            "title": "Bpm",
+            "type": "number"
+          },
+          "min_offset_ms": {
+            "default": 20,
+            "title": "Min Offset Ms",
+            "type": "number"
+          },
+          "match_by_pitch": {
+            "default": true,
+            "title": "Match By Pitch",
+            "type": "boolean"
+          },
+          "min_spacing_beats": {
+            "default": 0,
+            "title": "Min Spacing Beats",
+            "type": "number"
+          },
+          "pitch_filter": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pitch Filter"
+          },
+          "max_markers": {
+            "default": 0,
+            "title": "Max Markers",
+            "type": "integer"
+          },
+          "quantize_targets_to": {
+            "default": 0,
+            "title": "Quantize Targets To",
+            "type": "number"
+          },
+          "markers_per_bar": {
+            "default": 0,
+            "title": "Markers Per Bar",
+            "type": "number"
+          }
+        },
+        "required": [
+          "source_notes",
+          "target_notes"
+        ],
+        "title": "groove_marker_planArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.groove_tools"
+    },
+    {
+      "name": "groove_offset_report",
+      "description": "Compare two explicit beat-position lists to the grid and recommend one constant\nshift. Only events within tolerance of a grid line are averaged. Reports ms and\nbeats plus how many events were used. A constant shift corrects feel, not phrase\nstructure: audition before moving clips. No Live access or changes.\n",
+      "inputSchema": {
+        "properties": {
+          "vocal_onsets": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Vocal Onsets",
+            "type": "array"
+          },
+          "drum_hits": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Drum Hits",
+            "type": "array"
+          },
+          "bpm": {
+            "default": 120.0,
+            "title": "Bpm",
+            "type": "number"
+          },
+          "grid_beats": {
+            "default": 1.0,
+            "title": "Grid Beats",
+            "type": "number"
+          },
+          "tolerance_beats": {
+            "default": 0.25,
+            "title": "Tolerance Beats",
+            "type": "number"
+          }
+        },
+        "required": [
+          "vocal_onsets",
+          "drum_hits"
+        ],
+        "title": "groove_offset_reportArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.groove_tools"
+    },
+    {
       "name": "guide_halftime_remix_workflow",
       "description": "Guide remix creation in small decision groups. Select source clips, read their\nMIDI/timing, plan a drop, build through existing Live tools, audition, then refine.\nReturns pending decisions or a plan; never silently edits the set.\n",
       "inputSchema": {
@@ -4511,6 +5141,35 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.remix_workflow"
+    },
+    {
+      "name": "guide_song_draft",
+      "description": "Ask at most three questions (genre, energy, key), then return a 4/4 sketch.\nGenres are house, hip_hop, pop and melodic. Dubstep, riddim and half-time\nredirect to guide_halftime_remix_workflow. No Live writes and no playback.\n",
+      "inputSchema": {
+        "properties": {
+          "answers": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Answers"
+          }
+        },
+        "title": "guide_song_draftArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.song_draft"
     },
     {
       "name": "humanize_clip",
@@ -4573,6 +5232,165 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.generators_advanced"
+    },
+    {
+      "name": "inject_saved_clip_envelope",
+      "description": "Write one MIDI CC automation envelope into a SAVED .als with Live closed, for the\nMIDI clip that starts at clip_time beats on the single track matching the name\npattern. points are clip-relative beats with normalized 0..1 values, strictly\nincreasing, stored as 0..127. Requires that track's ControllerTargets.<cc>, so\ncreate the MIDI track in Live first. Dry run by default; an in-place write is\nbacked up and re-read. Close Live before writing: a save would overwrite this.\nVerification is file-level, not a Live readback.\n",
+      "inputSchema": {
+        "properties": {
+          "als_path": {
+            "title": "Als Path",
+            "type": "string"
+          },
+          "track_pattern": {
+            "title": "Track Pattern",
+            "type": "string"
+          },
+          "clip_time": {
+            "title": "Clip Time",
+            "type": "number"
+          },
+          "cc": {
+            "title": "Cc",
+            "type": "integer"
+          },
+          "points": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Points",
+            "type": "array"
+          },
+          "output_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Output Path"
+          },
+          "replace": {
+            "default": false,
+            "title": "Replace",
+            "type": "boolean"
+          },
+          "dry_run": {
+            "default": true,
+            "title": "Dry Run",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "als_path",
+          "track_pattern",
+          "clip_time",
+          "cc",
+          "points"
+        ],
+        "title": "inject_saved_clip_envelopeArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.groove_tools"
+    },
+    {
+      "name": "insert_chain",
+      "description": "Add one chain to an Instrument/Effect Rack and verify the chain count grew by\nexactly one. Refuses when this Live build does not expose RackDevice.insert_chain.\nOne Live Undo step. Needs the EXT.12 bridge.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "chain_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Chain Index"
+          },
+          "expected_device_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expected Device Name"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index"
+        ],
+        "title": "insert_chainArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
+      "name": "insert_device_to_chain",
+      "description": "Insert one native device into a rack chain by browser name and verify the device\ncount grew by one. Third-party and Max devices are not covered. Refuses when this\nLive build does not expose Chain.insert_device. One Live Undo step. EXT.12 bridge.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "chain_index": {
+            "title": "Chain Index",
+            "type": "integer"
+          },
+          "device_name": {
+            "title": "Device Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index",
+          "chain_index",
+          "device_name"
+        ],
+        "title": "insert_device_to_chainArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
     },
     {
       "name": "insert_live_clip_notes",
@@ -4647,6 +5465,46 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.server"
+    },
+    {
+      "name": "inspect_rack",
+      "description": "Read one rack's macro support and the Dry/Wet, Mix or Amount parameter on\neach chain device. Read-only. Needs the EXT.13 bridge. An empty chain list\nis reported, not treated as a failure.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "expected_device_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expected Device Name"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index"
+        ],
+        "title": "inspect_rackArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
     },
     {
       "name": "inspect_remix_session",
@@ -4833,6 +5691,21 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.device_kb"
+    },
+    {
+      "name": "list_plugin_aliases",
+      "description": "List the Serum friendly-name map. These are Live parameter strings, not\nstock Ableton device names, and they do not change a value by themselves.\n",
+      "inputSchema": {
+        "properties": {},
+        "title": "list_plugin_aliasesArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.plugin_aliases"
     },
     {
       "name": "list_recipes",
@@ -5031,6 +5904,104 @@
       "module": "ableton_live_mcp.tools.devices"
     },
     {
+      "name": "local_onsets_to_notes",
+      "description": "Measure onsets in a bounded local PCM WAV window and convert them to a note grid\nfor groove work; strength becomes velocity. No phoneme, lyric or pitch detection,\nso the notes are rhythm only. Seconds convert at a constant BPM, so use unwarped\naudio or convert with the clip's warp map first. No Live access or changes.\n",
+      "inputSchema": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "bpm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Bpm"
+          },
+          "pitch": {
+            "default": 38,
+            "title": "Pitch",
+            "type": "integer"
+          },
+          "min_strength": {
+            "default": 0,
+            "title": "Min Strength",
+            "type": "number"
+          },
+          "start_seconds": {
+            "default": 0,
+            "title": "Start Seconds",
+            "type": "number"
+          },
+          "max_seconds": {
+            "default": 30,
+            "title": "Max Seconds",
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "local_onsets_to_notesArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.groove_tools"
+    },
+    {
+      "name": "map_rack_blend_macro",
+      "description": "Map nested Dry/Wet, Mix or Amount parameters to one rack macro and name\nthat macro Blend unless macro_name is set. macro_index is 0..7. Refuses\nwhen this Live build has no RackDevice.macro_map. Devices without a blend\nparameter are skipped. One Live Undo step. Needs the EXT.13 bridge.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "expected_device_name": {
+            "title": "Expected Device Name",
+            "type": "string"
+          },
+          "macro_index": {
+            "default": 0,
+            "title": "Macro Index",
+            "type": "integer"
+          },
+          "macro_name": {
+            "default": "Blend",
+            "title": "Macro Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index",
+          "expected_device_name"
+        ],
+        "title": "map_rack_blend_macroArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "mastering_recipe_catalog",
       "description": "Seven advanced mastering recipes: M/S EQ, selective band dynamics, sub-aware glue, staged peak control, stereo translation, section consistency and delivery QC. Displayed-unit audition settings, primary sources and back-off criteria. Read-only; does not apply a master or measure audio.",
       "inputSchema": {
@@ -5151,6 +6122,30 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.remix_midi"
+    },
+    {
+      "name": "plan_song_draft",
+      "description": "Plan a 16, 32 or 64 bar Session sketch in 4/4. Role tracks are Drums, Bass,\nChords, and Lead when energy is high. Drum pitches are General MIDI guesses:\nconfirm them with get_drum_pads. No Live writes.\n",
+      "inputSchema": {
+        "properties": {
+          "config": {
+            "additionalProperties": true,
+            "title": "Config",
+            "type": "object"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "title": "plan_song_draftArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.song_draft"
     },
     {
       "name": "prepare_remix_session",
@@ -5462,6 +6457,57 @@
       "module": "ableton_live_mcp.tools.clips"
     },
     {
+      "name": "quantize_notes_to_groove",
+      "description": "Snap each source note to its nearest target event within max_snap_beats, leaving\nfar notes unchanged, and report how many moved. Snapping removes intentional feel:\nkeep the original clip to compare. No Live access or changes.\n",
+      "inputSchema": {
+        "properties": {
+          "source_notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Notes",
+            "type": "array"
+          },
+          "target_notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Target Notes",
+            "type": "array"
+          },
+          "source_offset": {
+            "default": 0,
+            "title": "Source Offset",
+            "type": "number"
+          },
+          "max_snap_beats": {
+            "default": 1.0,
+            "title": "Max Snap Beats",
+            "type": "number"
+          },
+          "match_by_pitch": {
+            "default": true,
+            "title": "Match By Pitch",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "source_notes",
+          "target_notes"
+        ],
+        "title": "quantize_notes_to_grooveArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.groove_tools"
+    },
+    {
       "name": "rack_variation",
       "description": "Rack macro snapshots. action: \"store\" (save current macros as a\nvariation), \"recall\" (restore variation `index`), \"randomize\" (randomize\nall macro knobs - instant sound-design exploration).",
       "inputSchema": {
@@ -5679,6 +6725,38 @@
       "module": "enableton.remix_workflow"
     },
     {
+      "name": "refine_song_draft",
+      "description": "Revise a sketch: more_space, more_energy, darker, brighter, shorter, longer.\nLocked sections keep their notes when the form still holds them. Read-only.\n",
+      "inputSchema": {
+        "properties": {
+          "plan": {
+            "additionalProperties": true,
+            "title": "Plan",
+            "type": "object"
+          },
+          "feedback": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Feedback",
+            "type": "array"
+          }
+        },
+        "required": [
+          "plan",
+          "feedback"
+        ],
+        "title": "refine_song_draftArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.song_draft"
+    },
+    {
       "name": "replace_simpler_sample",
       "description": "Replace a Simpler sample with an absolute local audio-file path. Requires Live 12.4+\nAND runtime API support; otherwise fails before writing. Replaces musical content:\nconfirm the target and preserve the original set. Readback is not an audio audition.\n",
       "inputSchema": {
@@ -5727,6 +6805,104 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.devices"
+    },
+    {
+      "name": "resolve_plugin_parameter",
+      "description": "Resolve a friendly or exact parameter name against the live device.\nAn exact live name wins. A Serum alias is used only when that configured\ncontrol is actually present. Read-only. No 0..1 conversion.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "parameter": {
+            "title": "Parameter",
+            "type": "string"
+          },
+          "expected_track_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expected Track Name"
+          },
+          "expected_device_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expected Device Name"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index",
+          "parameter"
+        ],
+        "title": "resolve_plugin_parameterArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.plugin_aliases"
+    },
+    {
+      "name": "retime_warp_clip",
+      "description": "Rewrite a warped audio clip's marker map to one uniform source-to-beat\nrate, verified by readback. Requires track and clip names; Arrangement\nsource requires expected_start_time. Keeps the first marker's sample, sets\nthe loop to the retimed span and reports the constant source offset left for\nplacement to correct. Retime a fresh duplicate: a failed retime leaves that\nclip part edited, so delete it and start again from the source file.\n",
+      "inputSchema": {
+        "properties": {
+          "target": {
+            "additionalProperties": true,
+            "title": "Target",
+            "type": "object"
+          },
+          "beats_per_second": {
+            "title": "Beats Per Second",
+            "type": "number"
+          },
+          "anchor_sample": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Anchor Sample"
+          }
+        },
+        "required": [
+          "target",
+          "beats_per_second"
+        ],
+        "title": "retime_warp_clipArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.warp_tools"
     },
     {
       "name": "save_set",
@@ -6865,6 +8041,60 @@
       "module": "ableton_live_mcp.tools.devices"
     },
     {
+      "name": "set_eq_bands",
+      "description": "Set several EQ Eight bands in one call on the clip's or track's EQ Eight.\nbands entries take band 1..8 plus any of filter_on, frequency_hz, gain_db, q.\nFrequencies and gains are reached through the parameter's own display string,\nnot a guessed log formula, and every written band is read back. mode is A or B.\nBands with no field are refused. One Live Undo step. Needs the EXT.12 bridge.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "bands": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Bands",
+            "type": "array"
+          },
+          "mode": {
+            "default": "A",
+            "title": "Mode",
+            "type": "string"
+          },
+          "expected_device_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expected Device Name"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index",
+          "bands"
+        ],
+        "title": "set_eq_bandsArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.extended_tools"
+    },
+    {
       "name": "set_fold_state",
       "description": "Fold (collapse) or unfold a group track. Errors if the track is not a group\ntrack (see get_group_info).",
       "inputSchema": {
@@ -7187,6 +8417,54 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.access_tools"
+    },
+    {
+      "name": "set_plugin_parameter",
+      "description": "Set one plugin parameter by friendly or exact name. The value is the\nparameter's native number from get_sound_design_parameters, not a guessed\n0..1 amount. Resolves the live name, then uses the guarded parameter batch:\nrange check, readback and rollback. One Live Undo step.\n",
+      "inputSchema": {
+        "properties": {
+          "track_index": {
+            "title": "Track Index",
+            "type": "integer"
+          },
+          "device_index": {
+            "title": "Device Index",
+            "type": "integer"
+          },
+          "parameter": {
+            "title": "Parameter",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "number"
+          },
+          "expected_track_name": {
+            "title": "Expected Track Name",
+            "type": "string"
+          },
+          "expected_device_name": {
+            "title": "Expected Device Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "track_index",
+          "device_index",
+          "parameter",
+          "value",
+          "expected_track_name",
+          "expected_device_name"
+        ],
+        "title": "set_plugin_parameterArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.plugin_aliases"
     },
     {
       "name": "set_record_mode",

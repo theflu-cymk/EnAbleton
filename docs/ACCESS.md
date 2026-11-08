@@ -3,7 +3,9 @@
 This extension expands the 1.8.1 server rather than enabling an unrestricted
 Python interpreter inside Live. Every bridge command runs on Live's main
 thread. Writes are explicit; installing the extension never changes a song.
-Tool count: 191 (156 upstream, 35 additions). Recipes are retained.
+Tool count: 234 (156 upstream, 78 additions). Recipes are retained, and every
+upstream 1.8.1 tool is present; see [TOOL_CATALOG.md](TOOL_CATALOG.md) for the
+generated list and the annotated reference at <https://abletonmcp.com/tools/>.
 
 | Area | Read | Write |
 | --- | --- | --- |
@@ -70,3 +72,31 @@ Primary API references:
 - https://docs.cycling74.com/apiref/lom/clip/
 - https://docs.cycling74.com/apiref/lom/deviceparameter/
 - https://docs.cycling74.com/apiref/lom/chain/
+
+## Clip extent and units (Live Object Model)
+
+`Clip.end_time` is get-only, but the Arrangement edge follows `loop_end` and
+`end_marker`, both of which are get/set. Units depend on Warp: beats while the
+clip is warped, seconds for unwarped audio, so a write made after disabling
+Warp must be expressed in seconds. Live exposes no group-creation call, and
+`Track.group_track` stays read-only.
+
+### Moving, splitting and deleting Arrangement clips
+
+`start_time` is get-only in the Live Object Model, so a clip cannot be moved by
+assignment. Three guarded bridge commands fill that gap:
+
+- `move_arrangement_clip` duplicates at the destination beat with
+  `duplicate_clip_to_arrangement`, deletes the original, then verifies the new
+  start and end. It refuses a destination that would overwrite another clip on the
+  track, and requires `expected_start_time` plus an optional `expected_clip_name`.
+- `split_arrangement_clip` duplicates at `split_at`, sets `end_marker` on the left
+  half and `start_marker` on the right, then checks both edges.
+- `delete_arrangement_clip_guarded` deletes only when the clip still starts at the
+  guarded beat and still carries the guarded name.
+
+All three refuse unwarped audio, where markers are seconds rather than beats. Warp
+it, or render at project tempo and place the render. `start_marker` and `end_marker`
+are also writable through `write_access_object`, validated from 0 to the clip length
+in the clip's own units. Each destructive command runs inside one Undo step and
+reports failure explicitly instead of presenting a partial edit as success.

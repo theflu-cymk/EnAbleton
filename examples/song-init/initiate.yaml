@@ -1,0 +1,144 @@
+schemaVersion: 1
+song:
+  name: Example Song
+  root: /music/songs
+  onExists: reuse
+lint:
+  failOn: warning
+  includeSession: false
+  rules:
+    track_naming:
+      enabled: true
+    clip_naming:
+      enabled: true
+      severity: info
+    missing_samples:
+      enabled: true
+    midi_validity:
+      enabled: true
+    midi_overlaps:
+      enabled: true
+      params:
+        monophonicRoles:
+        - bass
+    midi_grid:
+      enabled: true
+      severity: info
+      params:
+        gridBeats: 0.25
+        toleranceBeats: 0.04
+    midi_dynamics:
+      enabled: true
+    harmonic_layering:
+      enabled: true
+      severity: info
+      params:
+        minOverlapBeats: 0.5
+    empty_content:
+      enabled: true
+      severity: info
+    clip_boundaries:
+      enabled: true
+      severity: info
+    arrangement_overlaps:
+      enabled: true
+    warp_maps:
+      enabled: true
+    stem_sync:
+      enabled: true
+      params:
+        groups: []
+    instrument_assignments:
+      enabled: true
+    track_colors:
+      enabled: true
+      severity: info
+    session_settings:
+      enabled: true
+    organization:
+      enabled: true
+      severity: info
+defaults:
+  processes: {}
+steps:
+- id: workspace
+  process: create_song_folder
+  enabled: true
+  params: {}
+- id: inventory
+  process: cleanup_unused
+  enabled: true
+  params:
+    collect: false
+    save: false
+- id: missing-media
+  process: check_missing_samples
+  enabled: true
+  params: {}
+- id: session-defaults
+  process: set_session_defaults
+  enabled: false
+  params:
+    tempo: 120
+    numerator: 4
+    denominator: 4
+    force: false
+- id: empty-clips
+  process: remove_empty_clips
+  enabled: false
+  params: {}
+- id: empty-tracks
+  process: remove_empty_tracks
+  enabled: false
+  params: {}
+- id: note-overlaps
+  process: fix_midi_overlaps
+  enabled: false
+  params: {}
+  target:
+    types:
+    - midi
+- id: midi-grid
+  process: quantize_timing
+  enabled: false
+  params: {}
+  target:
+    types:
+    - midi
+- id: velocities
+  process: normalize_velocities
+  enabled: false
+  params:
+    mode: clamp
+    min: 40
+    max: 112
+  target:
+    types:
+    - midi
+- id: lengths
+  process: fix_clip_lengths
+  enabled: true
+  params:
+    mode: report
+    toleranceBeats: 0.04
+    allowTrim: false
+- id: warp
+  process: unwrap_layers
+  enabled: false
+  params:
+    reference: null
+    renders: {}
+- id: layers
+  process: apply_layer_naming
+  enabled: true
+  params: {}
+- id: grouping
+  process: organize_groups
+  enabled: true
+  params:
+    apply: false
+- id: arrangement-overlaps
+  process: trim_overlapping_clips
+  enabled: true
+  params:
+    apply: false

@@ -1,7 +1,7 @@
 # Additions and abilities — v0.1.0-beta.1
 
-The first beta shipped 191 MCP tools. The current development catalog has 204:
-156 from pinned upstream 1.8.1 and 48 additions.
+The first beta shipped 191 MCP tools. The current development catalog has 234:
+156 from pinned upstream 1.8.1 and 78 additions.
 The generated [tool catalog](TOOL_CATALOG.md) includes every tool and annotation.
 
 | Area | Added capabilities | Practical limits |
@@ -45,6 +45,22 @@ Real-loop analysis was exercised during development. The beta does not claim
 every feature has been manually auditioned in every Live version.
 
 See [ACCESS.md](ACCESS.md), [WARP.md](WARP.md), and [LIMITATIONS.md](LIMITATIONS.md).
+
+## Unreleased arrangement import, racks and drafts
+
+`create_arrangement_audio_clip` imports a file onto a free Arrangement beat and
+removes that import if its length overlaps another clip or it does not land on
+the requested beat. `inspect_rack` and `map_rack_blend_macro` read nested
+Dry/Wet, Mix and Amount parameters and map them to one macro when this Live
+build exposes `RackDevice.macro_map`. Serum aliases translate friendly names
+onto configured Live parameter strings and still write native values.
+`guide_song_draft`, `plan_song_draft`, `refine_song_draft` and
+`apply_song_draft` sketch a 4/4 house, hip-hop, pop or melodic Session draft;
+dubstep, riddim and half-time stay on the half-time remix guide. Applying a
+draft writes tracks, clips and notes as one undo step and does not rename a
+locator that already sits on a section beat. `describe_tool_families` groups
+those tools with the existing names. Drum pitches in a draft are General MIDI
+guesses.
 
 ## Unreleased song workflow and Live lint
 

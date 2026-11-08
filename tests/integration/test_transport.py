@@ -20,7 +20,7 @@ async def main():
         async with ClientSession(read, write) as session:
             await session.initialize()
             tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-            assert len(tools) == 204, len(tools)
+            assert len(tools) == 234, len(tools)
             for name in (
                 "batch_commands",
                 "undo",
@@ -39,6 +39,17 @@ async def main():
                 "compare_remix_previews",
                 "inspect_remix_session",
                 "plan_remix_midi_cleanup",
+                "create_arrangement_audio_clip",
+                "inspect_rack",
+                "map_rack_blend_macro",
+                "list_plugin_aliases",
+                "resolve_plugin_parameter",
+                "set_plugin_parameter",
+                "guide_song_draft",
+                "plan_song_draft",
+                "refine_song_draft",
+                "apply_song_draft",
+                "describe_tool_families",
             ):
                 assert name in tools, name
             for name, arguments in (
@@ -52,6 +63,13 @@ async def main():
                 ("guide_halftime_remix_workflow", {}),
                 ("plan_halftime_remix_workflow", {"config": {}}),
                 ("refine_halftime_remix_workflow", {"config": {}, "feedback": ["smoother"]}),
+                ("describe_tool_families", {}),
+                ("list_plugin_aliases", {}),
+                ("guide_song_draft", {}),
+                (
+                    "plan_song_draft",
+                    {"config": {"genre": "house", "energy": "medium", "key": "Am", "bars": 16}},
+                ),
             ):
                 result = await session.call_tool(name, arguments)
                 assert not result.isError, result
@@ -62,6 +80,19 @@ async def main():
                     assert len(data["recipes"]) == 13
                 if name == "search_production_recipes":
                     assert data["total"] == 50
+                if name == "describe_tool_families":
+                    assert data["live_changes"] is False
+                    assert any(
+                        tool == "map_rack_blend_macro"
+                        for family in data["families"]
+                        for tool in family["tools"]
+                    )
+                if name == "list_plugin_aliases":
+                    assert data["profiles"][0]["name"] == "Serum"
+                if name == "guide_song_draft":
+                    assert data["live_changes"] is False and len(data["questions"]) <= 3
+                if name == "plan_song_draft":
+                    assert data["status"] == "planned" and data["playback_started"] is False
                 print("Verified:", name)
             with tempfile.TemporaryDirectory() as temp:
                 source = Path(temp) / "scan-fixture.wav"
@@ -118,7 +149,25 @@ async def main():
             assert tools["scan_clip_audio_problems"].annotations.readOnlyHint
             assert tools["apply_warp_repair"].annotations.destructiveHint
             assert tools["get_audio_clip_timing"].annotations.readOnlyHint
-            print("204 tools verified; no Live mutations requested.")
+            for name in (
+                "guide_song_draft",
+                "plan_song_draft",
+                "refine_song_draft",
+                "resolve_plugin_parameter",
+                "list_plugin_aliases",
+                "inspect_rack",
+                "describe_tool_families",
+            ):
+                assert tools[name].annotations.readOnlyHint
+            for name in (
+                "apply_song_draft",
+                "create_arrangement_audio_clip",
+                "map_rack_blend_macro",
+                "set_plugin_parameter",
+            ):
+                assert not tools[name].annotations.readOnlyHint
+                assert tools[name].annotations.destructiveHint
+            print("234 tools verified; no Live mutations requested.")
 
 
 if __name__ == "__main__":

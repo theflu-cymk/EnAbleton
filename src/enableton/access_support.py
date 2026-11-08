@@ -53,6 +53,8 @@ PROPERTIES = {
         "pitch_fine": (-50, 50),
         "warping": bool,
         "warp_mode": (0, 6),
+        "start_marker": (-16384, 1576800),
+        "end_marker": (-16384, 1576800),
     },
     "chain": {"name": str, "mute": bool, "solo": bool},
 }
@@ -204,6 +206,11 @@ class AccessSupportMixin(object):
                     value = int(value)
                 if key == "signature_denominator" and value not in (1, 2, 4, 8, 16):
                     raise ValueError("Invalid time signature denominator")
+                if key in ("start_marker", "end_marker"):
+                    if value < 0:
+                        raise ValueError(key + " must be >= 0")
+                    if value > float(obj.length) + 1e-3:
+                        raise ValueError(key + " exceeds the clip length")
             planned.append((key, value, getattr(obj, key)))
         self._song.begin_undo_step()
         applied = []

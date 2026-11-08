@@ -39,7 +39,10 @@ render smooth audio, build owned Live lanes, capture a preview and compare at
 matched loudness. Changed source MIDI or pulse controls can be prepared and rebuilt
 without duplicate tracks. Start with `uv run enableton remix-guide`; the complete
 loop uses `remix-prepare`, `remix-build`, `remix-preview` and `remix-compare`.
-The current development catalog has 204 tools (156 upstream, 48 additions).
+The current development catalog has 234 tools (156 upstream, 78 additions).
+Arrangement audio import, rack blend macros, Serum parameter aliases and a 4/4
+song-draft guide are in that catalog. `describe_tool_families` maps the new
+names onto the existing ones.
 
 ## Song initiation and Live linting (unreleased)
 
@@ -49,6 +52,8 @@ The current development catalog has 204 tools (156 upstream, 48 additions).
 
 ```powershell
 uv run enableton lint "F:\ableton songs\In Hell\configs\initiation.yaml" --live
+# default initial preparation: asks prepare or lint first
+uv run enableton initiate --song-root "F:\ableton songs" --song-name "In Hell"
 ```
 
 Reads the running set and reports actual naming, MIDI, media, Warp, timing and

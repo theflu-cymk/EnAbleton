@@ -21,7 +21,7 @@ class MigrationTests(unittest.TestCase):
             return {"version": "1.7.1-bass.1"}
 
         with patch.object(launcher, "_upstream_send", send):
-            with self.assertRaisesRegex(RuntimeError, "older bridge"):
+            with self.assertRaisesRegex(RuntimeError, "select only EnAbleton"):
                 launcher._version_checked_send(object(), "delete_track", {"track_index": 0})
         self.assertEqual(calls, ["get_script_info"])
 
@@ -77,6 +77,9 @@ class MigrationTests(unittest.TestCase):
                     "get_clip_notes",
                     "batch",
                     "undo",
+                    "inspect_rack",
+                    "create_arrangement_audio_clip",
+                    "map_rack_blend_macro",
                 ):
                     self.assertIn(command, info["capabilities"])
                 instance._get_clip_envelope = lambda args: args
@@ -84,6 +87,15 @@ class MigrationTests(unittest.TestCase):
                     cls._ALL_COMMANDS["get_clip_envelope"](instance, {"guard": 1}), {"guard": 1}
                 )
                 self.assertEqual(manifest["upstream_version"], "1.8.1")
+                self.assertEqual(info["version"], "1.8.1-ext.14")
+                text = (target / "__init__.py").read_text(encoding="utf-8")
+                self.assertIn(
+                    '_COMMAND_TIMEOUTS = {"create_audio_clip": 60.0, '
+                    '"create_arrangement_audio_clip": 60.0}',
+                    text,
+                )
+                self.assertIn("payload.encode(\"utf-8\") + b'\\n'", text)
+                self.assertNotIn('client.sendall(payload.encode("utf-8"))', text)
         finally:
             for key, value in old.items():
                 if value is None:

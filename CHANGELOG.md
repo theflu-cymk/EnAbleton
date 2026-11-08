@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+- Fix Arrangement audio import so a new Live clip wrapper is not deleted as a
+  different clip, and remove an import that does not land on the requested beat
+  (bridge protocol `1.8.1-ext.14`). Song-draft tracks, clips and notes are one
+  undo step, and an existing locator is left in place. Rack readback omits
+  values that are not JSON. This bridge's replies end with a newline, and
+  arrangement audio import waits up to 60 seconds. Fully quit Live and select
+  only EnAbleton after installing.
+- Add Arrangement audio import, rack inspection and blend-macro mapping (bridge
+  protocol `1.8.1-ext.13`). Serum parameter aliases resolve friendly names onto
+  configured Live parameters and write native values. A 4/4 song-draft guide
+  plans, revises and applies Session sketches without starting playback;
+  dubstep, riddim and half-time stay on the half-time remix guide.
+  `describe_tool_families` groups the new tools with the existing names.
+- Add guarded Arrangement clip move, split and delete commands plus writable
+  `start_marker`/`end_marker` (bridge protocol `1.8.1-ext.9`). `start_time` is
+  get-only, so a move is a duplicate at the destination followed by a delete.
+- Add the default initial-preparation preset behind `enableton initiate`: it asks
+  prepare or lint, then runs phase-ordered protect, audit, align, name and verify
+  steps that default to report-only.
+- Add role-based layer naming and colours (`NN Label`, one colour per role) as a
+  registered step, and make render-first, reference-aligned Warp removal the default.
+- Correct clip extent units: `loop_end` and `end_marker` are settable, and unwarped
+  audio measures them in seconds rather than beats.
 - Add guarded Live writers for track and clip deletion, Session clip resizing and
   audio Warp state (`set_access_warp`, bridge protocol `1.8.1-ext.8`), plus track
   monitoring state and clip `warp_mode` through `set_clip`.
