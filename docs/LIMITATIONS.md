@@ -15,8 +15,13 @@
 - Added envelope tools operate on Session clips. Their linear curves use
   bounded hold-step approximation. Audio clip coordinate units differ when
   Warp is off; inspect timing before editing.
-- Note-ID modifications preserve clips/identities but do not add/delete notes
-  or edit MPE expression curves. Upstream tools have separate write semantics.
+- Note-ID edits preserve the clip and its other notes; edited notes get new IDs
+  because Live edits them by remove/re-add. Insert and delete are separate guarded
+  commands. None rewrite MPE expression curves. Upstream tools have separate write
+  semantics.
+- Live exposes no API to create a group track or move tracks into one, and
+  Arrangement clip extent is read-only. Grouping is reported as skipped; Session
+  clip resizing writes `loop_end`.
 - Tests with synthetic audio/fake Live objects establish software behavior,
   not perceptual quality or a full Ableton compatibility certification.
 - The server controls Live locally. It does not provide a native hosted-Grok

@@ -10,8 +10,11 @@ from enableton import __version__
 from enableton.cli import main
 
 root = Path(__file__).resolve().parents[1]
-wheel = next((root / "dist").glob("*.whl"))
-source = next((root / "dist").glob("*.tar.gz"))
+wheels = sorted((root / "dist").glob("*.whl"))
+sources = sorted((root / "dist").glob("*.tar.gz"))
+if not wheels or not sources:
+    raise SystemExit("Run `uv build` first; no wheel or sdist found in dist/")
+wheel, source = wheels[-1], sources[-1]
 forbidden = (".wav", ".aif", ".aiff", ".mp3", ".als", ".adv", ".adg", ".cfg")
 with zipfile.ZipFile(wheel) as archive:
     names = archive.namelist()
@@ -28,10 +31,15 @@ with zipfile.ZipFile(wheel) as archive:
         "enableton/remix_arrangement.py",
         "enableton/remix_tools.py",
         "enableton/remix_cli.py",
+        "enableton/jsonio.py",
+        "enableton/numbers.py",
         "enableton/licenses/ableton-live-mcp-MIT.txt",
     ):
         assert resource in names, resource
-    assert len(json.loads(archive.read("enableton/production_recipes.json"))["entries"]) == 50
+    recipes = json.loads(archive.read("enableton/production_recipes.json"))["entries"]
+    assert len(recipes) == 50, len(recipes)
+    assert sum(1 for entry in recipes if entry.get("sources")) == 45, "sourced recipe count"
+    assert len({entry["id"] for entry in recipes}) == len(recipes), "duplicate recipe id"
     assert not any(
         name.lower().endswith(forbidden) and Path(name).name != "setup.cfg" for name in names
     )

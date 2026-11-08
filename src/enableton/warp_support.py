@@ -120,7 +120,7 @@ class WarpSupportMixin(object):
                     cleanup = "new preview removed"
                 except Exception:
                     cleanup = "preview cleanup failed; inspect track and use Live Undo"
-            raise RuntimeError("Warp repair failed; " + cleanup + ": " + str(error))
+            raise RuntimeError("Warp repair failed; " + cleanup + ": " + str(error)) from error
         finally:
             self._song.end_undo_step()
         return {

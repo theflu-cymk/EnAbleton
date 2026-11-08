@@ -20,7 +20,7 @@ async def main():
         async with ClientSession(read, write) as session:
             await session.initialize()
             tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-            assert len(tools) == 202, len(tools)
+            assert len(tools) == 204, len(tools)
             for name in (
                 "batch_commands",
                 "undo",
@@ -118,7 +118,7 @@ async def main():
             assert tools["scan_clip_audio_problems"].annotations.readOnlyHint
             assert tools["apply_warp_repair"].annotations.destructiveHint
             assert tools["get_audio_clip_timing"].annotations.readOnlyHint
-            print("202 tools verified; no Live mutations requested.")
+            print("204 tools verified; no Live mutations requested.")
 
 
 if __name__ == "__main__":

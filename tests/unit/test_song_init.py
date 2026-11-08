@@ -97,7 +97,9 @@ class SongInitTests(unittest.TestCase):
     def test_unsupported_writer_preflight_before_folder(self):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaises(UnsupportedOperations):
-                run_pipeline(config(Path(directory)), SnapshotAdapter(state()), dry_run=False)
+                run_pipeline(
+                    config(Path(directory)), SnapshotAdapter(state()), dry_run=False, strict=True
+                )
             self.assertEqual(list(Path(directory).iterdir()), [])
 
     def test_folder_reuse_manifest_logs_and_cli_overrides(self):
@@ -262,3 +264,74 @@ class SongInitTests(unittest.TestCase):
             self.assertFalse((Path(directory) / "cli-song").exists())
             self.assertEqual(main(args + ["--apply"]), 0)
             self.assertTrue((Path(directory) / "cli-song" / "song.json").is_file())
+
+
+class NonBlockingPipelineTests(unittest.TestCase):
+    """One unavailable Live API must not abort a whole run."""
+
+    def config(self):
+        return {
+            "schemaVersion": 1,
+            "steps": [
+                {"id": "empty", "process": "remove_empty_tracks", "enabled": True, "params": {}}
+            ],
+        }
+
+    def state(self):
+        return {
+            "session": {"tempo": 120, "numerator": 4, "denominator": 4},
+            "tracks": [
+                {
+                    "id": "track:0",
+                    "index": 0,
+                    "name": "Spare",
+                    "type": "midi",
+                    "clips": [],
+                    "devices": [],
+                    "is_group": False,
+                    "has_automation": False,
+                    "armed": False,
+                    "live_input": None,
+                }
+            ],
+        }
+
+    def adapter(self):
+        from copy import deepcopy
+
+        class ReportingAdapter:
+            def __init__(self, state):
+                self.state = state
+
+            def snapshot(self):
+                return deepcopy(self.state)
+
+            def supports(self, change):
+                return False
+
+            def reason(self, change):
+                return "platform limit for " + change["kind"]
+
+            def apply(self, change):
+                raise AssertionError("refused changes must not be applied")
+
+        return ReportingAdapter(self.state())
+
+    def test_unsupported_change_is_reported_not_fatal(self):
+        from enableton.song_init import run_pipeline
+
+        report = run_pipeline(self.config(), self.adapter(), dry_run=False, strict=False)
+
+        self.assertIn("delete_track", report["missingAdapterHelpers"])
+
+        self.assertEqual(report["steps"][0]["status"], "reported")
+
+        self.assertEqual(
+            report["steps"][0]["skipped"][0]["reason"], "platform limit for delete_track"
+        )
+
+    def test_strict_mode_still_refuses_before_writing(self):
+        from enableton.song_init import UnsupportedOperations, run_pipeline
+
+        with self.assertRaises(UnsupportedOperations):
+            run_pipeline(self.config(), self.adapter(), dry_run=False, strict=True)

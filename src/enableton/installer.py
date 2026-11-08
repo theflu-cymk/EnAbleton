@@ -9,7 +9,7 @@ import shutil
 import tempfile
 
 
-def digest(path):
+def sha256_file(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
@@ -22,7 +22,7 @@ def validate_stage(stage):
         if Path(name).name != name or not name.endswith(".py"):
             raise ValueError("Unsafe manifest filename")
         path = stage / name
-        if path.is_symlink() or not path.is_file() or digest(path) != expected:
+        if path.is_symlink() or not path.is_file() or sha256_file(path) != expected:
             raise ValueError("Staged file mismatch: " + name)
         compile(path.read_text(encoding="utf-8"), str(path), "exec")
     return manifest
@@ -35,6 +35,8 @@ def atomic_copy(source, destination):
         with tempfile.NamedTemporaryFile(dir=destination.parent, delete=False) as handle:
             temporary = Path(handle.name)
             handle.write(Path(source).read_bytes())
+            handle.flush()
+            os.fsync(handle.fileno())
         os.replace(temporary, destination)
     finally:
         if temporary and temporary.exists():
@@ -65,7 +67,7 @@ def install_bridge(stage, remote, backup_root, replace=False):
             if (
                 Path(name).name != name
                 or not (remote / name).is_file()
-                or digest(remote / name) != expected
+                or sha256_file(remote / name) != expected
             ):
                 raise ValueError(
                     "Installed bridge has local changes; review before overwriting: " + name
@@ -81,7 +83,7 @@ def install_bridge(stage, remote, backup_root, replace=False):
             destination = remote / name
             applied.append(destination)
             atomic_copy(stage / name, destination)
-            if digest(stage / name) != digest(destination):
+            if sha256_file(stage / name) != sha256_file(destination):
                 raise RuntimeError("Installed hash mismatch: " + name)
     except Exception as error:
         failures = []

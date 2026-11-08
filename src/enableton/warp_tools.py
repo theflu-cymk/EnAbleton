@@ -1,14 +1,14 @@
 """Audio analysis runs in a bounded subprocess; Live writes are duplicate-only."""
 
 import json
-import os
 from pathlib import Path
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 import uuid
+from .bridge_version import VERSION
+from .jsonio import atomic_json
 from .warp_analysis import (
     audit_timing,
     beat_to_source,
@@ -29,23 +29,6 @@ def _file_identity(path):
         raise ValueError("Source file is unavailable")
     stat = path.stat()
     return {"path": str(path.resolve()), "size": stat.st_size, "mtime_ns": stat.st_mtime_ns}
-
-
-def atomic_json(path, data):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    raw = json.dumps(data, indent=2, allow_nan=False)
-    temp = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            mode="w", encoding="utf-8", dir=path.parent, delete=False
-        ) as f:
-            temp = Path(f.name)
-            f.write(raw)
-        os.replace(temp, path)
-    finally:
-        if temp and temp.exists():
-            temp.unlink()
 
 
 def _analyze(path, start_seconds=0, max_seconds=30, tempo_hint=None):
@@ -80,14 +63,14 @@ def _analyze(path, start_seconds=0, max_seconds=30, tempo_hint=None):
             text=True,
             timeout=25,
         )
-    except subprocess.TimeoutExpired:
-        raise RuntimeError("Audio analysis exceeded 25 seconds; no Live changes made")
+    except subprocess.TimeoutExpired as error:
+        raise RuntimeError("Audio analysis exceeded 25 seconds; no Live changes made") from error
     if len(result.stdout) > 4_000_000:
         raise RuntimeError("Analysis response exceeded 4 MB")
     try:
         data = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        raise RuntimeError("Audio worker returned invalid output")
+    except json.JSONDecodeError as error:
+        raise RuntimeError("Audio worker returned invalid output") from error
     if result.returncode or "error" in data:
         raise RuntimeError(data.get("error", "Audio worker failed"))
     latest = path.stat()
@@ -120,7 +103,7 @@ def register_warp(mcp, dispatch):
     def describe_warp_workflow() -> dict:
         """List implemented warp analysis, preview repair and runtime limits."""
         return {
-            "version": "1.8.1-ext.5",
+            "version": VERSION,
             "audio_analysis": "Local PCM WAV, bounded 120-second windows in a 25-second subprocess; per-file metadata cache",
             "analysis": [
                 "BPM candidates, heuristic confidence and half/double-time ambiguity",
@@ -321,7 +304,7 @@ def register_warp(mcp, dispatch):
                 + str(backup)
                 + ". "
                 + str(error)
-            )
+            ) from error
         try:
             atomic_json(backup.with_suffix(".result.json"), result)
         except OSError as error:

@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 
 os.environ["ABLETON_TOOLSETS"] = "all"
+UPSTREAM_TOOL_COUNT = 156  # pinned upstream 1.8.1 surface; additions may grow
 from enableton.server import mcp
 from enableton import __version__
 
@@ -21,8 +22,9 @@ async def main():
         row["origin"] = "EnAbleton" if module.startswith("enableton") else "upstream"
         row["module"] = module
         rows.append(row)
-    assert len(rows) == 202
-    assert sum(row["origin"] == "EnAbleton" for row in rows) == 46
+    upstream = sum(row["origin"] == "upstream" for row in rows)
+    additions = len(rows) - upstream
+    assert upstream == UPSTREAM_TOOL_COUNT, upstream
     document = {
         "enableton_version": __version__,
         "upstream_version": "1.8.1",
@@ -35,7 +37,8 @@ async def main():
     lines = [
         "# MCP tool catalog",
         "",
-        f"Generated from EnAbleton {__version__}: 202 tools (156 upstream, 46 additions).",
+        f"Generated from EnAbleton {__version__}: {len(rows)} tools "
+        f"({upstream} upstream, {additions} additions).",
         "",
         "Annotations describe intended effects; always inspect targets before edits.",
         "",
@@ -51,7 +54,7 @@ async def main():
             lines.append(f"| `{row['name']}` | {intent} | {description} |")
         lines.append("")
     (root / "docs" / "TOOL_CATALOG.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print("Generated 202-tool catalog, including 46 additions.")
+    print(f"Generated {len(rows)}-tool catalog, including {additions} additions.")
 
 
 if __name__ == "__main__":

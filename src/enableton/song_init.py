@@ -254,7 +254,7 @@ class SnapshotAdapter:
         raise UnsupportedOperations(f"Live adapter needed for {change['kind']}")
 
 
-def run_pipeline(config, adapter, *, dry_run=True, only=None, song_overrides=None):
+def run_pipeline(config, adapter, *, dry_run=True, only=None, song_overrides=None, strict=False):
     """Run with injectable MCP adapter; no filesystem/Live writes during dry run."""
     validate(config)
     only = set(only or [])
@@ -283,17 +283,23 @@ def run_pipeline(config, adapter, *, dry_run=True, only=None, song_overrides=Non
         if condition(preview_state, step.get("when", {})):
             for ch in result.changes:
                 project(preview_state, ch)
-    unsupported = sorted(
-        {
-            ch["kind"]
-            for step, result, prior in previews
-            if condition(prior, step.get("when", {}))
-            for ch in result.changes
-            if ch["kind"] != "create_song_folder" and not adapter.supports(ch)
-        }
-    )
-    if not dry_run and unsupported:
-        raise UnsupportedOperations("Missing guarded adapter helpers: " + ", ".join(unsupported))
+    unsupported = {}
+    for step, result, prior in previews:
+        if not condition(prior, step.get("when", {})):
+            continue
+        for ch in result.changes:
+            if ch["kind"] == "create_song_folder" or adapter.supports(ch):
+                continue
+            explain = getattr(adapter, "reason", None)
+            unsupported[ch["kind"]] = (
+                explain(ch) if callable(explain) else "no guarded writer for " + ch["kind"]
+            )
+    # Only strict mode aborts the run. The default applies everything the bridge
+    # can do and reports the rest, so one unavailable Live API cannot block a step.
+    if not dry_run and strict and unsupported:
+        raise UnsupportedOperations(
+            "Missing guarded adapter helpers: " + ", ".join(sorted(unsupported))
+        )
     records = []
     destination = None
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid4().hex[:8]
@@ -326,14 +332,30 @@ def run_pipeline(config, adapter, *, dry_run=True, only=None, song_overrides=Non
                 record.update(status="planned", after=after, projected=True)
                 continue
             record["status"] = "applying"
+            skipped = []
+            applied = 0
             for change in result.changes:
                 if change["kind"] == "create_song_folder":
                     destination = create_folder(change)
-                else:
-                    if not adapter.supports(change):
-                        raise UnsupportedOperations(change["kind"])
-                    adapter.apply(change)
-            record.update(status="complete", after=current_state())
+                    applied += 1
+                    continue
+                if not adapter.supports(change):
+                    explain = getattr(adapter, "reason", None)
+                    skipped.append(
+                        {
+                            "kind": change["kind"],
+                            "target": change["target"],
+                            "reason": explain(change)
+                            if callable(explain)
+                            else "no guarded writer for " + change["kind"],
+                        }
+                    )
+                    continue
+                adapter.apply(change)
+                applied += 1
+            if skipped:
+                record["skipped"] = skipped
+            record.update(status="complete" if applied else "reported", after=current_state())
     except Exception as error:
         if records:
             records[-1].update(status="failed", error=str(error), after=current_state())
@@ -355,7 +377,8 @@ def run_pipeline(config, adapter, *, dry_run=True, only=None, song_overrides=Non
     return {
         "dryRun": dry_run,
         "steps": records,
-        "missingAdapterHelpers": unsupported,
+        "missingAdapterHelpers": sorted(unsupported),
+        "unsupportedReasons": unsupported,
         "songFolder": str(destination) if destination else None,
     }
 
@@ -375,7 +398,11 @@ def main(argv=None):
     mode.add_argument(
         "--dry-run", action="store_true", help="No set/filesystem writes except explicit --report"
     )
-    mode.add_argument("--apply", action="store_true", help="Legacy snapshot workflow apply")
+    mode.add_argument(
+        "--apply",
+        action="store_true",
+        help="Apply the workflow: --live writes through the bridge, --snapshot uses the legacy adapter",
+    )
     mode.add_argument("--fix", action="store_true", help="Explicit Live lint metadata fixes only")
     parser.add_argument(
         "--lint", action="store_true", help="Run diagnostic rules independently of cleanup steps"
@@ -406,10 +433,16 @@ def main(argv=None):
     parser.add_argument("--only", action="append", default=[], help="Legacy workflow step IDs")
     parser.add_argument("--song-root")
     parser.add_argument("--song-name")
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Abort before writing when any selected step needs an unavailable Live API",
+    )
     args = parser.parse_args(argv)
     try:
         config = load_config(args.config)
-        lint_mode = args.live or args.lint or args.fix
+        live_apply = args.live and args.apply
+        lint_mode = (args.live or args.lint or args.fix) and not live_apply
         if lint_mode:
             from .song_lint import run_lint, write_report
 
@@ -441,6 +474,26 @@ def main(argv=None):
                 write_report(args.report, report)
             print(json.dumps(report, indent=2))
             return report["exitCode"]
+        if live_apply:
+            from .server import dispatch
+            from .song_apply import LiveAdapter
+            from .song_lint import collect_live
+
+            adapter = LiveAdapter(dispatch, collect_live(include_session=True))
+            overrides = {}
+            for key, value in (("root", args.song_root), ("name", args.song_name)):
+                if value is not None:
+                    overrides[key] = value
+            report = run_pipeline(
+                config,
+                adapter,
+                dry_run=False,
+                only=[v for item in args.only for v in item.split(",")],
+                song_overrides=overrides,
+                strict=args.strict,
+            )
+            print(json.dumps(report, indent=2))
+            return 0
         if (
             args.rules
             or args.fail_on

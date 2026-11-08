@@ -8,15 +8,11 @@ from pathlib import Path
 import statistics
 import wave
 
+from .numbers import finite
+
 MAX_SECONDS = 120
 MAX_FILE_BYTES = 512 * 1024 * 1024
 RATE = 200  # onset-envelope frames per second
-
-
-def finite(value, label):
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
-        raise ValueError(label + " must be a finite number")
-    return float(value)
 
 
 def timing_fingerprint(timing):

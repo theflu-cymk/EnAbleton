@@ -2,16 +2,9 @@
 
 import math
 
+from .numbers import finite as number
+
 MAX_STEPS = 2048
-
-
-def number(value, label):
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ValueError(label + " must be a finite number")
-    value = float(value)
-    if not math.isfinite(value):
-        raise ValueError(label + " must be finite")
-    return value
 
 
 def index(value, sequence, label):
@@ -178,7 +171,7 @@ class EnvelopeSupportMixin(object):
             raise RuntimeError(
                 "Envelope write failed; changes may be partial. Use Live Undo to revert: "
                 + str(error)
-            )
+            ) from error
         finally:
             self._song.end_undo_step()
         result.update(

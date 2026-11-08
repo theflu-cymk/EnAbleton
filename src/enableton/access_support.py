@@ -2,6 +2,26 @@
 
 from .envelope_support import index, number
 
+
+def _note_spec(note):
+    """Build Live's note specification; imported lazily so tests can inject it."""
+    from Live.Clip import MidiNoteSpecification
+
+    return MidiNoteSpecification(**note)
+
+
+def _note_identity(note):
+    def read(name):
+        return note[name] if isinstance(note, dict) else getattr(note, name)
+
+    return (
+        int(read("pitch")),
+        round(float(read("start_time")), 4),
+        round(float(read("duration")), 4),
+        round(float(read("velocity")), 4),
+    )
+
+
 PROPERTIES = {
     "song": {
         "tempo": (20, 999),
@@ -13,7 +33,14 @@ PROPERTIES = {
         "signature_numerator": (1, 99),
         "signature_denominator": (1, 16),
     },
-    "track": {"name": str, "mute": bool, "solo": bool, "arm": bool, "color_index": (0, 69)},
+    "track": {
+        "name": str,
+        "mute": bool,
+        "solo": bool,
+        "arm": bool,
+        "color_index": (0, 69),
+        "current_monitoring_state": (0, 2),
+    },
     "scene": {"name": str, "color_index": (0, 69), "tempo": (20, 999)},
     "clip": {
         "name": str,
@@ -169,6 +196,7 @@ class AccessSupportMixin(object):
                     "pitch_fine",
                     "signature_numerator",
                     "signature_denominator",
+                    "current_monitoring_state",
                 ):
                     if value != int(value):
                         raise ValueError(key + " must be integer")
@@ -200,7 +228,7 @@ class AccessSupportMixin(object):
                 + ("rollback incomplete, use Live Undo" if failed else "previous values restored")
                 + ": "
                 + str(error)
-            )
+            ) from error
         finally:
             self._song.end_undo_step()
         return {"verified": True, "properties": {key: getattr(obj, key) for key in changes}}
@@ -268,7 +296,7 @@ class AccessSupportMixin(object):
                 + ("rollback incomplete; use Live Undo" if failed else "previous values restored")
                 + ": "
                 + str(error)
-            )
+            ) from error
         finally:
             self._song.end_undo_step()
         return dict(self._get_access_mixer(args), verified=True)
@@ -307,17 +335,23 @@ class AccessSupportMixin(object):
             "notes": notes,
         }
 
-    def _modify_access_notes(self, args):
+    def _insert_access_notes(self, args):
         if not args.get("expected_track_name") or not args.get("expected_clip_name"):
             raise ValueError("Track and clip name guards required")
         if args.get("clip_view") == "arrangement" and args.get("expected_start_time") is None:
             raise ValueError("Arrangement start guard required")
-        track, clip = self._access_clip(args)
+        clip = self._access_clip(args)[1]
+        if not clip.is_midi_clip:
+            raise ValueError("MIDI clip required")
         if clip.is_recording:
             raise ValueError("Stop clip recording first")
-        current = self._get_access_notes(args)["notes"]
-        by_id = {n["note_id"]: n for n in current}
-        changes = args.get("notes")
+        if not callable(getattr(clip, "add_new_notes", None)):
+            raise RuntimeError("This Live version cannot insert notes")
+        if not hasattr(clip, "get_all_notes_extended"):
+            raise RuntimeError("Full-range note API unavailable; refusing an unverified insert")
+        rows = args.get("notes")
+        if not isinstance(rows, list) or not 1 <= len(rows) <= 10000:
+            raise ValueError("Provide 1..10000 notes to insert")
         allowed = {
             "pitch": (0, 127),
             "start_time": (-16384, 16384),
@@ -327,11 +361,164 @@ class AccessSupportMixin(object):
             "velocity_deviation": (-127, 127),
             "release_velocity": (0, 127),
         }
+        planned = []
+        for row in rows:
+            if not isinstance(row, dict):
+                raise ValueError("Each note must be an object")
+            note = {}
+            for key, value in row.items():
+                if key == "mute":
+                    if not isinstance(value, bool):
+                        raise ValueError("mute must be boolean")
+                    note[key] = value
+                elif key in allowed:
+                    value = number(value, key)
+                    low, high = allowed[key]
+                    if not low <= value <= high or (key == "pitch" and value != int(value)):
+                        raise ValueError("Invalid " + key)
+                    note[key] = int(value) if key == "pitch" else value
+                else:
+                    raise ValueError("Unsupported note field")
+            for required in ("pitch", "start_time", "duration"):
+                if required not in note:
+                    raise ValueError("Each note requires " + required)
+            note.setdefault("velocity", 100.0)
+            planned.append(note)
+        before = {n.note_id for n in clip.get_all_notes_extended()}
+        self._song.begin_undo_step()
+        try:
+            clip.add_new_notes(tuple(_note_spec(note) for note in planned))
+            actual = list(clip.get_all_notes_extended())
+            added = [n for n in actual if n.note_id not in before]
+            if len(added) != len(planned) or len(actual) - len(before) != len(planned):
+                raise RuntimeError("Inserted note count failed readback")
+            if sorted(_note_identity(n) for n in added) != sorted(
+                _note_identity(n) for n in planned
+            ):
+                raise RuntimeError("Inserted note content failed readback")
+        except Exception as error:
+            raise RuntimeError(
+                "Note insert failed; one Live Undo step reverts it: " + str(error)
+            ) from error
+        finally:
+            self._song.end_undo_step()
+        return {"verified": True, "inserted": len(planned), "note_count": len(actual)}
+
+    def _delete_access_notes(self, args):
+        if not args.get("expected_track_name") or not args.get("expected_clip_name"):
+            raise ValueError("Track and clip name guards required")
+        if args.get("clip_view") == "arrangement" and args.get("expected_start_time") is None:
+            raise ValueError("Arrangement start guard required")
+        clip = self._access_clip(args)[1]
+        if not clip.is_midi_clip:
+            raise ValueError("MIDI clip required")
+        if clip.is_recording:
+            raise ValueError("Stop clip recording first")
+        if not callable(getattr(clip, "remove_notes_extended", None)):
+            raise RuntimeError("This Live version cannot delete notes")
+        if not hasattr(clip, "get_all_notes_extended"):
+            raise RuntimeError("Full-range note API unavailable; refusing an unverified delete")
+        rows = args.get("notes")
+        if not isinstance(rows, list) or not 1 <= len(rows) <= 10000:
+            raise ValueError("Provide 1..10000 note IDs to delete")
+        current = list(clip.get_all_notes_extended())
+        by_id = {n.note_id: n for n in current}
+        targets = set()
+        for row in rows:
+            ident = row.get("note_id") if isinstance(row, dict) else row
+            if (
+                isinstance(ident, bool)
+                or not isinstance(ident, int)
+                or ident not in by_id
+                or ident in targets
+            ):
+                raise ValueError("Unknown or duplicate note ID")
+            targets.add(ident)
+        # Live removes notes by pitch/time window, so identical pitch+start pairs
+        # cannot be addressed individually. Refuse before touching the clip.
+        positions = {}
+        for note in current:
+            key = (note.pitch, round(note.start_time, 4))
+            positions.setdefault(key, []).append(note.note_id)
+        ambiguous = sorted(
+            ident
+            for ident in targets
+            if len(positions[(by_id[ident].pitch, round(by_id[ident].start_time, 4))]) > 1
+        )
+        if ambiguous:
+            raise ValueError("Duplicate pitch/start notes are ambiguous; nothing deleted")
+        self._song.begin_undo_step()
+        try:
+            for ident in sorted(targets):
+                note = by_id[ident]
+                clip.remove_notes_extended(note.pitch, 1, note.start_time, 0.0001)
+            remaining = {n.note_id for n in clip.get_all_notes_extended()}
+            if remaining != set(by_id) - targets:
+                raise RuntimeError("Note deletion failed readback")
+        except Exception as error:
+            raise RuntimeError(
+                "Note delete failed; one Live Undo step reverts it: " + str(error)
+            ) from error
+        finally:
+            self._song.end_undo_step()
+        return {"verified": True, "deleted": len(targets), "note_count": len(remaining)}
+
+    def _modify_access_notes(self, args):
+        """Edit notes by ID with a targeted remove/re-add rewrite.
+
+        ``Clip.apply_note_modifications`` failed on Live 12.2.5, where the note
+        objects it expects are read-only snapshots, so each target note is removed
+        by its exact pitch/time window and re-added with the changed fields. Live
+        therefore reassigns the ID of every edited note; the other notes keep their
+        IDs and expression data. Content is verified by readback.
+        """
+        if not args.get("expected_track_name") or not args.get("expected_clip_name"):
+            raise ValueError("Track and clip name guards required")
+        if args.get("clip_view") == "arrangement" and args.get("expected_start_time") is None:
+            raise ValueError("Arrangement start guard required")
+        clip = self._access_clip(args)[1]
+        if not clip.is_midi_clip:
+            raise ValueError("MIDI clip required")
+        if clip.is_recording:
+            raise ValueError("Stop clip recording first")
+        if not hasattr(clip, "get_all_notes_extended"):
+            raise RuntimeError("Full-range note API unavailable; refusing an unverified edit")
+        for name in ("remove_notes_extended", "add_new_notes"):
+            if not callable(getattr(clip, name, None)):
+                raise RuntimeError("This Live version cannot modify notes in place")
+        changes = args.get("notes")
         if not isinstance(changes, list) or not 1 <= len(changes) <= 10000:
             raise ValueError("Provide 1..10000 note modifications")
-        updates = []
+        allowed = {
+            "pitch": (0, 127),
+            "start_time": (-16384, 16384),
+            "duration": (0.001, 32768),
+            "velocity": (1, 127),
+            "probability": (0, 1),
+            "velocity_deviation": (-127, 127),
+            "release_velocity": (0, 127),
+        }
+        fields = (
+            "pitch",
+            "start_time",
+            "duration",
+            "velocity",
+            "mute",
+            "probability",
+            "velocity_deviation",
+            "release_velocity",
+        )
+        current = list(clip.get_all_notes_extended())
+        by_id = {note.note_id: note for note in current}
+        positions = {}
+        for note in current:
+            key = (note.pitch, round(note.start_time, 4))
+            positions.setdefault(key, []).append(note.note_id)
+        edits = []
         seen = set()
         for change in changes:
+            if not isinstance(change, dict):
+                raise ValueError("Each note entry must be an object")
             ident = change.get("note_id")
             if (
                 isinstance(ident, bool)
@@ -341,55 +528,159 @@ class AccessSupportMixin(object):
             ):
                 raise ValueError("Unknown or duplicate note ID")
             seen.add(ident)
-            note = dict(by_id[ident])
-            for key, value in change.items():
-                if key == "note_id":
+            original = by_id[ident]
+            if len(positions[(original.pitch, round(original.start_time, 4))]) > 1:
+                raise ValueError("Duplicate pitch/start notes are ambiguous; nothing modified")
+            note = {name: getattr(original, name) for name in fields if hasattr(original, name)}
+            for name, value in change.items():
+                if name == "note_id":
                     continue
-                if key == "mute":
+                if name == "mute":
                     if not isinstance(value, bool):
                         raise ValueError("mute must be boolean")
-                elif key in allowed:
-                    value = number(value, key)
-                    lo, hi = allowed[key]
-                    if not lo <= value <= hi or (key == "pitch" and value != int(value)):
-                        raise ValueError("Invalid " + key)
-                    if key == "pitch":
-                        value = int(value)
+                elif name in allowed:
+                    value = number(value, name)
+                    low, high = allowed[name]
+                    if not low <= value <= high or (name == "pitch" and value != int(value)):
+                        raise ValueError("Invalid " + name)
+                    value = int(value) if name == "pitch" else value
                 else:
                     raise ValueError("Unsupported note field")
-                note[key] = value
-            updates.append(note)
-        if not callable(getattr(clip, "apply_note_modifications", None)):
-            raise RuntimeError("Note modification API unavailable")
-        raw_notes = {n.note_id: n for n in clip.get_all_notes_extended()}
-
-        def apply(rows):
-            objects = []
-            for row in rows:
-                obj = raw_notes[row["note_id"]]
-                for key, value in row.items():
-                    if key != "note_id":
-                        setattr(obj, key, value)
-                objects.append(obj)
-            clip.apply_note_modifications(tuple(objects))
-
+                note[name] = value
+            edits.append((original, note))
+        originals = [
+            {name: getattr(note, name) for name in fields if hasattr(note, name)}
+            for note, _ in edits
+        ]
         self._song.begin_undo_step()
         try:
-            apply(updates)
-            after = {n["note_id"]: n for n in self._get_access_notes(args)["notes"]}
-            for note in updates:
-                for key, value in note.items():
-                    actual = after[note["note_id"]][key]
-                    if isinstance(value, (int, float)) and abs(actual - value) > 1e-4:
-                        raise RuntimeError("Note verification failed")
-                    elif not isinstance(value, (int, float)) and actual != value:
-                        raise RuntimeError("Note verification failed")
+            for original, note in edits:
+                clip.remove_notes_extended(
+                    original.pitch, 1, max(0.0, original.start_time - 1e-4), 2e-4
+                )
+                clip.add_new_notes((_note_spec(note),))
+            after = list(clip.get_all_notes_extended())
+            remaining = list(after)
+            added = []
+            for _, note in edits:
+                wanted = _note_identity(note)
+                match = next((n for n in remaining if _note_identity(n) == wanted), None)
+                if match is None:
+                    raise RuntimeError("Modified note failed readback")
+                remaining.remove(match)
+                added.append(match)
+                for name, value in note.items():
+                    if name in ("pitch", "start_time", "duration", "velocity"):
+                        continue
+                    actual = getattr(match, name, None)
+                    if isinstance(value, bool):
+                        if bool(actual) != value:
+                            raise RuntimeError("Modified note field failed readback: " + name)
+                    elif (
+                        isinstance(value, (int, float)) and abs(float(actual) - float(value)) > 1e-4
+                    ):
+                        raise RuntimeError("Modified note field failed readback: " + name)
+            if sorted(n.note_id for n in remaining) != sorted(
+                ident for ident in by_id if ident not in seen
+            ):
+                raise RuntimeError("Untouched notes changed during modification")
         except Exception as error:
             try:
-                apply([by_id[n["note_id"]] for n in updates])
-            except Exception:
-                raise RuntimeError("Note edit rollback incomplete; use Live Undo")
-            raise RuntimeError("Note edit failed; previous notes restored: " + str(error))
+                for _, note in edits:
+                    clip.remove_notes_extended(
+                        note["pitch"], 1, max(0.0, note["start_time"] - 1e-4), 2e-4
+                    )
+                clip.add_new_notes(tuple(_note_spec(spec) for spec in originals))
+            except Exception as rollback_error:
+                raise RuntimeError(
+                    "Note edit rollback incomplete; use Live Undo"
+                ) from rollback_error
+            raise RuntimeError(
+                "Note edit failed; previous notes restored: " + str(error)
+            ) from error
         finally:
             self._song.end_undo_step()
-        return {"verified": True, "modified_notes": len(updates), "note_count": len(current)}
+        return {
+            "verified": True,
+            "modified_notes": len(edits),
+            "note_ids": sorted(n.note_id for n in added),
+            "note_count": len(after),
+        }
+
+    def _set_access_warp(self, args):
+        """Audio Warp state for Session or Arrangement clips, verified by readback."""
+
+        if not args.get("expected_track_name") or not args.get("expected_clip_name"):
+            raise ValueError("Track and clip name guards required")
+
+        if args.get("clip_view") == "arrangement" and args.get("expected_start_time") is None:
+            raise ValueError("Arrangement start guard required")
+
+        clip = self._access_clip(args)[1]
+
+        if not clip.is_audio_clip:
+            raise ValueError("Audio clip required")
+
+        if clip.is_recording:
+            raise ValueError("Stop clip recording first")
+
+        changes = args.get("properties")
+
+        if not isinstance(changes, dict) or not 1 <= len(changes) <= 8:
+            raise ValueError("Provide 1..8 warp changes")
+
+        ranged = {"gain": (0, 1), "pitch_coarse": (-48, 48), "pitch_fine": (-50, 50)}
+
+        planned = {}
+
+        for key, value in changes.items():
+            if key == "warping":
+                if not isinstance(value, bool):
+                    raise ValueError("warping must be boolean")
+
+                planned[key] = value
+
+            elif key == "warp_mode":
+                if isinstance(value, bool) or not isinstance(value, int) or value not in range(7):
+                    raise ValueError("Invalid warp_mode")
+
+                planned[key] = value
+
+            elif key in ranged:
+                value = number(value, key)
+
+                low, high = ranged[key]
+
+                if not low <= value <= high:
+                    raise ValueError("Invalid " + key)
+
+                planned[key] = int(value) if key == "pitch_coarse" else value
+
+            else:
+                raise ValueError("Unsupported warp property")
+
+        self._song.begin_undo_step()
+
+        try:
+            for key, value in planned.items():
+                setattr(clip, key, value)
+
+            for key, value in planned.items():
+                actual = getattr(clip, key)
+
+                matched = (
+                    bool(actual) == value
+                    if isinstance(value, bool)
+                    else abs(float(actual) - float(value)) <= 1e-4
+                )
+
+                if not matched:
+                    raise RuntimeError("Warp readback failed: " + key)
+
+        except Exception as error:
+            raise RuntimeError("Warp write failed; use Live Undo: " + str(error)) from error
+
+        finally:
+            self._song.end_undo_step()
+
+        return {"verified": True, "applied": planned}

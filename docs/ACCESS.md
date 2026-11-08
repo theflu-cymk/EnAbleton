@@ -11,7 +11,7 @@ Tool count: 191 (156 upstream, 35 additions). Recipes are retained.
 | Nested rack chains | Name, mute/solo, devices, mixer volume/pan/sends | Name/mute/solo and mixer controls |
 | Song | Exposed tempo, swing, loop, metronome, time signature | Allowlisted scalar properties |
 | Tracks and scenes | Names, colors, mute/solo/arm where applicable | Supported scalar properties |
-| Session and Arrangement clips | Properties; complete MIDI notes and note IDs | Properties and existing-note modifications by ID |
+| Session and Arrangement clips | Properties; complete MIDI notes and note IDs | Properties, note-ID modifications, and verified insert/delete |
 | Existing upstream coverage | Routing, transport, meters, browser, rack macros, pads, take lanes, offline sets | Existing creation/deletion, recording, routing, note-generation and device controls |
 
 ## Target schema
@@ -41,9 +41,11 @@ corresponding collection. Writes require track and clip name guards;
 Arrangement writes also require `expected_start_time` in arrangement beats.
 MIDI note times remain in the clip's own coordinate system. Offset loop
 regions do not truncate the new full-range reader. Note-ID edits retain the
-clip, note identities and expression data; they do not add/delete notes or
-rewrite MPE curves. Read back after every edit. Runtime API differences can
-still fail; use Live Undo if rollback reports incomplete.
+clip, its other notes and their expression data; edited notes get new IDs
+because Live edits them by remove/re-add. Insert and delete use separate guarded
+commands; edits never rewrite MPE curves. Read back after every edit.
+Runtime API differences can still fail; use Live Undo if rollback reports
+incomplete.
 
 ## Boundaries
 
@@ -51,6 +53,10 @@ There is no promise of read/write access to literally every part of Live.
 Preferences, arbitrary UI actions, plug-in window controls, audio-to-MIDI
 conversion, and hidden third-party plug-in parameters remain outside this
 bridge. Track reordering and direct Arrangement automation are not added.
+Group creation and moving tracks into a group are absent from the Live API
+itself, and Arrangement clip extent has no writable property, so those two are
+reported rather than faked. Guarded writes do cover track and clip deletion,
+Session clip length and audio Warp state.
 Session envelope tools keep their existing documented behavior. Audio
 measurements, rendered true peak and perceived sound require separate checks.
 

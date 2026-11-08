@@ -466,7 +466,7 @@ def register(mcp, send):
                 raise RuntimeError(
                     "Build stopped on new track %d (%s); existing tracks preserved. Partial new track remains: %s"
                     % (idx, track_name, error)
-                )
+                ) from error
 
     @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False})
     def inspect_sub_clip(track_index: int, clip_index: int, expected_track_name: str) -> dict:

@@ -3,13 +3,9 @@
 import math
 import random
 
+from .numbers import finite
+
 SHAPES = ("wobble", "growl", "yoi", "pluck", "sweep", "machinegun", "duck")
-
-
-def finite(value, name):
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
-        raise ValueError(name + " must be a finite number")
-    return float(value)
 
 
 def curve_points(

@@ -12,7 +12,7 @@ This is a beta, not an Ableton-endorsed product or an unrestricted Live API.
 
 - **Production library:** 13 original native bass patches, rhythmic MIDI and
   modulation tools, seven mastering techniques, artist-method references and
-  47 searchable source-linked production entries.
+  50 searchable production reference entries, 45 with primary sources.
 - **Deeper control:** nested devices on tracks, returns and Main; formatted
   parameter inspection; guarded batches; rack-chain mixers; full-range Session
   and Arrangement MIDI reads and note-ID editing.
@@ -39,7 +39,7 @@ render smooth audio, build owned Live lanes, capture a preview and compare at
 matched loudness. Changed source MIDI or pulse controls can be prepared and rebuilt
 without duplicate tracks. Start with `uv run enableton remix-guide`; the complete
 loop uses `remix-prepare`, `remix-build`, `remix-preview` and `remix-compare`.
-The current development catalog has 202 tools (156 upstream, 46 additions).
+The current development catalog has 204 tools (156 upstream, 48 additions).
 
 ## Song initiation and Live linting (unreleased)
 

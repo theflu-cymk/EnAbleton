@@ -17,6 +17,7 @@ classifiers = [
   "Topic :: Multimedia :: Sound/Audio",
 ]
 dependencies = [
+    "av==18.1.0",
     "mcp-server-ableton-live==1.8.1",
     "pyyaml==6.0.3",
 ]
@@ -43,4 +44,22 @@ target-version = "py312"
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E9", "F63", "F7", "F82"]
+select = [
+    "E9",     # syntax errors
+    "F63",    # invalid comparisons
+    "F7",     # real control-flow mistakes
+    "F82",    # undefined names
+    "B006",   # mutable default argument
+    "B008",   # function call in default argument
+    "B904",   # raise inside except without explicit chaining
+    "S102",   # exec
+    "S105",   # hardcoded password
+    "S106",   # hardcoded password argument
+    "S301",   # pickle
+    "S506",   # unsafe yaml load
+    "RUF100", # unused noqa
+]
+
+[tool.ruff.lint.per-file-ignores]
+# The dispatch performance test compiles a generated function on purpose.
+"tests/**" = ["S102"]

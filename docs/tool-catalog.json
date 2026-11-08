@@ -1,11 +1,11 @@
 {
   "enableton_version": "0.1.0b1",
   "upstream_version": "1.8.1",
-  "tool_count": 202,
+  "tool_count": 204,
   "tools": [
     {
       "name": "add_notes_to_clip",
-      "description": "REPLACES the clip's entire note content with the given notes. Use edit_notes\n    to add or remove a subset without touching the rest.\n\n    notes: list of {\"pitch\": 0-127 (60 = C3 in Live's naming), \"start_time\": beats\n    from clip start (float), \"duration\": beats, \"velocity\": 1-127, \"mute\": bool}.\n    Precondition: the clip must exist (create_clip first).\n    ",
+      "description": "REPLACES the clip's entire note content with the given notes. Use edit_notes\nto add or remove a subset without touching the rest.\n\nnotes: list of {\"pitch\": 0-127 (60 = C3 in Live's naming), \"start_time\": beats\nfrom clip start (float), \"duration\": beats, \"velocity\": 1-127, \"mute\": bool}.\nPrecondition: the clip must exist (create_clip first).\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -66,7 +66,7 @@
     },
     {
       "name": "adg_analyze",
-      "description": "Full offline analysis of a .adg rack or .adv preset: named macros\n    (name/value), the chain + device tree (recursive, incl. racks-inside-racks\n    with each device's kind/name/on-state and any sample), legacy macro->\n    parameter mappings, every referenced sample (name + relative path), the\n    required Live edition, and \u2014 for drum racks \u2014 the pad map (pad -> MIDI note,\n    label, and sample). No Live required.",
+      "description": "Full offline analysis of a .adg rack or .adv preset: named macros\n(name/value), the chain + device tree (recursive, incl. racks-inside-racks\nwith each device's kind/name/on-state and any sample), legacy macro->\nparameter mappings, every referenced sample (name + relative path), the\nrequired Live edition, and \u2014 for drum racks \u2014 the pad map (pad -> MIDI note,\nlabel, and sample). No Live required.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -102,7 +102,7 @@
     },
     {
       "name": "adg_edition",
-      "description": "Classify the Live edition a saved .adg/.adv needs, offline: 'suite' if any\n    Suite-only device is present (Operator, Wavetable, Echo, Drift, Meld,\n    Sampler, Collision, ...), else 'standard' if any Standard-only device is\n    present (EQ Eight, Compressor, Simpler, Impulse, Drum Rack, ...), else\n    'intro'. Returns the verdict plus which devices drove it, so an agent can\n    tell whether a preset will load on the user's edition before loading it.",
+      "description": "Classify the Live edition a saved .adg/.adv needs, offline: 'suite' if any\nSuite-only device is present (Operator, Wavetable, Echo, Drift, Meld,\nSampler, Collision, ...), else 'standard' if any Standard-only device is\npresent (EQ Eight, Compressor, Simpler, Impulse, Drum Rack, ...), else\n'intro'. Returns the verdict plus which devices drove it, so an agent can\ntell whether a preset will load on the user's edition before loading it.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -138,7 +138,7 @@
     },
     {
       "name": "adg_summary",
-      "description": "Summarize a saved .adg rack or .adv device preset WITHOUT Live running:\n    name, rack type, total device count, top-level chain count, named-macro\n    count, required Live edition (intro/standard/suite), and whether it is a drum\n    kit (`is_drum_rack` is true when the preset is or wraps a Drum Rack \u2014 factory\n    kits ship wrapped in an Instrument Rack). `path` is a filesystem path to a\n    .adg or .adv file.",
+      "description": "Summarize a saved .adg rack or .adv device preset WITHOUT Live running:\nname, rack type, total device count, top-level chain count, named-macro\ncount, required Live edition (intro/standard/suite), and whether it is a drum\nkit (`is_drum_rack` is true when the preset is or wraps a Drum Rack \u2014 factory\nkits ship wrapped in an Instrument Rack). `path` is a filesystem path to a\n.adg or .adv file.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -174,7 +174,7 @@
     },
     {
       "name": "als_details",
-      "description": "Read mixing and arrangement detail from a saved .als, offline: the set's\n    locators (name + beat time) and each track's fader volume, pan, and number of\n    automation lanes. Complements als_summary for reviewing a mix without Live.",
+      "description": "Read mixing and arrangement detail from a saved .als, offline: the set's\nlocators (name + beat time) and each track's fader volume, pan, and number of\nautomation lanes. Complements als_summary for reviewing a mix without Live.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -210,7 +210,7 @@
     },
     {
       "name": "als_detect_key",
-      "description": "Detect the key/scale of a saved .als file WITHOUT Live running\n    (Krumhansl-Kessler). Pools notes from every MIDI clip in the set, or only\n    one track when `track_index` is given. `weight` selects the histogram\n    weighting (\"duration\", \"velocity\", \"product\", \"count\"). `path` is a\n    filesystem path to a .als file.",
+      "description": "Detect the key/scale of a saved .als file WITHOUT Live running\n(Krumhansl-Kessler). Pools notes from every MIDI clip in the set, or only\none track when `track_index` is given. `weight` selects the histogram\nweighting (\"duration\", \"velocity\", \"product\", \"count\"). `path` is a\nfilesystem path to a .als file.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -263,7 +263,7 @@
     },
     {
       "name": "als_diff",
-      "description": "Diff two saved .als files (e.g. song_v4.als vs song_v5.als) offline:\n    tempo/time-signature changes, tracks added/removed by name, and per-track\n    deltas in device chain, clip count, note count, and mute state. Great for\n    logging what changed between versions.",
+      "description": "Diff two saved .als files (e.g. song_v4.als vs song_v5.als) offline:\ntempo/time-signature changes, tracks added/removed by name, and per-track\ndeltas in device chain, clip count, note count, and mute state. Great for\nlogging what changed between versions.",
       "inputSchema": {
         "properties": {
           "path_a": {
@@ -304,7 +304,7 @@
     },
     {
       "name": "als_extract_midi",
-      "description": "Extract MIDI notes from a track in a saved .als file, as\n    {pitch,start,duration,velocity} dicts per clip. `track_index` is the track's\n    position in the set (see als_summary). No Live required.",
+      "description": "Extract MIDI notes from a track in a saved .als file, as\n{pitch,start,duration,velocity} dicts per clip. `track_index` is the track's\nposition in the set (see als_summary). No Live required.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -345,7 +345,7 @@
     },
     {
       "name": "als_find_unfinished",
-      "description": "Lint a saved .als for likely-unfinished work, offline: no master\n    limiter/compressor, MIDI track with no instrument, MIDI clip with no notes,\n    empty audio track, or muted tracks. Returns machine-readable issues so an\n    agent can decide what to fix before rendering.",
+      "description": "Lint a saved .als for likely-unfinished work, offline: no master\nlimiter/compressor, MIDI track with no instrument, MIDI clip with no notes,\nempty audio track, or muted tracks. Returns machine-readable issues so an\nagent can decide what to fix before rendering.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -381,7 +381,7 @@
     },
     {
       "name": "als_list_tracks",
-      "description": "List every track in a saved .als file with its clips (name, MIDI/audio,\n    start, length, looping, sample path, note count). No Live required.",
+      "description": "List every track in a saved .als file with its clips (name, MIDI/audio,\nstart, length, looping, sample path, note count). No Live required.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -417,7 +417,7 @@
     },
     {
       "name": "als_summary",
-      "description": "Summarize a saved .als file WITHOUT Live running: version/creator, tempo,\n    time signature, and each track's kind, name, mute/solo, device names, clip\n    count, and note count. `path` is a filesystem path to a .als file.",
+      "description": "Summarize a saved .als file WITHOUT Live running: version/creator, tempo,\ntime signature, and each track's kind, name, mute/solo, device names, clip\ncount, and note count. `path` is a filesystem path to a .als file.",
       "inputSchema": {
         "properties": {
           "path": {
@@ -453,7 +453,7 @@
     },
     {
       "name": "analyze_audio_file",
-      "description": "Measure local WAV (integer/float), AIFF/AIFF-C, FLAC, Ogg Vorbis, MP3,\n    AAC or M4A/MP4 (AAC/ALAC) without Live: per-channel sample peak/RMS dBFS,\n    DC offset, crest factor and full-scale samples. Analyzes the first max_seconds\n    (default 30, maximum 120); marks partial results. Not LUFS or true peak. No upload.\n    Compressed files are measured after decoding; this does not recover lost audio.\n    Files are read locally without modification, normalization or upload.\n    ",
+      "description": "Measure local WAV (integer/float), AIFF/AIFF-C, FLAC, Ogg Vorbis, MP3,\nAAC or M4A/MP4 (AAC/ALAC) without Live: per-channel sample peak/RMS dBFS,\nDC offset, crest factor and full-scale samples. Analyzes the first max_seconds\n(default 30, maximum 120); marks partial results. Not LUFS or true peak. No upload.\nCompressed files are measured after decoding; this does not recover lost audio.\nFiles are read locally without modification, normalization or upload.\n",
       "inputSchema": {
         "properties": {
           "path": {
@@ -494,7 +494,7 @@
     },
     {
       "name": "analyze_mix",
-      "description": "Heuristic session-state checks, NOT audio, peak, LUFS or headroom measurements.\n    Scan the current live set for inspection leads: several high faders, a muted\n    or empty Session track, or a MIDI track without devices. External routing and\n    Arrangement audio may explain these states. Returns machine-readable\n    findings so you can decide what to fix. Reads the session; changes nothing.",
+      "description": "Heuristic session-state checks, NOT audio, peak, LUFS or headroom measurements.\nScan the current live set for inspection leads: several high faders, a muted\nor empty Session track, or a MIDI track without devices. External routing and\nArrangement audio may explain these states. Returns machine-readable\nfindings so you can decide what to fix. Reads the session; changes nothing.",
       "inputSchema": {
         "properties": {},
         "title": "analyze_mixArguments",
@@ -521,7 +521,7 @@
     },
     {
       "name": "analyze_warp_audio",
-      "description": "Estimate tempo and candidate downbeats from a bounded local PCM WAV window.\n        Returns measured onset events, heuristic confidence, half/double alternatives,\n        loop-edge discontinuity estimate and warp-mode guidance. Not audio audition.\n        Unsupported files fail explicitly; no Live access or changes.\n        ",
+      "description": "Estimate tempo and candidate downbeats from a bounded local PCM WAV window.\nReturns measured onset events, heuristic confidence, half/double alternatives,\nloop-edge discontinuity estimate and warp-mode guidance. Not audio audition.\nUnsupported files fail explicitly; no Live access or changes.\n",
       "inputSchema": {
         "properties": {
           "path": {
@@ -664,7 +664,7 @@
     },
     {
       "name": "apply_recipe",
-      "description": "Scaffold a genre starter in one call: set the tempo, add Drums, Bass, and\n    Chords MIDI tracks, try to load fitting instruments, and write generated\n    parts. `name` is one from list_recipes (e.g. \"lofi_beat\", \"house_groove\").\n    tempo/key/scale/bars override the recipe defaults. Adds new tracks; it does\n    not overwrite existing ones.",
+      "description": "Scaffold a genre starter in one call: set the tempo, add Drums, Bass, and\nChords MIDI tracks, try to load fitting instruments, and write generated\nparts. `name` is one from list_recipes (e.g. \"lofi_beat\", \"house_groove\").\ntempo/key/scale/bars override the recipe defaults. Adds new tracks; it does\nnot overwrite existing ones.",
       "inputSchema": {
         "properties": {
           "name": {
@@ -747,7 +747,7 @@
     },
     {
       "name": "apply_warp_repair",
-      "description": "Apply a reviewed preview to a non-overlapping duplicate ONLY. Saves the\n        source timing/plan before writing. Refuses stale/expired tokens and changed\n        files/targets, validates every marker, verifies original unchanged. Never\n        starts playback or replaces the original. After a timeout, inspect state;\n        token cannot be replayed. Needs EXT.5 Live bridge and actual marker API.\n        ",
+      "description": "Apply a reviewed preview to a non-overlapping duplicate ONLY. Saves the\nsource timing/plan before writing. Refuses stale/expired tokens and changed\nfiles/targets, validates every marker, verifies original unchanged. Never\nstarts playback or replaces the original. After a timeout, inspect state;\ntoken cannot be replayed. Needs EXT.5 Live bridge and actual marker API.\n",
       "inputSchema": {
         "properties": {
           "preview_token": {
@@ -791,7 +791,7 @@
     },
     {
       "name": "audit_warp_clip",
-      "description": "Read Session/Arrangement warp timing and optionally analyze its source WAV.\n        Checks marker order/slopes/drift, explicit bar length, source BPM versus mapping,\n        transient alignment and exact-window seam. Groove straight|triplet|swing.\n        Flags are structural errors or review candidates, never automatic repairs.\n        target uses track_index, clip_index, clip_view and optional name/start guards.\n        ",
+      "description": "Read Session/Arrangement warp timing and optionally analyze its source WAV.\nChecks marker order/slopes/drift, explicit bar length, source BPM versus mapping,\ntransient alignment and exact-window seam. Groove straight|triplet|swing.\nFlags are structural errors or review candidates, never automatic repairs.\ntarget uses track_index, clip_index, clip_view and optional name/start guards.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -852,7 +852,7 @@
     },
     {
       "name": "back_to_arranger",
-      "description": "Return playback control to the Arrangement (after Session clips have\n    overridden arrangement content - the orange 'Back to Arrangement' state).",
+      "description": "Return playback control to the Arrangement (after Session clips have\noverridden arrangement content - the orange 'Back to Arrangement' state).",
       "inputSchema": {
         "properties": {},
         "title": "back_to_arrangerArguments",
@@ -927,7 +927,7 @@
     },
     {
       "name": "batch_commands",
-      "description": "Run several commands in ONE round-trip and ONE undo step (atomic-ish:\n    stops at the first error; completed steps are a single undo away).\n\n    commands = [{\"type\": \"<command>\", \"params\": {...}}, ...]. Command names match\n    the MCP tool names (the few that differ are auto-translated), e.g.\n    [{\"type\": \"set_tempo\", \"params\": {\"tempo\": 80}},\n     {\"type\": \"create_midi_track\", \"params\": {\"index\": -1}}].\n    Composite tools (record_section, load_drum_kit, apply_recipe, save_set, the\n    generate_* tools) are NOT batchable - they orchestrate multiple commands\n    server-side. Prefer this for multi-step edits: fewer round-trips, one undo\n    reverts all.\n    ",
+      "description": "Run several commands in ONE round-trip and ONE undo step (atomic-ish:\nstops at the first error; completed steps are a single undo away).\n\ncommands = [{\"type\": \"<command>\", \"params\": {...}}, ...]. Command names match\nthe MCP tool names (the few that differ are auto-translated), e.g.\n[{\"type\": \"set_tempo\", \"params\": {\"tempo\": 80}},\n {\"type\": \"create_midi_track\", \"params\": {\"index\": -1}}].\nComposite tools (record_section, load_drum_kit, apply_recipe, save_set, the\ngenerate_* tools) are NOT batchable - they orchestrate multiple commands\nserver-side. Prefer this for multi-step edits: fewer round-trips, one undo\nreverts all.\n",
       "inputSchema": {
         "properties": {
           "commands": {
@@ -966,7 +966,7 @@
     },
     {
       "name": "batch_warp_audit",
-      "description": "Read-only audit of up to 256 explicit clip targets, with per-clip failures,\n        source-analysis deduplication and a 45-second batch budget. Max 8 unique WAV\n        windows, 15 seconds each; returns explicit skipped/unverified coverage. No\n        recoloring, marker changes or playback. Process further targets in another batch.\n        ",
+      "description": "Read-only audit of up to 256 explicit clip targets, with per-clip failures,\nsource-analysis deduplication and a 45-second batch budget. Max 8 unique WAV\nwindows, 15 seconds each; returns explicit skipped/unverified coverage. No\nrecoloring, marker changes or playback. Process further targets in another batch.\n",
       "inputSchema": {
         "properties": {
           "targets": {
@@ -1003,7 +1003,7 @@
     },
     {
       "name": "build_remix_session",
-      "description": "Build/update only this private project's named owned tracks in Live. Recheck sources,\n        map the loaded kit's actual pads, create native instruments and bounded automation,\n        and verify MIDI/Arrangement readback. New tracks start muted. Same bounds on rebuild;\n        source tracks stay intact. Requires stopped transport and matching tempo. Partial\n        failures retain a journal and are never blindly replayed. No automatic save.\n        ",
+      "description": "Build/update only this private project's named owned tracks in Live. Recheck sources,\nmap the loaded kit's actual pads, create native instruments and bounded automation,\nand verify MIDI/Arrangement readback. New tracks start muted. Same bounds on rebuild;\nsource tracks stay intact. Requires stopped transport and matching tempo. Partial\nfailures retain a journal and are never blindly replayed. No automatic save.\n",
       "inputSchema": {
         "properties": {
           "project_dir": {
@@ -1044,7 +1044,7 @@
     },
     {
       "name": "capture_and_insert_scene",
-      "description": "Snapshot the currently playing Session clips into a new scene - the\n    'keep that combination' workflow.",
+      "description": "Snapshot the currently playing Session clips into a new scene - the\n'keep that combination' workflow.",
       "inputSchema": {
         "properties": {},
         "title": "capture_and_insert_sceneArguments",
@@ -1071,7 +1071,7 @@
     },
     {
       "name": "capture_midi",
-      "description": "Grab recently played MIDI into a new clip (Live's Capture MIDI). Requires\n    that MIDI was recently played into an armed/monitored track.",
+      "description": "Grab recently played MIDI into a new clip (Live's Capture MIDI). Requires\nthat MIDI was recently played into an armed/monitored track.",
       "inputSchema": {
         "properties": {},
         "title": "capture_midiArguments",
@@ -1098,7 +1098,7 @@
     },
     {
       "name": "clear_automation",
-      "description": "Delete one device parameter's entire automation envelope from a clip.\n\n    Resolve the device and parameter with get_device_parameters first. This\n    removes every automation point for that parameter, not a time range; manual\n    parameter state remains. Use write_automation to replace the envelope with\n    new points, or undo immediately to recover an accidental clear.\n    ",
+      "description": "Delete one device parameter's entire automation envelope from a clip.\n\nResolve the device and parameter with get_device_parameters first. This\nremoves every automation point for that parameter, not a time range; manual\nparameter state remains. Use write_automation to replace the envelope with\nnew points, or undo immediately to recover an accidental clear.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1163,7 +1163,7 @@
     },
     {
       "name": "clip_operation",
-      "description": "Structural clip edits. op: \"duplicate_loop\" (double the loop, duplicating\n    notes - extend 2 bars to 4 before adding variation), \"crop\" (discard\n    material outside the loop), \"duplicate_region\" (copy notes from\n    region_start/region_length to destination_time, optionally transposing by\n    transposition_amount semitones; pitch=-1 means all pitches).",
+      "description": "Structural clip edits. op: \"duplicate_loop\" (double the loop, duplicating\nnotes - extend 2 bars to 4 before adding variation), \"crop\" (discard\nmaterial outside the loop), \"duplicate_region\" (copy notes from\nregion_start/region_length to destination_time, optionally transposing by\ntransposition_amount semitones; pitch=-1 means all pitches).",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1268,7 +1268,7 @@
     },
     {
       "name": "compare_remix_previews",
-      "description": "Create A/B WAVs matched by measured integrated LUFS, or explicitly labeled RMS\n        fallback. Attenuate only, preserve source files, refuse mismatched durations.\n        Returns source/variant measurements and gain adjustments; no preference claim.\n        ",
+      "description": "Create A/B WAVs matched by measured integrated LUFS, or explicitly labeled RMS\nfallback. Attenuate only, preserve source files, refuse mismatched durations.\nReturns source/variant measurements and gain adjustments; no preference claim.\n",
       "inputSchema": {
         "properties": {
           "project_dir": {
@@ -1301,7 +1301,7 @@
     },
     {
       "name": "compare_warp_reference",
-      "description": "Compare explicit measured/reference event times in a shared beat coordinate\n        system. Suggests a constant offset; no automatic matching of instrument roles,\n        phrase structure or groove. Does not modify Live.\n        ",
+      "description": "Compare explicit measured/reference event times in a shared beat coordinate\nsystem. Suggests a constant offset; no automatic matching of instrument roles,\nphrase structure or groove. Does not modify Live.\n",
       "inputSchema": {
         "properties": {
           "candidate_beats": {
@@ -1340,7 +1340,7 @@
     },
     {
       "name": "continue_playing",
-      "description": "Resume playback from the current position (start_playback restarts from\n    the playhead's last start point instead).",
+      "description": "Resume playback from the current position (start_playback restarts from\nthe playhead's last start point instead).",
       "inputSchema": {
         "properties": {},
         "title": "continue_playingArguments",
@@ -1367,7 +1367,7 @@
     },
     {
       "name": "create_audio_clip",
-      "description": "\n    Create a new audio clip in an audio track's clip slot by importing a file.\n\n    Requires Ableton Live 12.0.5 or newer - the underlying\n    ClipSlot.create_audio_clip Live API was introduced in 12.0.5 and is not\n    available in earlier 12.0.x releases.\n\n    Parameters:\n    - track_index: The index of the audio track to create the clip in\n    - clip_index: The index of the clip slot to create the clip in\n    - path: Absolute path to a supported audio file (e.g. a .wav). The target\n      track must be an audio track and the clip slot must be empty.\n    ",
+      "description": "\nCreate a new audio clip in an audio track's clip slot by importing a file.\n\nRequires Ableton Live 12.0.5 or newer - the underlying\nClipSlot.create_audio_clip Live API was introduced in 12.0.5 and is not\navailable in earlier 12.0.x releases.\n\nParameters:\n- track_index: The index of the audio track to create the clip in\n- clip_index: The index of the clip slot to create the clip in\n- path: Absolute path to a supported audio file (e.g. a .wav). The target\n  track must be an audio track and the clip slot must be empty.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1412,7 +1412,7 @@
     },
     {
       "name": "create_audio_track",
-      "description": "Insert an empty audio track at a chosen position, or append with `-1`.\n\n    Non-negative indices insert before the current track at that position and\n    shift it and later track indices up. Use create_midi_track for instruments\n    and MIDI clips, or create_return_track for a shared send-effect bus.\n    ",
+      "description": "Insert an empty audio track at a chosen position, or append with `-1`.\n\nNon-negative indices insert before the current track at that position and\nshift it and later track indices up. Use create_midi_track for instruments\nand MIDI clips, or create_return_track for a shared send-effect bus.\n",
       "inputSchema": {
         "properties": {
           "index": {
@@ -1506,7 +1506,7 @@
     },
     {
       "name": "create_clip",
-      "description": "Create an empty MIDI clip in a Session slot. Fails if the slot already has\n    a clip (pick another clip_index or delete_clip first) or the track is an\n    audio track. length is in beats (4.0 = one 4/4 bar).\n    Typical chain: create_clip -> add_notes_to_clip -> fire_clip or\n    duplicate_to_arrangement.\n    ",
+      "description": "Create an empty MIDI clip in a Session slot. Fails if the slot already has\na clip (pick another clip_index or delete_clip first) or the track is an\naudio track. length is in beats (4.0 = one 4/4 bar).\nTypical chain: create_clip -> add_notes_to_clip -> fire_clip or\nduplicate_to_arrangement.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1551,7 +1551,7 @@
     },
     {
       "name": "create_locator",
-      "description": "Create or rename an Arrangement locator at an absolute beat position.\n\n    SIDE EFFECT: first moves the Arrangement playhead to `time`, because Live\n    creates cues at the playhead. If a locator already exists there, it is reused\n    and renamed when `name` is provided. Use set_arrangement_time when only the\n    playhead should move, and get_locators to inspect existing markers.\n    ",
+      "description": "Create or rename an Arrangement locator at an absolute beat position.\n\nSIDE EFFECT: first moves the Arrangement playhead to `time`, because Live\ncreates cues at the playhead. If a locator already exists there, it is reused\nand renamed when `name` is provided. Use set_arrangement_time when only the\nplayhead should move, and get_locators to inspect existing markers.\n",
       "inputSchema": {
         "properties": {
           "time": {
@@ -1601,7 +1601,7 @@
     },
     {
       "name": "create_midi_track",
-      "description": "\n    Create a new MIDI track in the Ableton session.\n\n    Parameters:\n    - index: The index to insert the track at (-1 = end of list)\n    ",
+      "description": "\nCreate a new MIDI track in the Ableton session.\n\nParameters:\n- index: The index to insert the track at (-1 = end of list)\n",
       "inputSchema": {
         "properties": {
           "index": {
@@ -1757,7 +1757,7 @@
     },
     {
       "name": "create_take_lane",
-      "description": "Add a take lane to a track (for comping multiple recorded takes on one\n    track). Returns the new take-lane count.",
+      "description": "Add a take lane to a track (for comping multiple recorded takes on one\ntrack). Returns the new take-lane count.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1792,7 +1792,7 @@
     },
     {
       "name": "delete_arrangement_clip",
-      "description": "Delete a clip from the Arrangement timeline by its position in\n    get_arrangement_clips' list. NOTE: indices of later clips on the same track\n    shift down by one after each delete - re-read get_arrangement_clips between\n    deletes.\n    ",
+      "description": "Delete a clip from the Arrangement timeline by its position in\nget_arrangement_clips' list. NOTE: indices of later clips on the same track\nshift down by one after each delete - re-read get_arrangement_clips between\ndeletes.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1832,7 +1832,7 @@
     },
     {
       "name": "delete_clip",
-      "description": "Delete the existing Session-view clip in a slot, including its content.\n\n    This leaves the slot empty and does not shift other slot indices. It fails\n    for an empty slot. Use stop_clip if the intent is only to stop playback;\n    use undo immediately if the deletion was accidental.\n    ",
+      "description": "Delete the existing Session-view clip in a slot, including its content.\n\nThis leaves the slot empty and does not shift other slot indices. It fails\nfor an empty slot. Use stop_clip if the intent is only to stop playback;\nuse undo immediately if the deletion was accidental.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1876,7 +1876,7 @@
     },
     {
       "name": "delete_device",
-      "description": "Delete a device from a track's chain by its position (0-based). Shifts the\n    indices of later devices, so re-read the chain afterwards.",
+      "description": "Delete a device from a track's chain by its position (0-based). Shifts the\nindices of later devices, so re-read the chain afterwards.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -1913,6 +1913,39 @@
       },
       "origin": "upstream",
       "module": "ableton_live_mcp.tools.tracks"
+    },
+    {
+      "name": "delete_live_clip_notes",
+      "description": "Delete existing notes by note_id from a Session or Arrangement MIDI clip.\nUntouched notes keep their identity and expression data. Identical pitch and\nstart-time pairs are refused before any write because Live addresses notes by\nwindow, not by ID. Verified by readback; one Undo step.\n",
+      "inputSchema": {
+        "properties": {
+          "target": {
+            "additionalProperties": true,
+            "title": "Target",
+            "type": "object"
+          },
+          "notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Notes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "target",
+          "notes"
+        ],
+        "title": "delete_live_clip_notesArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.access_tools"
     },
     {
       "name": "delete_return_track",
@@ -2021,7 +2054,7 @@
     },
     {
       "name": "describe_capabilities",
-      "description": "A high-level map of this server: the tool groups and what each covers, plus\n    the conventions to follow, so you can orient before your first call. Set\n    ABLETON_TOOLSETS to load only some groups. For the current live state, call\n    get_session_snapshot; for mix problems, analyze_mix.",
+      "description": "A high-level map of this server: the tool groups and what each covers, plus\nthe conventions to follow, so you can orient before your first call. Set\nABLETON_TOOLSETS to load only some groups. For the current live state, call\nget_session_snapshot; for mix problems, analyze_mix.",
       "inputSchema": {
         "properties": {},
         "title": "describe_capabilitiesArguments",
@@ -2048,7 +2081,7 @@
     },
     {
       "name": "describe_device",
-      "description": "Return curated guidance for a common Ableton native device: which parameters\n    matter, their units (note `curve` = perceptual, not proportional), sensible\n    values, and mixing tips. `device_name` is case-insensitive (e.g. \"EQ Eight\",\n    \"Compressor\", \"Glue Compressor\", \"Reverb\", \"Auto Filter\", \"Saturator\",\n    \"Utility\", \"Limiter\", \"Delay\"). Pair with get_device_parameters for the live\n    indices and ranges.",
+      "description": "Return curated guidance for a common Ableton native device: which parameters\nmatter, their units (note `curve` = perceptual, not proportional), sensible\nvalues, and mixing tips. `device_name` is case-insensitive (e.g. \"EQ Eight\",\n\"Compressor\", \"Glue Compressor\", \"Reverb\", \"Auto Filter\", \"Saturator\",\n\"Utility\", \"Limiter\", \"Delay\"). Pair with get_device_parameters for the live\nindices and ranges.",
       "inputSchema": {
         "properties": {
           "device_name": {
@@ -2113,7 +2146,7 @@
     },
     {
       "name": "detect_clip_key",
-      "description": "Detect the key/scale of one Session MIDI clip (Krumhansl-Kessler). Reads\n    the clip's notes and returns the best-fit key with a confidence (-1..1),\n    margin over the runner-up, and the runner-up key. `weight` is how notes are\n    weighted into the pitch-class histogram: \"duration\" (default), \"velocity\",\n    \"product\", or \"count\". Reads only; changes nothing.",
+      "description": "Detect the key/scale of one Session MIDI clip (Krumhansl-Kessler). Reads\nthe clip's notes and returns the best-fit key with a confidence (-1..1),\nmargin over the runner-up, and the runner-up key. `weight` is how notes are\nweighted into the pitch-class histogram: \"duration\" (default), \"velocity\",\n\"product\", or \"count\". Reads only; changes nothing.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2158,7 +2191,7 @@
     },
     {
       "name": "detect_session_key",
-      "description": "Detect the overall key/scale of the whole set by pooling the notes of\n    every MIDI track's Session clips (Krumhansl-Kessler). Gives the harmonic\n    center of the arrangement as a whole. `weight` selects the histogram\n    weighting (\"duration\", \"velocity\", \"product\", \"count\"). Reads only.",
+      "description": "Detect the overall key/scale of the whole set by pooling the notes of\nevery MIDI track's Session clips (Krumhansl-Kessler). Gives the harmonic\ncenter of the arrangement as a whole. `weight` selects the histogram\nweighting (\"duration\", \"velocity\", \"product\", \"count\"). Reads only.",
       "inputSchema": {
         "properties": {
           "weight": {
@@ -2191,7 +2224,7 @@
     },
     {
       "name": "detect_track_key",
-      "description": "Detect the key/scale of a whole track by pooling the notes of every\n    Session clip it holds (Krumhansl-Kessler). Useful when a part is spread\n    across several clips. `weight` selects the histogram weighting (\"duration\",\n    \"velocity\", \"product\", \"count\"). Reads only; changes nothing.",
+      "description": "Detect the key/scale of a whole track by pooling the notes of every\nSession clip it holds (Krumhansl-Kessler). Useful when a part is spread\nacross several clips. `weight` selects the histogram weighting (\"duration\",\n\"velocity\", \"product\", \"count\"). Reads only; changes nothing.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2231,7 +2264,7 @@
     },
     {
       "name": "duplicate_clip_to",
-      "description": "Copy a Session clip to any other track/scene slot (overwrites the\n    destination slot). The cross-track way to build variations.",
+      "description": "Copy a Session clip to any other track/scene slot (overwrites the\ndestination slot). The cross-track way to build variations.",
       "inputSchema": {
         "properties": {
           "src_track": {
@@ -2281,7 +2314,7 @@
     },
     {
       "name": "duplicate_scene",
-      "description": "Insert a copy of one Session scene, including every clip in its row.\n\n    This creates new content and increases the scene count; later scene indices\n    shift to make room. Use duplicate_track for a whole track or duplicate_clip_to\n    for one clip. Use the new scene as an editable section variation.\n    ",
+      "description": "Insert a copy of one Session scene, including every clip in its row.\n\nThis creates new content and increases the scene count; later scene indices\nshift to make room. Use duplicate_track for a whole track or duplicate_clip_to\nfor one clip. Use the new scene as an editable section variation.\n",
       "inputSchema": {
         "properties": {
           "scene_index": {
@@ -2319,7 +2352,7 @@
     },
     {
       "name": "duplicate_to_arrangement",
-      "description": "\n    Copy a Session-view clip into the Arrangement timeline.\n\n    OVERWRITES whatever already occupies the destination range on that track\n    (like recording over tape) - this is also the supported way to REPLACE a\n    section. Uses Live's track.duplicate_clip_to_arrangement() API (Live 11/12).\n    The clip is placed at destination_time beats from the start of the\n    arrangement on the same track it lives in.\n\n    Typical workflow:\n      1. create_clip / add_notes_to_clip to build a Session clip\n      2. Call duplicate_to_arrangement once per bar/section you need\n      3. Call switch_to_arrangement_view to confirm the result in Live\n\n    Parameters:\n    - track_index:       Index of the track that owns the Session clip\n    - clip_index:        Index of the clip slot in that track (Session view)\n    - destination_time:  Beat position in the arrangement to place the clip\n                         (e.g. 0.0 = start, 8.0 = bar 3 in 4/4)\n    ",
+      "description": "\nCopy a Session-view clip into the Arrangement timeline.\n\nOVERWRITES whatever already occupies the destination range on that track\n(like recording over tape) - this is also the supported way to REPLACE a\nsection. Uses Live's track.duplicate_clip_to_arrangement() API (Live 11/12).\nThe clip is placed at destination_time beats from the start of the\narrangement on the same track it lives in.\n\nTypical workflow:\n  1. create_clip / add_notes_to_clip to build a Session clip\n  2. Call duplicate_to_arrangement once per bar/section you need\n  3. Call switch_to_arrangement_view to confirm the result in Live\n\nParameters:\n- track_index:       Index of the track that owns the Session clip\n- clip_index:        Index of the clip slot in that track (Session view)\n- destination_time:  Beat position in the arrangement to place the clip\n                     (e.g. 0.0 = start, 8.0 = bar 3 in 4/4)\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2364,7 +2397,7 @@
     },
     {
       "name": "duplicate_track",
-      "description": "Insert a copy of one regular track, including its devices and clips.\n\n    This creates new content and increases the track count; later track indices\n    shift to make room. Use duplicate_scene for a Session row or duplicate_clip_to\n    for one clip. Rename or edit the copy to create a variation.\n    ",
+      "description": "Insert a copy of one regular track, including its devices and clips.\n\nThis creates new content and increases the track count; later track indices\nshift to make room. Use duplicate_scene for a Session row or duplicate_clip_to\nfor one clip. Rename or edit the copy to create a variation.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2402,7 +2435,7 @@
     },
     {
       "name": "edit_notes",
-      "description": "Edit a subset of notes in a MIDI clip without rewriting all of them.\n    add = [{pitch,start_time,duration,velocity,mute}], remove = [{pitch,start_time}] (matched by pitch+start).",
+      "description": "Edit a subset of notes in a MIDI clip without rewriting all of them.\nadd = [{pitch,start_time,duration,velocity,mute}], remove = [{pitch,start_time}] (matched by pitch+start).",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2474,7 +2507,7 @@
     },
     {
       "name": "fire_clip",
-      "description": "Launch one existing Session-view clip using Live's launch quantization.\n\n    The slot must contain a clip. Launching it takes Session control of that\n    track and replaces any other playing Session clip on the same track; firing\n    an already-playing clip may retrigger it according to its launch settings.\n    Use fire_scene to launch a whole row, or continue_playing for transport only.\n    ",
+      "description": "Launch one existing Session-view clip using Live's launch quantization.\n\nThe slot must contain a clip. Launching it takes Session control of that\ntrack and replaces any other playing Session clip on the same track; firing\nan already-playing clip may retrigger it according to its launch settings.\nUse fire_scene to launch a whole row, or continue_playing for transport only.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2519,7 +2552,7 @@
     },
     {
       "name": "fire_scene",
-      "description": "Launch a Session-view scene using Live's launch quantization.\n\n    This fires the row's clips together and can replace or stop clips currently\n    playing on the affected tracks according to each slot's launch behavior.\n    Use fire_clip to launch only one track's clip, or start_playback when the\n    intent is Arrangement transport rather than Session launching.\n    ",
+      "description": "Launch a Session-view scene using Live's launch quantization.\n\nThis fires the row's clips together and can replace or stop clips currently\nplaying on the affected tracks according to each slot's launch behavior.\nUse fire_clip to launch only one track's clip, or start_playback when the\nintent is Arrangement transport rather than Session launching.\n",
       "inputSchema": {
         "properties": {
           "scene_index": {
@@ -2557,7 +2590,7 @@
     },
     {
       "name": "generate_additive",
-      "description": "Write a Philip-Glass additive process into a Session clip. REPLACES the\n    clip's notes if it already exists.\n\n    Builds a short one-voice motif (each pitch a ``note_length``-beat note, back\n    to back) from ``pitches`` -- a space-/comma-separated list of MIDI numbers.\n    Then plays the first 1 note, then the first 2, then the first 3 ...\n    concatenated end to end, so the phrase audibly grows one note per stage.\n    ``steps`` is how many stages to build (0 = use every note; capped at the\n    number of pitches).\n\n    If ``source_clip_index`` is given, the motif is read from that clip on the\n    same track instead of built from ``pitches``. Returns a short summary.\n    ",
+      "description": "Write a Philip-Glass additive process into a Session clip. REPLACES the\nclip's notes if it already exists.\n\nBuilds a short one-voice motif (each pitch a ``note_length``-beat note, back\nto back) from ``pitches`` -- a space-/comma-separated list of MIDI numbers.\nThen plays the first 1 note, then the first 2, then the first 3 ...\nconcatenated end to end, so the phrase audibly grows one note per stage.\n``steps`` is how many stages to build (0 = use every note; capped at the\nnumber of pitches).\n\nIf ``source_clip_index`` is given, the motif is read from that clip on the\nsame track instead of built from ``pitches``. Returns a short summary.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2629,7 +2662,7 @@
     },
     {
       "name": "generate_bassline",
-      "description": "Write a bassline following a chord progression. REPLACES existing notes.\n\n    progression: same syntax as generate_chord_progression.\n    style: \"roots\" (long root notes), \"root_fifth\" (root + fifth bounce),\n    \"walking\" (root, approach tones), \"eighth_pump\" (driving 8ths on the root).\n    octave: 1 = very low (C1=24), 2 = typical bass (C2=36).\n    ",
+      "description": "Write a bassline following a chord progression. REPLACES existing notes.\n\nprogression: same syntax as generate_chord_progression.\nstyle: \"roots\" (long root notes), \"root_fifth\" (root + fifth bounce),\n\"walking\" (root, approach tones), \"eighth_pump\" (driving 8ths on the root).\noctave: 1 = very low (C1=24), 2 = typical bass (C2=36).\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2694,7 +2727,7 @@
     },
     {
       "name": "generate_chord_progression",
-      "description": "Generate voiced chords and write them into one Session-view MIDI clip.\n\n    DESTRUCTIVE: creates a clip when the slot is empty; otherwise resizes its loop\n    and replaces every existing note. The track must accept MIDI. Progressions\n    accept dash/comma/space-separated symbols such as `Am9-Fmaj7-Cmaj9-G13`;\n    supported qualities include maj7, m7, m9, 9, 13, 7#9, sus4, dim, and add9.\n    Use add_notes_to_clip for exact notes or edit_notes to preserve existing ones.\n    ",
+      "description": "Generate voiced chords and write them into one Session-view MIDI clip.\n\nDESTRUCTIVE: creates a clip when the slot is empty; otherwise resizes its loop\nand replaces every existing note. The track must accept MIDI. Progressions\naccept dash/comma/space-separated symbols such as `Am9-Fmaj7-Cmaj9-G13`;\nsupported qualities include maj7, m7, m9, 9, 13, 7#9, sus4, dim, and add9.\nUse add_notes_to_clip for exact notes or edit_notes to preserve existing ones.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2787,7 +2820,7 @@
     },
     {
       "name": "generate_drum_pattern",
-      "description": "Write a genre drum pattern into a Session clip on a Drum Rack track.\n    REPLACES the clip's notes if the clip exists.\n\n    style: lofi | boom_bap | house | techno | trap | dnb | ambient.\n    swing: beats to delay 8th-note offbeats (0.0-0.1; 0.06 \u2248 MPC-ish).\n    humanize: max random velocity deviation (0 = machine-perfect).\n    Uses the standard Live drum map (36 kick, 38 snare, 42/46 hats...).\n    ",
+      "description": "Write a genre drum pattern into a Session clip on a Drum Rack track.\nREPLACES the clip's notes if the clip exists.\n\nstyle: lofi | boom_bap | house | techno | trap | dnb | ambient.\nswing: beats to delay 8th-note offbeats (0.0-0.1; 0.06 \u2248 MPC-ish).\nhumanize: max random velocity deviation (0 = machine-perfect).\nUses the standard Live drum map (36 kick, 38 snare, 42/46 hats...).\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2859,7 +2892,7 @@
     },
     {
       "name": "generate_euclidean_drums",
-      "description": "Write a Euclidean (Bjorklund) rhythm for one drum voice into a Session clip.\n    REPLACES the clip's notes if the clip exists.\n\n    Distributes `pulses` hits as evenly as possible across `steps` slots spanning\n    one bar (steps=8 -> 8th notes, 16 -> 16th notes), repeated for `bars`.\n    pulses=3, steps=8 is the tresillo. `rotate` shifts the pattern left by that\n    many steps. instrument: a drum-map name (kick/snare/chat/ohat/clap/ride/...) or\n    a raw MIDI number. `humanize` is max +/- velocity jitter.\n    ",
+      "description": "Write a Euclidean (Bjorklund) rhythm for one drum voice into a Session clip.\nREPLACES the clip's notes if the clip exists.\n\nDistributes `pulses` hits as evenly as possible across `steps` slots spanning\none bar (steps=8 -> 8th notes, 16 -> 16th notes), repeated for `bars`.\npulses=3, steps=8 is the tresillo. `rotate` shifts the pattern left by that\nmany steps. instrument: a drum-map name (kick/snare/chat/ohat/clap/ride/...) or\na raw MIDI number. `humanize` is max +/- velocity jitter.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -2946,7 +2979,7 @@
     },
     {
       "name": "generate_genre_progression",
-      "description": "Build a genre-idiomatic chord progression and write it as voiced chords.\n    REPLACES existing notes.\n\n    genre: lofi/boom_bap/hip_hop/trap/house/deep_house/techno/trance/dnb/rnb/\n    neo_soul/jazz/bossa_nova/ambient/synthwave/pop/afrobeats/amapiano/... (fuzzy\n    matched). The genre's scale-degree grammar is transposed into key+scale, then\n    voiced (see generate_voiced_progression for the style options). bars = number\n    of chords (the grammar loops). Returns the chord symbols it used.\n    ",
+      "description": "Build a genre-idiomatic chord progression and write it as voiced chords.\nREPLACES existing notes.\n\ngenre: lofi/boom_bap/hip_hop/trap/house/deep_house/techno/trance/dnb/rnb/\nneo_soul/jazz/bossa_nova/ambient/synthwave/pop/afrobeats/amapiano/... (fuzzy\nmatched). The genre's scale-degree grammar is transposed into key+scale, then\nvoiced (see generate_voiced_progression for the style options). bars = number\nof chords (the grammar loops). Returns the chord symbols it used.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3043,7 +3076,7 @@
     },
     {
       "name": "generate_groove",
-      "description": "Write a pocketed drum groove into a Session clip. REPLACES existing notes.\n\n    style: lofi | boom_bap | house | trap | jazz | funk. pocket: beats to lay\n    every hit behind the beat (0.0-0.1). swing: off-beat hat delay (0.5 straight\n    .. ~0.66). ghost: 0-1 probability of soft ghost snares between backbeats.\n    humanize: max +/- velocity deviation. Uses the standard Live drum map.\n    ",
+      "description": "Write a pocketed drum groove into a Session clip. REPLACES existing notes.\n\nstyle: lofi | boom_bap | house | trap | jazz | funk. pocket: beats to lay\nevery hit behind the beat (0.0-0.1). swing: off-beat hat delay (0.5 straight\n.. ~0.66). ghost: 0-1 probability of soft ghost snares between backbeats.\nhumanize: max +/- velocity deviation. Uses the standard Live drum map.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3125,7 +3158,7 @@
     },
     {
       "name": "generate_melody",
-      "description": "Write a voice-led melody over a chord progression. REPLACES existing notes.\n\n    Notes come from key+scale, biased to chord tones on strong beats, chosen by\n    nearest-pitch voice-leading (small steps), with optional chromatic approach\n    notes. progression: dash-/comma-separated symbols. key: e.g. \"C\", \"F#\", \"Bb\".\n    scale: major/minor/dorian/lydian/mixolydian/blues/bebop/minor_pentatonic/...\n    density: low|medium|high (note rate). phrase_arc: rising|arch|ascend_descend|\n    static (register contour). chromatic: 0-1 approach-note probability. low/high\n    bound the register (MIDI). swing: 0.5 straight .. ~0.66.\n    ",
+      "description": "Write a voice-led melody over a chord progression. REPLACES existing notes.\n\nNotes come from key+scale, biased to chord tones on strong beats, chosen by\nnearest-pitch voice-leading (small steps), with optional chromatic approach\nnotes. progression: dash-/comma-separated symbols. key: e.g. \"C\", \"F#\", \"Bb\".\nscale: major/minor/dorian/lydian/mixolydian/blues/bebop/minor_pentatonic/...\ndensity: low|medium|high (note rate). phrase_arc: rising|arch|ascend_descend|\nstatic (register contour). chromatic: 0-1 approach-note probability. low/high\nbound the register (MIDI). swing: 0.5 straight .. ~0.66.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3227,7 +3260,7 @@
     },
     {
       "name": "generate_phase",
-      "description": "Write a Steve-Reich phasing pattern into a Session clip. REPLACES the\n    clip's notes if it already exists.\n\n    Builds a short one-voice motif (each pitch a ``note_length``-beat note, back\n    to back) from ``pitches`` -- a space-/comma-separated list of MIDI numbers,\n    e.g. \"60 62 64 67 69\". Then stacks ``repeats`` copies of that motif, each copy\n    starting ``shift`` beats later than the last, so the copies drift against one\n    another. A ``shift`` smaller than the motif length (len(pitches)*note_length)\n    gives the classic overlapping phase texture; ``shift`` == motif length is a\n    plain loop.\n\n    If ``source_clip_index`` is given, the motif is read from that clip on the\n    same track instead of built from ``pitches``. Returns a short summary.\n    ",
+      "description": "Write a Steve-Reich phasing pattern into a Session clip. REPLACES the\nclip's notes if it already exists.\n\nBuilds a short one-voice motif (each pitch a ``note_length``-beat note, back\nto back) from ``pitches`` -- a space-/comma-separated list of MIDI numbers,\ne.g. \"60 62 64 67 69\". Then stacks ``repeats`` copies of that motif, each copy\nstarting ``shift`` beats later than the last, so the copies drift against one\nanother. A ``shift`` smaller than the motif length (len(pitches)*note_length)\ngives the classic overlapping phase texture; ``shift`` == motif length is a\nplain loop.\n\nIf ``source_clip_index`` is given, the motif is read from that clip on the\nsame track instead of built from ``pitches``. Returns a short summary.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3304,7 +3337,7 @@
     },
     {
       "name": "generate_voiced_progression",
-      "description": "Write voice-led jazz chord voicings into a Session clip. REPLACES existing notes.\n\n    progression: dash-/comma-separated symbols, e.g. \"Am9-Dm7-G13-Cmaj7\".\n    style: rootless (3-7-9-13 stack, no root), quartal (stacked 4ths), shell\n    (root-3-7), or block (close-position). Smooth voice-leading is applied between\n    chords. center_pitch biases register (60 = C3 in Live). voices caps notes per\n    chord; humanize is max +/- velocity jitter.\n    ",
+      "description": "Write voice-led jazz chord voicings into a Session clip. REPLACES existing notes.\n\nprogression: dash-/comma-separated symbols, e.g. \"Am9-Dm7-G13-Cmaj7\".\nstyle: rootless (3-7-9-13 stack, no root), quartal (stacked 4ths), shell\n(root-3-7), or block (close-position). Smooth voice-leading is applied between\nchords. center_pitch biases register (60 = C3 in Live). voices caps notes per\nchord; humanize is max +/- velocity jitter.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3391,7 +3424,7 @@
     },
     {
       "name": "generate_walking_bass",
-      "description": "Write a quarter-note walking bass line under a progression. REPLACES notes.\n\n    Root on beat 1, chord/scale tones through the bar, chromatic approach into the\n    next chord's root on the last beat, with occasional soft ghost notes.\n    progression: dash-/comma-separated symbols. key/scale set the passing-tone\n    pool. octave: 1 = very low (C1), 2 = typical bass (C2). ghost: 0-1 offbeat\n    ghost-note probability.\n    ",
+      "description": "Write a quarter-note walking bass line under a progression. REPLACES notes.\n\nRoot on beat 1, chord/scale tones through the bar, chromatic approach into the\nnext chord's root on the last beat, with occasional soft ghost notes.\nprogression: dash-/comma-separated symbols. key/scale set the passing-tone\npool. octave: 1 = very low (C1), 2 = typical bass (C2). ghost: 0-1 offbeat\nghost-note probability.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3478,7 +3511,7 @@
     },
     {
       "name": "get_arrangement_clips",
-      "description": "\n    List all clips placed in the Arrangement timeline for a track.\n\n    Returns each clip's name, start_time, end_time, length, and type.\n\n    Parameters:\n    - track_index: The index of the track to inspect\n    ",
+      "description": "\nList all clips placed in the Arrangement timeline for a track.\n\nReturns each clip's name, start_time, end_time, length, and type.\n\nParameters:\n- track_index: The index of the track to inspect\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3513,7 +3546,7 @@
     },
     {
       "name": "get_audio_clip_timing",
-      "description": "Read every audio warp marker, source path, clip/loop/start markers,\n        pitch and Arrangement boundaries. Target: track_index, clip_index,\n        clip_view=session|arrangement and optional name/start guards. Source marker\n        sample_time is seconds; beat_time is clip beats. Requires EXT.4 bridge.\n        Does not validate audible transients or modify audio/markers.\n        ",
+      "description": "Read every audio warp marker, source path, clip/loop/start markers,\npitch and Arrangement boundaries. Target: track_index, clip_index,\nclip_view=session|arrangement and optional name/start guards. Source marker\nsample_time is seconds; beat_time is clip beats. Requires EXT.4 bridge.\nDoes not validate audible transients or modify audio/markers.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -3537,7 +3570,7 @@
     },
     {
       "name": "get_browser_items_at_path",
-      "description": "\n    Get browser items at a specific path in Ableton's browser.\n\n    Parameters:\n    - path: Path in the format \"category/folder/subfolder\"\n            where category is one of the available browser categories in Ableton\n    ",
+      "description": "\nGet browser items at a specific path in Ableton's browser.\n\nParameters:\n- path: Path in the format \"category/folder/subfolder\"\n        where category is one of the available browser categories in Ableton\n",
       "inputSchema": {
         "properties": {
           "path": {
@@ -3573,7 +3606,7 @@
     },
     {
       "name": "get_browser_tree",
-      "description": "List the browser's top-level categories and their immediate entries.\n    NOTE: returns a shallow listing (no deep hierarchy) - drill down with\n    get_browser_items_at_path(\"instruments\"), ...(\"sounds/Piano & Keys\"), etc.,\n    or skip straight to search_browser when you know a name.\n    category_type: \"all\", \"instruments\", \"sounds\", \"drums\", \"audio_effects\", \"midi_effects\".\n    ",
+      "description": "List the browser's top-level categories and their immediate entries.\nNOTE: returns a shallow listing (no deep hierarchy) - drill down with\nget_browser_items_at_path(\"instruments\"), ...(\"sounds/Piano & Keys\"), etc.,\nor skip straight to search_browser when you know a name.\ncategory_type: \"all\", \"instruments\", \"sounds\", \"drums\", \"audio_effects\", \"midi_effects\".\n",
       "inputSchema": {
         "properties": {
           "category_type": {
@@ -3687,7 +3720,7 @@
     },
     {
       "name": "get_clip_info",
-      "description": "Full clip state: loop points, markers, playing position, per-clip time\n    signature; for audio clips also file path, gain display, and warp markers.",
+      "description": "Full clip state: loop points, markers, playing position, per-clip time\nsignature; for audio clips also file path, gain display, and warp markers.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3727,7 +3760,7 @@
     },
     {
       "name": "get_clip_notes",
-      "description": "Return every MIDI note in an existing Session-view MIDI clip.\n\n    Each note includes pitch, start time, duration, velocity, and mute state;\n    newer Live versions may add expression fields. This is read-only and fails\n    for an empty slot or audio clip. Use get_clip_info for clip properties.\n    ",
+      "description": "Return every MIDI note in an existing Session-view MIDI clip.\n\nEach note includes pitch, start time, duration, velocity, and mute state;\nnewer Live versions may add expression fields. This is read-only and fails\nfor an empty slot or audio clip. Use get_clip_info for clip properties.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3812,7 +3845,7 @@
     },
     {
       "name": "get_device_routing",
-      "description": "Read a device's audio-input (sidechain) routing: current input type/channel\n    and the available options. Only sidechain-capable devices (Compressor, Gate)\n    have this. Use the options with set_device_routing to pick a sidechain source.",
+      "description": "Read a device's audio-input (sidechain) routing: current input type/channel\nand the available options. Only sidechain-capable devices (Compressor, Gate)\nhave this. Use the options with set_device_routing to pick a sidechain source.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3919,7 +3952,7 @@
     },
     {
       "name": "get_group_info",
-      "description": "Report a track's group state: whether it is a foldable group track, whether\n    it is inside a group, its fold state, and its parent group's name.",
+      "description": "Report a track's group state: whether it is a foldable group track, whether\nit is inside a group, its fold state, and its parent group's name.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -3954,7 +3987,7 @@
     },
     {
       "name": "get_live_clip_notes",
-      "description": "Read ALL MIDI notes including note IDs from Session or Arrangement,\n        including notes outside offset loop bounds. No partial-read fallback.\n        Target: track_index, clip_view=session|arrangement, clip_index and names.\n        ",
+      "description": "Read ALL MIDI notes including note IDs from Session or Arrangement,\nincluding notes outside offset loop bounds. No partial-read fallback.\nTarget: track_index, clip_view=session|arrangement, clip_index and names.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -3978,7 +4011,7 @@
     },
     {
       "name": "get_live_mixer",
-      "description": "Read track/return/Main or nested chain volume, pan and sends. Chain target\n        adds device_path to its rack plus chain_index. Values include formatted units.\n        ",
+      "description": "Read track/return/Main or nested chain volume, pan and sends. Chain target\nadds device_path to its rack plus chain_index. Values include formatted units.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -4002,7 +4035,7 @@
     },
     {
       "name": "get_locators",
-      "description": "List arrangement locators (index, name, beat time) for structure-aware\n    navigation. Jump with jump_to_locator.",
+      "description": "List arrangement locators (index, name, beat time) for structure-aware\nnavigation. Jump with jump_to_locator.",
       "inputSchema": {
         "properties": {},
         "title": "get_locatorsArguments",
@@ -4064,7 +4097,7 @@
     },
     {
       "name": "get_master_meters",
-      "description": "Read the Master track's output meters - values pinned near 1.0 during\n    playback mean the master is clipping; pull set_master_volume down.",
+      "description": "Read the Master track's output meters - values pinned near 1.0 during\nplayback mean the master is clipping; pull set_master_volume down.",
       "inputSchema": {
         "properties": {},
         "title": "get_master_metersArguments",
@@ -4091,7 +4124,7 @@
     },
     {
       "name": "get_nested_device_parameters",
-      "description": "Read nested parameters. Target: track_type, track_index, device_path\n        [device,chain,device,...], optional expected_track_name/expected_device_name.\n        Main uses track_type=master. Values are native with formatted units.\n        ",
+      "description": "Read nested parameters. Target: track_type, track_index, device_path\n[device,chain,device,...], optional expected_track_name/expected_device_name.\nMain uses track_type=master. Values are native with formatted units.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -4115,7 +4148,7 @@
     },
     {
       "name": "get_rack_chains",
-      "description": "List an Instrument/Effect Rack's chains and the devices inside each -\n    previously unreachable nested devices. Use set_chain_device_parameter to\n    control them.",
+      "description": "List an Instrument/Effect Rack's chains and the devices inside each -\npreviously unreachable nested devices. Use set_chain_device_parameter to\ncontrol them.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -4155,7 +4188,7 @@
     },
     {
       "name": "get_return_device_parameters",
-      "description": "List parameters of a device on a Return track: names, values, min/max,\n    display strings. Call before set_return_device_parameter.",
+      "description": "List parameters of a device on a Return track: names, values, min/max,\ndisplay strings. Call before set_return_device_parameter.",
       "inputSchema": {
         "properties": {
           "return_index": {
@@ -4222,7 +4255,7 @@
     },
     {
       "name": "get_scale_info",
-      "description": "Read the song's scale and tuning: scale name, root note, scale intervals, and\n    the active tuning system (microtonal, Live 12.3+) if any. Set the scale with\n    set_song_scale; tune device parameters (e.g. Wavetable) with set_device_parameter.",
+      "description": "Read the song's scale and tuning: scale name, root note, scale intervals, and\nthe active tuning system (microtonal, Live 12.3+) if any. Set the scale with\nset_song_scale; tune device parameters (e.g. Wavetable) with set_device_parameter.",
       "inputSchema": {
         "properties": {},
         "title": "get_scale_infoArguments",
@@ -4249,7 +4282,7 @@
     },
     {
       "name": "get_session_info",
-      "description": "Return global Live-set and transport state without modifying the set.\n\n    Includes tempo, song time signature, playback position/state, Arrangement\n    loop, track/return/scene counts, scene names, key/scale, record mode, launch\n    quantization, Master volume/pan, and Live version. Use get_track_info for a\n    single track's clips/devices, or get_session_snapshot for a compact overview\n    of every track.\n    ",
+      "description": "Return global Live-set and transport state without modifying the set.\n\nIncludes tempo, song time signature, playback position/state, Arrangement\nloop, track/return/scene counts, scene names, key/scale, record mode, launch\nquantization, Master volume/pan, and Live version. Use get_track_info for a\nsingle track's clips/devices, or get_session_snapshot for a compact overview\nof every track.\n",
       "inputSchema": {
         "properties": {},
         "title": "get_session_infoArguments",
@@ -4277,7 +4310,7 @@
     },
     {
       "name": "get_session_snapshot",
-      "description": "One-call overview of the whole set: tempo, time signature, play state, and\n    for every track its name, type, mute/solo/arm, volume, clip count, and device\n    names, plus return-track names. Prefer this over many get_track_info calls.",
+      "description": "One-call overview of the whole set: tempo, time signature, play state, and\nfor every track its name, type, mute/solo/arm, volume, clip count, and device\nnames, plus return-track names. Prefer this over many get_track_info calls.",
       "inputSchema": {
         "properties": {},
         "title": "get_session_snapshotArguments",
@@ -4344,7 +4377,7 @@
     },
     {
       "name": "get_track_info",
-      "description": "Return detailed state for one regular track without modifying the set.\n\n    Includes name/type, mixer and arm/mute/solo state, sends, freeze/color state,\n    playing/fired slot indices, every Session slot's basic clip state, and the\n    device-chain names/types. Use get_session_info for global transport state,\n    get_device_parameters for parameter values, or get_clip_info for full clip\n    properties.\n    ",
+      "description": "Return detailed state for one regular track without modifying the set.\n\nIncludes name/type, mixer and arm/mute/solo state, sends, freeze/color state,\nplaying/fired slot indices, every Session slot's basic clip state, and the\ndevice-chain names/types. Use get_session_info for global transport state,\nget_device_parameters for parameter values, or get_clip_info for full clip\nproperties.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -4382,7 +4415,7 @@
     },
     {
       "name": "get_track_meters",
-      "description": "Read a track's output level meters (post-fader): left/right 0.0-1.0ish\n    (0.85 \u2248 0 dB, like faders). Poll during playback to judge balance/clipping -\n    this is how you 'listen' without exporting.",
+      "description": "Read a track's output level meters (post-fader): left/right 0.0-1.0ish\n(0.85 \u2248 0 dB, like faders). Poll during playback to judge balance/clipping -\nthis is how you 'listen' without exporting.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -4417,7 +4450,7 @@
     },
     {
       "name": "get_track_routing",
-      "description": "Read a track's input/output routing (current + all available options)\n    and monitoring state (0=In, 1=Auto, 2=Off). Routing options are identified\n    by display_name - use those strings with set_track_routing.",
+      "description": "Read a track's input/output routing (current + all available options)\nand monitoring state (0=In, 1=Auto, 2=Off). Routing options are identified\nby display_name - use those strings with set_track_routing.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -4452,7 +4485,7 @@
     },
     {
       "name": "guide_halftime_remix_workflow",
-      "description": "Guide remix creation in small decision groups. Select source clips, read their\n        MIDI/timing, plan a drop, build through existing Live tools, audition, then refine.\n        Returns pending decisions or a plan; never silently edits the set.\n        ",
+      "description": "Guide remix creation in small decision groups. Select source clips, read their\nMIDI/timing, plan a drop, build through existing Live tools, audition, then refine.\nReturns pending decisions or a plan; never silently edits the set.\n",
       "inputSchema": {
         "properties": {
           "answers": {
@@ -4481,7 +4514,7 @@
     },
     {
       "name": "humanize_clip",
-      "description": "Read a MIDI clip, apply timing + velocity humanization, and write it back.\n    REPLACES the clip's notes with the jittered version.\n\n    timing: max +/- start-time deviation in beats. velocity: max +/- velocity\n    deviation. Pitches are preserved; times stay non-negative. seed makes it\n    reproducible.\n    ",
+      "description": "Read a MIDI clip, apply timing + velocity humanization, and write it back.\nREPLACES the clip's notes with the jittered version.\n\ntiming: max +/- start-time deviation in beats. velocity: max +/- velocity\ndeviation. Pitches are preserved; times stay non-negative. seed makes it\nreproducible.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -4542,8 +4575,41 @@
       "module": "ableton_live_mcp.tools.generators_advanced"
     },
     {
+      "name": "insert_live_clip_notes",
+      "description": "Insert new notes into a MIDI clip without replacing existing content.\nEach note needs pitch, start_time and duration; velocity defaults to 100.\nOptional mute/probability/velocity_deviation/release_velocity are validated.\nName and Arrangement start guards required. Verified by readback; one Undo\nstep. Does not create MPE expression curves.\n",
+      "inputSchema": {
+        "properties": {
+          "target": {
+            "additionalProperties": true,
+            "title": "Target",
+            "type": "object"
+          },
+          "notes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Notes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "target",
+          "notes"
+        ],
+        "title": "insert_live_clip_notesArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.access_tools"
+    },
+    {
       "name": "inspect_live_device_tree",
-      "description": "Read every nested device, chain, parameter and formatted value on a track,\n        return or Main. track_type=track|return|master. Bounded to 256 devices/depth 8.\n        ",
+      "description": "Read every nested device, chain, parameter and formatted value on a track,\nreturn or Main. track_type=track|return|master. Bounded to 256 devices/depth 8.\n",
       "inputSchema": {
         "properties": {
           "track_type": {
@@ -4569,7 +4635,7 @@
     },
     {
       "name": "inspect_master_chain",
-      "description": "Read Main/Master devices including nested rack chains, chain gain/mute,\n    and each parameter's formatted value, enum options and automation state.\n    Does not change processing or measure LUFS, true peak or gain reduction.\n    Requires EXT.2 Live bridge; restart Live after installing the update.\n    ",
+      "description": "Read Main/Master devices including nested rack chains, chain gain/mute,\nand each parameter's formatted value, enum options and automation state.\nDoes not change processing or measure LUFS, true peak or gain reduction.\nRequires EXT.2 Live bridge; restart Live after installing the update.\n",
       "inputSchema": {
         "properties": {},
         "title": "inspect_master_chainArguments",
@@ -4584,7 +4650,7 @@
     },
     {
       "name": "inspect_remix_session",
-      "description": "Inspect a private remix journal, owned track identities and current source\n        fingerprints without edits. Report stale bindings and uncertain partial creates;\n        never adopt or delete an unverified track automatically.\n        ",
+      "description": "Inspect a private remix journal, owned track identities and current source\nfingerprints without edits. Report stale bindings and uncertain partial creates;\nnever adopt or delete an unverified track automatically.\n",
       "inputSchema": {
         "properties": {
           "project_dir": {
@@ -4640,7 +4706,7 @@
     },
     {
       "name": "jump_by",
-      "description": "Move the playhead by a relative number of beats (negative moves back).\n    Works during playback for on-the-fly navigation.",
+      "description": "Move the playhead by a relative number of beats (negative moves back).\nWorks during playback for on-the-fly navigation.",
       "inputSchema": {
         "properties": {
           "beats": {
@@ -4675,7 +4741,7 @@
     },
     {
       "name": "jump_to_cue",
-      "description": "Jump the playhead to the next locator/cue (direction >= 0) or the previous\n    one (direction < 0).",
+      "description": "Jump the playhead to the next locator/cue (direction >= 0) or the previous\none (direction < 0).",
       "inputSchema": {
         "properties": {
           "direction": {
@@ -4770,7 +4836,7 @@
     },
     {
       "name": "list_recipes",
-      "description": "List the built-in composition recipes (name, description, and default\n    tempo/key/scale/bars), for use with apply_recipe.",
+      "description": "List the built-in composition recipes (name, description, and default\ntempo/key/scale/bars), for use with apply_recipe.",
       "inputSchema": {
         "properties": {},
         "title": "list_recipesArguments",
@@ -4832,7 +4898,7 @@
     },
     {
       "name": "load_device_to_return",
-      "description": "Append one loadable browser device or preset to a return track's chain.\n\n    Obtain `item_uri` from search_browser. Loading selects the return track in\n    Live and creates a new device, so repeated calls add duplicates. Prefer audio\n    effects on returns; use load_instrument_or_effect for a regular track or\n    load_device_to_master for the Master chain.\n    ",
+      "description": "Append one loadable browser device or preset to a return track's chain.\n\nObtain `item_uri` from search_browser. Loading selects the return track in\nLive and creates a new device, so repeated calls add duplicates. Prefer audio\neffects on returns; use load_instrument_or_effect for a regular track or\nload_device_to_master for the Master chain.\n",
       "inputSchema": {
         "properties": {
           "return_index": {
@@ -4876,7 +4942,7 @@
     },
     {
       "name": "load_drum_kit",
-      "description": "Load a Drum Rack, then the first loadable kit at a browser path.\n\n    Use search_browser to obtain the rack URI and get_browser_items_at_path to\n    verify the kit path. This is a two-step mutation: it appends the rack first,\n    then loads the first loadable item found at `kit_path`. If path lookup fails,\n    the new empty rack remains on the track; repeated calls add more racks. Use\n    load_instrument_or_effect when one known browser URI is sufficient.\n    ",
+      "description": "Load a Drum Rack, then the first loadable kit at a browser path.\n\nUse search_browser to obtain the rack URI and get_browser_items_at_path to\nverify the kit path. This is a two-step mutation: it appends the rack first,\nthen loads the first loadable item found at `kit_path`. If path lookup fails,\nthe new empty rack remains on the track; repeated calls add more racks. Use\nload_instrument_or_effect when one known browser URI is sufficient.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -4926,7 +4992,7 @@
     },
     {
       "name": "load_instrument_or_effect",
-      "description": "\n    Load an instrument or effect onto a track using its URI.\n\n    Parameters:\n    - track_index: The index of the track to load the instrument on\n    - uri: The URI of the instrument or effect to load (e.g., 'query:Synths#Instrument%20Rack:Bass:FileId_5116')\n    ",
+      "description": "\nLoad an instrument or effect onto a track using its URI.\n\nParameters:\n- track_index: The index of the track to load the instrument on\n- uri: The URI of the instrument or effect to load (e.g., 'query:Synths#Instrument%20Rack:Bass:FileId_5116')\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -4994,7 +5060,7 @@
     },
     {
       "name": "modify_live_clip_notes",
-      "description": "Modify existing notes by note_id in Session or Arrangement without\n        recreating the clip. Each entry needs note_id plus pitch/start_time/duration/\n        velocity/mute/probability/deviation/release fields to change. Read all notes\n        first; names and Arrangement start guard required. Keeps note identities;\n        does not add/delete notes or rewrite MPE expression curves. One Undo step.\n        ",
+      "description": "Modify existing notes by note_id in Session or Arrangement without\nrecreating the clip. Each entry needs note_id plus pitch/start_time/duration/\nvelocity/mute/probability/deviation/release fields to change. Read all notes\nfirst; names and Arrangement start guard required. Live reassigns the ID of\neach edited note because the edit removes and re-adds it; other notes keep\ntheir IDs and expression data. Does not add unrelated notes or rewrite MPE\nexpression curves. One Undo step.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -5027,7 +5093,7 @@
     },
     {
       "name": "plan_halftime_remix_workflow",
-      "description": "Plan a reusable rock/dubstep/riddim flip: source-relative riff MIDI, held roots,\n        half-time drums, smooth pulses, audio-link choices and verification. No Live writes.\n        Physical Hz/ms/dB suggestions are not native device values. Read docs/REMIX_WORKFLOW.md.\n        ",
+      "description": "Plan a reusable rock/dubstep/riddim flip: source-relative riff MIDI, held roots,\nhalf-time drums, smooth pulses, audio-link choices and verification. No Live writes.\nPhysical Hz/ms/dB suggestions are not native device values. Read docs/REMIX_WORKFLOW.md.\n",
       "inputSchema": {
         "properties": {
           "config": {
@@ -5051,7 +5117,7 @@
     },
     {
       "name": "plan_remix_midi_cleanup",
-      "description": "Propose transcription cleanup on a guarded MIDI clip: exact duplicates,\n        short fragments, overlaps, gentle nearby-grid correction and optional lowest\n        monophonic voice/octave register. Never key-snap or edit the original. Returns\n        proposed notes and counts for building a separate copy; rechecks source notes.\n        ",
+      "description": "Propose transcription cleanup on a guarded MIDI clip: exact duplicates,\nshort fragments, overlaps, gentle nearby-grid correction and optional lowest\nmonophonic voice/octave register. Never key-snap or edit the original. Returns\nproposed notes and counts for building a separate copy; rechecks source notes.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -5088,7 +5154,7 @@
     },
     {
       "name": "prepare_remix_session",
-      "description": "Bind selected riff_midi/riff/vocal/rock_context clips with fresh name/start guards,\n        render immutable private audio assets, and save a rebuildable plan. Each source:\n        {target:{track_index,clip_index,clip_view,expected_track_name,expected_clip_name,\n        expected_start_time},source_start?:number}. source_start uses clip beats if warped,\n        seconds otherwise. Optional timing_reference is a guarded audio target sharing\n        the correct Warp map across aligned stems; source_offset_seconds is a measured\n        constant correction within +/-2 seconds. No Live writes. Optional level-based vocal activity inference;\n        refresh_pulses reads the owned Session Pulse Input MIDI. See REMIX_V2_PLAN.md.\n        ",
+      "description": "Bind selected riff_midi/riff/vocal/rock_context clips with fresh name/start guards,\nrender immutable private audio assets, and save a rebuildable plan. Each source:\n{target:{track_index,clip_index,clip_view,expected_track_name,expected_clip_name,\nexpected_start_time},source_start?:number}. source_start uses clip beats if warped,\nseconds otherwise. Optional timing_reference is a guarded audio target sharing\nthe correct Warp map across aligned stems; source_offset_seconds is a measured\nconstant correction within +/-2 seconds. No Live writes. Optional level-based vocal activity inference;\nrefresh_pulses reads the owned Session Pulse Input MIDI. See REMIX_V2_PLAN.md.\n",
       "inputSchema": {
         "properties": {
           "config": {
@@ -5179,7 +5245,7 @@
     },
     {
       "name": "preview_browser_item",
-      "description": "Audition a browser item (a sample, instrument, or preset) through Live's\n    preview tab WITHOUT loading it onto a track. `item_uri` comes from\n    search_browser or get_browser_items_at_path. Use stop_browser_preview to stop.",
+      "description": "Audition a browser item (a sample, instrument, or preset) through Live's\npreview tab WITHOUT loading it onto a track. `item_uri` comes from\nsearch_browser or get_browser_items_at_path. Use stop_browser_preview to stop.",
       "inputSchema": {
         "properties": {
           "item_uri": {
@@ -5259,7 +5325,7 @@
     },
     {
       "name": "preview_remix_session",
-      "description": "Capture a <=60 second preview of owned remix lanes through Live Resampling;\n        temporarily isolate them, disarm others, disable monitoring/feedback and verify\n        transport after start. Restore original mixer/arm/loop/time state. Returns WAV,\n        measured loudness/peaks/low-band correlation and a bounded problem scan. Requires\n        stopped playback and no launched Session clips. Real-time capture is not audition.\n        ",
+      "description": "Capture a <=60 second preview of owned remix lanes through Live Resampling;\ntemporarily isolate them, disarm others, disable monitoring/feedback and verify\ntransport after start. Restore original mixer/arm/loop/time state. Returns WAV,\nmeasured loudness/peaks/low-band correlation and a bounded problem scan. Requires\nstopped playback and no launched Session clips. Real-time capture is not audition.\n",
       "inputSchema": {
         "properties": {
           "project_dir": {
@@ -5292,7 +5358,7 @@
     },
     {
       "name": "preview_warp_repair",
-      "description": "Preview explicit existing-marker moves WITHOUT editing Live. Requires track\n        and clip names; Arrangement source requires expected_start_time. Preserves\n        first/hidden terminal anchors and source sample positions; detects crossing,\n        excessive shifts and invalid slopes. Destination is for a later duplicate,\n        in Arrangement beats. Token expires after 10 min and after one apply attempt.\n        ",
+      "description": "Preview explicit existing-marker moves WITHOUT editing Live. Requires track\nand clip names; Arrangement source requires expected_start_time. Preserves\nfirst/hidden terminal anchors and source sample positions; detects crossing,\nexcessive shifts and invalid slopes. Destination is for a later duplicate,\nin Arrangement beats. Token expires after 10 min and after one apply attempt.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -5347,7 +5413,7 @@
     },
     {
       "name": "quantize_clip",
-      "description": "Quantize a MIDI clip. grid: quarter/eighth/eighth_triplet/sixteenth/sixteenth_triplet/thirtysecond.\n    amount 0.0-1.0 (use <1.0 to humanize toward the grid without full snap).",
+      "description": "Quantize a MIDI clip. grid: quarter/eighth/eighth_triplet/sixteenth/sixteenth_triplet/thirtysecond.\namount 0.0-1.0 (use <1.0 to humanize toward the grid without full snap).",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -5397,7 +5463,7 @@
     },
     {
       "name": "rack_variation",
-      "description": "Rack macro snapshots. action: \"store\" (save current macros as a\n    variation), \"recall\" (restore variation `index`), \"randomize\" (randomize\n    all macro knobs - instant sound-design exploration).",
+      "description": "Rack macro snapshots. action: \"store\" (save current macros as a\nvariation), \"recall\" (restore variation `index`), \"randomize\" (randomize\nall macro knobs - instant sound-design exploration).",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -5454,7 +5520,7 @@
     },
     {
       "name": "re_enable_automation",
-      "description": "Restore automation that was overridden by manual parameter changes.\n    IMPORTANT: setting a device parameter that has an envelope overrides the\n    envelope until this is called.",
+      "description": "Restore automation that was overridden by manual parameter changes.\nIMPORTANT: setting a device parameter that has an envelope overrides the\nenvelope until this is called.",
       "inputSchema": {
         "properties": {},
         "title": "re_enable_automationArguments",
@@ -5481,7 +5547,7 @@
     },
     {
       "name": "read_live_object",
-      "description": "Read scalar properties and availability. object_type=song|track|scene|clip|chain.\n        Clip target: track_type, track_index, clip_view=session|arrangement, clip_index.\n        Scene uses scene_index. Chain uses device_path to rack and chain_index.\n        ",
+      "description": "Read scalar properties and availability. object_type=song|track|scene|clip|chain.\nClip target: track_type, track_index, clip_view=session|arrangement, clip_index.\nScene uses scene_index. Chain uses device_path to rack and chain_index.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -5505,7 +5571,7 @@
     },
     {
       "name": "record_section",
-      "description": "Bounce a section of the arrangement to an audio file WITHOUT the Export\n    dialog, so you can hear an internal signal. Creates a temporary audio track,\n    routes its input to `source` (\"Resampling\" = the master output, or a track's\n    name for that track's output), arms it, and records from start_beat to end_beat\n    in REAL TIME (a 4-bar section takes about 4 bars of wall-clock; capped at\n    5 minutes). Returns the recorded WAV path. Set cleanup=False to keep the\n    recording track. Runs the transport and adds an arrangement clip.",
+      "description": "Bounce a section of the arrangement to an audio file WITHOUT the Export\ndialog, so you can hear an internal signal. Creates a temporary audio track,\nroutes its input to `source` (\"Resampling\" = the master output, or a track's\nname for that track's output), arms it, and records from start_beat to end_beat\nin REAL TIME (a 4-bar section takes about 4 bars of wall-clock; capped at\n5 minutes). Returns the recorded WAV path. Set cleanup=False to keep the\nrecording track. Runs the transport and adds an arrangement clip.",
       "inputSchema": {
         "properties": {
           "start_beat": {
@@ -5582,7 +5648,7 @@
     },
     {
       "name": "refine_halftime_remix_workflow",
-      "description": "Revise a remix plan using explicit listening feedback: too_guttural, too_busy,\n        vocal_masked, kick_sub_clash, weak_transition, clicks, more_riddim, smoother.\n        Returns a new config with revision history. No audio audition or Live changes.\n        ",
+      "description": "Revise a remix plan using explicit listening feedback: too_guttural, too_busy,\nvocal_masked, kick_sub_clash, weak_transition, clicks, more_riddim, smoother.\nReturns a new config with revision history. No audio audition or Live changes.\n",
       "inputSchema": {
         "properties": {
           "config": {
@@ -5614,7 +5680,7 @@
     },
     {
       "name": "replace_simpler_sample",
-      "description": "Replace a Simpler sample with an absolute local audio-file path. Requires Live 12.4+\n    AND runtime API support; otherwise fails before writing. Replaces musical content:\n    confirm the target and preserve the original set. Readback is not an audio audition.\n    ",
+      "description": "Replace a Simpler sample with an absolute local audio-file path. Requires Live 12.4+\nAND runtime API support; otherwise fails before writing. Replaces musical content:\nconfirm the target and preserve the original set. Readback is not an audio audition.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -5664,7 +5730,7 @@
     },
     {
       "name": "save_set",
-      "description": "Save the current Live set to its existing file, if the Live API supports it\n    (it does not on most versions). Returns whether the API call is available and\n    whether the save succeeded. To save under a new name/path, use the GUI Save-As.",
+      "description": "Save the current Live set to its existing file, if the Live API supports it\n(it does not on most versions). Returns whether the API call is available and\nwhether the save succeeded. To save under a new name/path, use the GUI Save-As.",
       "inputSchema": {
         "properties": {},
         "title": "save_setArguments",
@@ -5691,7 +5757,7 @@
     },
     {
       "name": "scan_audio_problems",
-      "description": "Scan local integer PCM WAV for measured levels/DC and suspected clicks, gaps,\n        near-full-scale peaks and level jumps. Returns source timestamps, evidence,\n        confidence and targeted repair recipes. Bounded window, not audition or automatic\n        smoothing. Other formats and unassessed defects are explicit. No writes.\n        ",
+      "description": "Scan local integer PCM WAV for measured levels/DC and suspected clicks, gaps,\nnear-full-scale peaks and level jumps. Returns source timestamps, evidence,\nconfidence and targeted repair recipes. Bounded window, not audition or automatic\nsmoothing. Other formats and unassessed defects are explicit. No writes.\n",
       "inputSchema": {
         "properties": {
           "path": {
@@ -5724,7 +5790,7 @@
     },
     {
       "name": "scan_clip_audio_problems",
-      "description": "Scan the source WAV window of one explicit Session/Arrangement audio clip.\n        target uses track_index, clip_index, clip_view and optional name/start guards.\n        Rechecks clip timing after scan. Reports source seconds; effects, fades and Warp\n        playback are not rendered or analyzed. No edits, playback or automatic repair.\n        ",
+      "description": "Scan the source WAV window of one explicit Session/Arrangement audio clip.\ntarget uses track_index, clip_index, clip_view and optional name/start guards.\nRechecks clip timing after scan. Reports source seconds; effects, fades and Warp\nplayback are not rendered or analyzed. No edits, playback or automatic repair.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -5753,7 +5819,7 @@
     },
     {
       "name": "search_browser",
-      "description": "Search the Ableton browser by display name (case-insensitive substring).\n    Returns loadable items with their URIs for load_instrument_or_effect /\n    load_device_to_master / load_device_to_return.\n\n    category: optionally limit to one of \"instruments\", \"sounds\", \"drums\",\n    \"audio_effects\", \"midi_effects\", \"packs\" (default: search all of them).\n    Prefer this over walking get_browser_items_at_path when you know a name.\n    ",
+      "description": "Search the Ableton browser by display name (case-insensitive substring).\nReturns loadable items with their URIs for load_instrument_or_effect /\nload_device_to_master / load_device_to_return.\n\ncategory: optionally limit to one of \"instruments\", \"sounds\", \"drums\",\n\"audio_effects\", \"midi_effects\", \"packs\" (default: search all of them).\nPrefer this over walking get_browser_items_at_path when you know a name.\n",
       "inputSchema": {
         "properties": {
           "query": {
@@ -5806,7 +5872,7 @@
     },
     {
       "name": "search_production_recipes",
-      "description": "Search the full AbletonMCPEXT reference library: bass, layering, modulation,\n    mastering, tutorials and artist methods. Read-only; reference entries are not\n    executable presets. Sources and verification limits are preserved.\n    ",
+      "description": "Search the full AbletonMCPEXT reference library: bass, layering, modulation,\nmastering, tutorials and artist methods. Read-only; reference entries are not\nexecutable presets. Sources and verification limits are preserved.\n",
       "inputSchema": {
         "properties": {
           "query": {
@@ -5827,7 +5893,7 @@
     },
     {
       "name": "session_diff",
-      "description": "Report what changed in the set since the LAST time you called this tool:\n    tempo/time-signature/play-state, tracks added, removed, renamed or reordered, and per-track volume,\n    mute, solo, arm, clip-count, and device changes. The first call records a\n    baseline (no diff). Track IDs are scoped to the running bridge; older bridges\n    cannot identify renames reliably. Call it before and after an edit to verify it took effect.",
+      "description": "Report what changed in the set since the LAST time you called this tool:\ntempo/time-signature/play-state, tracks added, removed, renamed or reordered, and per-track volume,\nmute, solo, arm, clip-count, and device changes. The first call records a\nbaseline (no diff). Track IDs are scoped to the running bridge; older bridges\ncannot identify renames reliably. Call it before and after an edit to verify it took effect.",
       "inputSchema": {
         "properties": {},
         "title": "session_diffArguments",
@@ -5854,7 +5920,7 @@
     },
     {
       "name": "set_ableton_link",
-      "description": "Enable or disable Ableton Link, which syncs tempo and phase with other\n    Link-enabled apps and devices on the local network.",
+      "description": "Enable or disable Ableton Link, which syncs tempo and phase with other\nLink-enabled apps and devices on the local network.",
       "inputSchema": {
         "properties": {
           "enabled": {
@@ -5889,7 +5955,7 @@
     },
     {
       "name": "set_arrangement_overdub",
-      "description": "Toggle arrangement overdub: recording layers MIDI onto existing\n    arrangement clips instead of replacing them.",
+      "description": "Toggle arrangement overdub: recording layers MIDI onto existing\narrangement clips instead of replacing them.",
       "inputSchema": {
         "properties": {
           "enabled": {
@@ -5924,7 +5990,7 @@
     },
     {
       "name": "set_arrangement_time",
-      "description": "\n    Move the arrangement playhead to a specific position.\n\n    Parameters:\n    - time: Position in beats from the start of the arrangement (e.g. 8.0 = bar 3 in 4/4)\n    ",
+      "description": "\nMove the arrangement playhead to a specific position.\n\nParameters:\n- time: Position in beats from the start of the arrangement (e.g. 8.0 = bar 3 in 4/4)\n",
       "inputSchema": {
         "properties": {
           "time": {
@@ -5959,7 +6025,7 @@
     },
     {
       "name": "set_chain_device_parameter",
-      "description": "Set a parameter on a device INSIDE a rack chain (indices from\n    get_rack_chains). Values clamp to the parameter's native range.",
+      "description": "Set a parameter on a device INSIDE a rack chain (indices from\nget_rack_chains). Values clamp to the parameter's native range.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6026,7 +6092,7 @@
     },
     {
       "name": "set_clip_audio",
-      "description": "Set audio-clip properties. gain 0-1, pitch_coarse semitones (-48..48), pitch_fine cents,\n    warping on/off, warp_mode 0=Beats 1=Tones 2=Texture 3=Re-Pitch 4=Complex 6=Complex Pro.",
+      "description": "Set audio-clip properties. gain 0-1, pitch_coarse semitones (-48..48), pitch_fine cents,\nwarping on/off, warp_mode 0=Beats 1=Tones 2=Texture 3=Re-Pitch 4=Complex 6=Complex Pro.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6126,7 +6192,7 @@
     },
     {
       "name": "set_clip_color",
-      "description": "Set an existing Session clip's palette color without changing its content.\n\n    This is a visual organization change only. Use set_track_color to recolor\n    the track header instead. Repeating the same color has no additional effect.\n    ",
+      "description": "Set an existing Session clip's palette color without changing its content.\n\nThis is a visual organization change only. Use set_track_color to recolor\nthe track header instead. Repeating the same color has no additional effect.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6231,7 +6297,7 @@
     },
     {
       "name": "set_clip_loop",
-      "description": "Update selected loop and launch markers on one existing Session clip.\n\n    Provide at least one optional field; omitted fields stay unchanged. `start`\n    and `end` are loop-brace positions in clip-relative beats and end must be\n    after start. `start_marker` controls where non-looped launch begins;\n    `looping` enables or disables repetition. Use set_loop for the Arrangement's\n    global loop region, not a clip, and get_clip_info to inspect current values.\n    ",
+      "description": "Update selected loop and launch markers on one existing Session clip.\n\nProvide at least one optional field; omitted fields stay unchanged. `start`\nand `end` are loop-brace positions in clip-relative beats and end must be\nafter start. `start_marker` controls where non-looped launch begins;\n`looping` enables or disables repetition. Use set_loop for the Arrangement's\nglobal loop region, not a clip, and get_clip_info to inspect current values.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6331,7 +6397,7 @@
     },
     {
       "name": "set_clip_name",
-      "description": "Rename an existing Session-view clip without changing its notes or audio.\n\n    The slot must contain a clip. Use this for the clip label; use set_track_name\n    for the track label. Repeating the same name has no additional effect.\n    ",
+      "description": "Rename an existing Session-view clip without changing its notes or audio.\n\nThe slot must contain a clip. Use this for the clip label; use set_track_name\nfor the track label. Repeating the same name has no additional effect.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6432,7 +6498,7 @@
     },
     {
       "name": "set_clip_trigger_quantization",
-      "description": "Global launch quantization for firing clips/scenes. 0=None (instant,\n    good for auditioning), 4=1 bar (default), 7=1/4 note, 13=1/32.",
+      "description": "Global launch quantization for firing clips/scenes. 0=None (instant,\ngood for auditioning), 4=1 bar (default), 7=1/4 note, 13=1/32.",
       "inputSchema": {
         "properties": {
           "value": {
@@ -6467,7 +6533,7 @@
     },
     {
       "name": "set_crossfade_assign",
-      "description": "Assign one regular track to crossfader side A, neither side, or side B.\n\n    This configures which side affects the track; it does not move the crossfader\n    or change track volume immediately. Use set_crossfader afterward to blend the\n    A/B groups. Repeating the same assignment has no additional effect.\n    ",
+      "description": "Assign one regular track to crossfader side A, neither side, or side B.\n\nThis configures which side affects the track; it does not move the crossfader\nor change track volume immediately. Use set_crossfader afterward to blend the\nA/B groups. Repeating the same assignment has no additional effect.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6548,7 +6614,7 @@
     },
     {
       "name": "set_device_enabled",
-      "description": "Enable or bypass one device on a regular track.\n\n    `true` turns the device on; `false` bypasses its processing while preserving\n    the device and parameter values. This changes audible signal flow but not\n    clip content. Use set_track_mute to silence the whole track, or\n    set_device_parameter to change one control.\n    ",
+      "description": "Enable or bypass one device on a regular track.\n\n`true` turns the device on; `false` bypasses its processing while preserving\nthe device and parameter values. This changes audible signal flow but not\nclip content. Use set_track_mute to silence the whole track, or\nset_device_parameter to change one control.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6599,7 +6665,7 @@
     },
     {
       "name": "set_device_parameter",
-      "description": "Set a parameter after reading get_device_parameters. Numbers use the native range;\n    strings use display units ('250 Hz', '-6 dB') or exact enum labels. Unsupported\n    display mappings fail before writing. Returns Live's actual readback and warnings.",
+      "description": "Set a parameter after reading get_device_parameters. Numbers use the native range;\nstrings use display units ('250 Hz', '-6 dB') or exact enum labels. Unsupported\ndisplay mappings fail before writing. Returns Live's actual readback and warnings.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6669,7 +6735,7 @@
     },
     {
       "name": "set_device_routing",
-      "description": "Set a device's sidechain audio input. `field` is \"input_routing_type\" (the\n    source track/return) or \"input_routing_channel\" (Pre FX / Post FX / Post Mixer);\n    `display_name` is one of the options from get_device_routing. For ducking, also\n    enable the device's Sidechain parameter via set_device_parameter.",
+      "description": "Set a device's sidechain audio input. `field` is \"input_routing_type\" (the\nsource track/return) or \"input_routing_channel\" (Pre FX / Post FX / Post Mixer);\n`display_name` is one of the options from get_device_routing. For ducking, also\nenable the device's Sidechain parameter via set_device_parameter.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6719,7 +6785,7 @@
     },
     {
       "name": "set_drum_pad",
-      "description": "Mute/solo/rename a single Drum Rack pad by its MIDI note (e.g. 36=kick).\n    Per-pad muting = instant beat variations without touching the notes.",
+      "description": "Mute/solo/rename a single Drum Rack pad by its MIDI note (e.g. 36=kick).\nPer-pad muting = instant beat variations without touching the notes.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6800,7 +6866,7 @@
     },
     {
       "name": "set_fold_state",
-      "description": "Fold (collapse) or unfold a group track. Errors if the track is not a group\n    track (see get_group_info).",
+      "description": "Fold (collapse) or unfold a group track. Errors if the track is not a group\ntrack (see get_group_info).",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -6840,7 +6906,7 @@
     },
     {
       "name": "set_groove_amount",
-      "description": "Set the global Groove Amount (0.0 to 1.0), which scales how strongly every\n    clip's assigned groove is applied across the whole set.",
+      "description": "Set the global Groove Amount (0.0 to 1.0), which scales how strongly every\nclip's assigned groove is applied across the whole set.",
       "inputSchema": {
         "properties": {
           "amount": {
@@ -6875,7 +6941,7 @@
     },
     {
       "name": "set_live_mixer",
-      "description": "Set track/return/Main or rack-chain mixer: volume, pan, send:N. Native\n        values, not assumed dB. Read mixer first. Track and chain name guards,\n        automated-control refusal, verified readback, rollback and one Undo step.\n        ",
+      "description": "Set track/return/Main or rack-chain mixer: volume, pan, send:N. Native\nvalues, not assumed dB. Read mixer first. Track and chain name guards,\nautomated-control refusal, verified readback, rollback and one Undo step.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -6907,7 +6973,7 @@
     },
     {
       "name": "set_loop",
-      "description": "Set the global Arrangement loop region and its enabled state.\n\n    `start` is an absolute beat and `length` is a positive beat duration. The\n    region is updated even when `enabled=false`; playback simply will not repeat\n    it. Use set_clip_loop for a Session clip's loop braces, not the Arrangement.\n    ",
+      "description": "Set the global Arrangement loop region and its enabled state.\n\n`start` is an absolute beat and `length` is a positive beat duration. The\nregion is updated even when `enabled=false`; playback simply will not repeat\nit. Use set_clip_loop for a Session clip's loop braces, not the Arrangement.\n",
       "inputSchema": {
         "properties": {
           "start": {
@@ -6958,7 +7024,7 @@
     },
     {
       "name": "set_master_device_parameter",
-      "description": "Set one enabled parameter on a device in the Master track's chain.\n\n    Call get_master_device_parameters first and use its parameter name/index and\n    native min/max; numeric out-of-range values are clamped. Display strings with\n    supported units or exact enum labels also work; unsupported mappings fail\n    before writing. This affects the full mix. Read back the resulting display.\n    Use set_device_parameter for a regular track or\n    set_return_device_parameter for a return track.\n    ",
+      "description": "Set one enabled parameter on a device in the Master track's chain.\n\nCall get_master_device_parameters first and use its parameter name/index and\nnative min/max; numeric out-of-range values are clamped. Display strings with\nsupported units or exact enum labels also work; unsupported mappings fail\nbefore writing. This affects the full mix. Read back the resulting display.\nUse set_device_parameter for a regular track or\nset_return_device_parameter for a return track.\n",
       "inputSchema": {
         "properties": {
           "device_index": {
@@ -7092,7 +7158,7 @@
     },
     {
       "name": "set_nested_device_parameters",
-      "description": "Guarded, verified nested parameter batch on track/return/Main. Read first.\n        Target requires expected_track_name, expected_device_name and device_path.\n        Native values only; refuses automated controls. Rollback and one Undo step.\n        ",
+      "description": "Guarded, verified nested parameter batch on track/return/Main. Read first.\nTarget requires expected_track_name, expected_device_name and device_path.\nNative values only; refuses automated controls. Rollback and one Undo step.\n",
       "inputSchema": {
         "properties": {
           "target": {
@@ -7124,7 +7190,7 @@
     },
     {
       "name": "set_record_mode",
-      "description": "Arm or disarm Live's global Arrangement Record state.\n\n    `true` enables Arrangement recording; `false` disables it. Enabling alone\n    does not record: arm the intended tracks with set_track_arm, then use\n    start_playback. Use set_session_record or trigger_session_record for Session\n    slots instead. Repeating the current state has no additional effect.\n    ",
+      "description": "Arm or disarm Live's global Arrangement Record state.\n\n`true` enables Arrangement recording; `false` disables it. Enabling alone\ndoes not record: arm the intended tracks with set_track_arm, then use\nstart_playback. Use set_session_record or trigger_session_record for Session\nslots instead. Repeating the current state has no additional effect.\n",
       "inputSchema": {
         "properties": {
           "enabled": {
@@ -7161,7 +7227,7 @@
     },
     {
       "name": "set_return_device_parameter",
-      "description": "Set one enabled parameter on a device in a return track's chain.\n\n    Call get_return_device_parameters first and use its parameter name/index and\n    native min/max; numeric out-of-range values are clamped. Supported display-unit\n    strings and exact enum labels also work; unsupported mappings fail before writing.\n    Use set_device_parameter for\n    a regular track or set_master_device_parameter for the full-mix chain.\n    ",
+      "description": "Set one enabled parameter on a device in a return track's chain.\n\nCall get_return_device_parameters first and use its parameter name/index and\nnative min/max; numeric out-of-range values are clamped. Supported display-unit\nstrings and exact enum labels also work; unsupported mappings fail before writing.\nUse set_device_parameter for\na regular track or set_master_device_parameter for the full-mix chain.\n",
       "inputSchema": {
         "properties": {
           "return_index": {
@@ -7232,7 +7298,7 @@
     },
     {
       "name": "set_scene_name",
-      "description": "Rename one Session-view scene without changing any clips in the row.\n\n    Use set_clip_name for an individual clip. Repeating the same name has no\n    additional effect.\n    ",
+      "description": "Rename one Session-view scene without changing any clips in the row.\n\nUse set_clip_name for an individual clip. Repeating the same name has no\nadditional effect.\n",
       "inputSchema": {
         "properties": {
           "scene_index": {
@@ -7321,7 +7387,7 @@
     },
     {
       "name": "set_session_automation_record",
-      "description": "Toggle recording of parameter changes into Session clip envelopes -\n    an alternative to write_automation for captured knob rides.",
+      "description": "Toggle recording of parameter changes into Session clip envelopes -\nan alternative to write_automation for captured knob rides.",
       "inputSchema": {
         "properties": {
           "enabled": {
@@ -7356,7 +7422,7 @@
     },
     {
       "name": "set_session_record",
-      "description": "Toggle Session record (records into armed tracks' selected Session slots;\n    also enables MIDI overdub into playing clips).",
+      "description": "Toggle Session record (records into armed tracks' selected Session slots;\nalso enables MIDI overdub into playing clips).",
       "inputSchema": {
         "properties": {
           "enabled": {
@@ -7391,7 +7457,7 @@
     },
     {
       "name": "set_simpler_playback_mode",
-      "description": "Set a Simpler device's playback mode: 0 = Classic, 1 = One-Shot, 2 = Slicing.\n    Slicing chops the sample into playable slices, central to lofi/hip-hop\n    sampling. Errors if the device at that index is not a Simpler.",
+      "description": "Set a Simpler device's playback mode: 0 = Classic, 1 = One-Shot, 2 = Slicing.\nSlicing chops the sample into playable slices, central to lofi/hip-hop\nsampling. Errors if the device at that index is not a Simpler.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -7436,7 +7502,7 @@
     },
     {
       "name": "set_song_scale",
-      "description": "Set the song's key context. root_note 0-11 (0=C, 2=D...), scale_name e.g.\n    \"Major\", \"Minor\", \"Dorian\". Read current values via get_session_info.",
+      "description": "Set the song's key context. root_note 0-11 (0=C, 2=D...), scale_name e.g.\n\"Major\", \"Minor\", \"Dorian\". Read current values via get_session_info.",
       "inputSchema": {
         "properties": {
           "root_note": {
@@ -7576,7 +7642,7 @@
     },
     {
       "name": "set_tempo",
-      "description": "\n    Set the tempo of the Ableton session.\n\n    Parameters:\n    - tempo: The new tempo in BPM\n    ",
+      "description": "\nSet the tempo of the Ableton session.\n\nParameters:\n- tempo: The new tempo in BPM\n",
       "inputSchema": {
         "properties": {
           "tempo": {
@@ -7611,7 +7677,7 @@
     },
     {
       "name": "set_time_signature",
-      "description": "Set the Live set's global time signature, such as 4/4, 3/4, or 6/8.\n\n    This changes bar/grid and metronome interpretation but does not rewrite clip\n    notes. Use set_clip_signature instead when only one clip needs a different\n    meter for polymeter. Repeating the same signature has no additional effect.\n    ",
+      "description": "Set the Live set's global time signature, such as 4/4, 3/4, or 6/8.\n\nThis changes bar/grid and metronome interpretation but does not rewrite clip\nnotes. Use set_clip_signature instead when only one clip needs a different\nmeter for polymeter. Repeating the same signature has no additional effect.\n",
       "inputSchema": {
         "properties": {
           "numerator": {
@@ -7656,7 +7722,7 @@
     },
     {
       "name": "set_track_arm",
-      "description": "Arm or disarm a track for recording (fails on tracks that can't be armed,\n    e.g. group/return tracks).",
+      "description": "Arm or disarm a track for recording (fails on tracks that can't be armed,\ne.g. group/return tracks).",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -7736,7 +7802,7 @@
     },
     {
       "name": "set_track_monitoring",
-      "description": "Set input monitoring: 0=In (always hear input), 1=Auto, 2=Off.\n    Required for resampling/bounce workflows.",
+      "description": "Set input monitoring: 0=In (always hear input), 1=Auto, 2=Off.\nRequired for resampling/bounce workflows.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -7776,7 +7842,7 @@
     },
     {
       "name": "set_track_mute",
-      "description": "Set one regular track's mute state (`true` mutes; `false` unmutes).\n\n    Muting silences that track in Live but preserves its clips, devices, and\n    mixer settings. Use set_track_solo to audition a track relative to the rest,\n    or stop_clip when only Session clip playback should stop.\n    ",
+      "description": "Set one regular track's mute state (`true` mutes; `false` unmutes).\n\nMuting silences that track in Live but preserves its clips, devices, and\nmixer settings. Use set_track_solo to audition a track relative to the rest,\nor stop_clip when only Session clip playback should stop.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -7820,7 +7886,7 @@
     },
     {
       "name": "set_track_name",
-      "description": "\n    Set the name of a track.\n\n    Parameters:\n    - track_index: The index of the track to rename\n    - name: The new name for the track\n    ",
+      "description": "\nSet the name of a track.\n\nParameters:\n- track_index: The index of the track to rename\n- name: The new name for the track\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -7860,7 +7926,7 @@
     },
     {
       "name": "set_track_pan",
-      "description": "Set one regular track's stereo pan position; 0.0 is centered.\n\n    Live clamps the value to the track's native range. This changes mixer state,\n    not the audio file or clip content. Use set_master_device_parameter for a\n    device control, and set_crossfader for A/B crossfading.\n    ",
+      "description": "Set one regular track's stereo pan position; 0.0 is centered.\n\nLive clamps the value to the track's native range. This changes mixer state,\nnot the audio file or clip content. Use set_master_device_parameter for a\ndevice control, and set_crossfader for A/B crossfading.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -7906,7 +7972,7 @@
     },
     {
       "name": "set_track_routing",
-      "description": "Set track routing by display name. field: input_routing_type |\n    output_routing_type | input_routing_channel | output_routing_channel.\n    Enables sidechain sources, bus routing, and resampling (route a track's\n    output into another track's input, arm, record). Get options from\n    get_track_routing first.",
+      "description": "Set track routing by display name. field: input_routing_type |\noutput_routing_type | input_routing_channel | output_routing_channel.\nEnables sidechain sources, bus routing, and resampling (route a track's\noutput into another track's input, arm, record). Get options from\nget_track_routing first.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -7951,7 +8017,7 @@
     },
     {
       "name": "set_track_solo",
-      "description": "Set one regular track's solo state (`true` solos; `false` unsolos).\n\n    Solo changes monitoring relative to other tracks and does not alter clip or\n    device content. Other tracks may remain soloed, so clear them separately when\n    exclusive auditioning is required. Use set_track_mute to silence this track.\n    ",
+      "description": "Set one regular track's solo state (`true` solos; `false` unsolos).\n\nSolo changes monitoring relative to other tracks and does not alter clip or\ndevice content. Other tracks may remain soloed, so clear them separately when\nexclusive auditioning is required. Use set_track_mute to silence this track.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -8035,7 +8101,7 @@
     },
     {
       "name": "setup_session",
-      "description": "Bootstrap a session in one call: set tempo and create named MIDI tracks,\n    optionally loading an instrument found by name for each.\n\n    tracks: [{\"name\": \"Drums\", \"instrument\": \"drum kit\"}, {\"name\": \"Bass\",\n    \"instrument\": \"upright bass\"}, ...]. \"instrument\" is a search_browser query\n    (best match is loaded); omit it to create an empty track.\n    Returns a per-track report with the loaded item names.\n    ",
+      "description": "Bootstrap a session in one call: set tempo and create named MIDI tracks,\noptionally loading an instrument found by name for each.\n\ntracks: [{\"name\": \"Drums\", \"instrument\": \"drum kit\"}, {\"name\": \"Bass\",\n\"instrument\": \"upright bass\"}, ...]. \"instrument\" is a search_browser query\n(best match is loaded); omit it to create an empty track.\nReturns a per-track report with the loaded item names.\n",
       "inputSchema": {
         "properties": {
           "tempo": {
@@ -8079,7 +8145,7 @@
     },
     {
       "name": "start_playback",
-      "description": "Start Arrangement playback from the current song time. NOTE: the response\n    reports the PRE-command state (may say playing=false right after starting) -\n    confirm with get_session_info.\n    ",
+      "description": "Start Arrangement playback from the current song time. NOTE: the response\nreports the PRE-command state (may say playing=false right after starting) -\nconfirm with get_session_info.\n",
       "inputSchema": {
         "properties": {},
         "title": "start_playbackArguments",
@@ -8160,7 +8226,7 @@
     },
     {
       "name": "stop_clip",
-      "description": "\n    Stop playing a clip.\n\n    Parameters:\n    - track_index: The index of the track containing the clip\n    - clip_index: The index of the clip slot containing the clip\n    ",
+      "description": "\nStop playing a clip.\n\nParameters:\n- track_index: The index of the track containing the clip\n- clip_index: The index of the clip slot containing the clip\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -8200,7 +8266,7 @@
     },
     {
       "name": "stop_playback",
-      "description": "Stop playback. NOTE: the response reports the PRE-command state - confirm\n    with get_session_info.\n    ",
+      "description": "Stop playback. NOTE: the response reports the PRE-command state - confirm\nwith get_session_info.\n",
       "inputSchema": {
         "properties": {},
         "title": "stop_playbackArguments",
@@ -8227,7 +8293,7 @@
     },
     {
       "name": "switch_to_arrangement_view",
-      "description": "Switch Ableton's main window to the Arrangement view.\n\n    Parameters:\n    ",
+      "description": "Switch Ableton's main window to the Arrangement view.\n\nParameters:\n",
       "inputSchema": {
         "properties": {},
         "title": "switch_to_arrangement_viewArguments",
@@ -8254,7 +8320,7 @@
     },
     {
       "name": "tap_tempo",
-      "description": "Tap the tempo once. Tapping repeatedly at a beat sets the tempo to that\n    rate; a single tap nudges the transport. Returns the resulting tempo.",
+      "description": "Tap the tempo once. Tapping repeatedly at a beat sets the tempo to that\nrate; a single tap nudges the transport. Returns the resulting tempo.",
       "inputSchema": {
         "properties": {},
         "title": "tap_tempoArguments",
@@ -8312,7 +8378,7 @@
     },
     {
       "name": "transform_clip",
-      "description": "Read a MIDI clip's notes, apply a classical motif transformation, and write\n    the result. Overwrites the source clip unless ``dest_clip_index`` is given\n    (in which case that destination slot is REPLACED instead).\n\n    op (one of):\n      transpose  - shift every pitch by ``amount`` semitones (integer; may be\n                   negative). Timing unchanged; out-of-range pitches clamped.\n      invert     - mirror pitches about the first note's pitch (up-motion becomes\n                   down-motion). ``amount`` is ignored.\n      retrograde - play the motif backwards in time (onset order reversed,\n                   durations preserved). ``amount`` is ignored.\n      augment    - scale start times and durations by ``amount`` (a factor > 1\n                   stretches/slows, 0 < ``amount`` < 1 compresses/speeds up).\n                   Requires ``amount`` > 0.\n\n    ``amount`` therefore means semitones for transpose and a time factor for\n    augment. Returns a short summary of what was written.\n    ",
+      "description": "Read a MIDI clip's notes, apply a classical motif transformation, and write\nthe result. Overwrites the source clip unless ``dest_clip_index`` is given\n(in which case that destination slot is REPLACED instead).\n\nop (one of):\n  transpose  - shift every pitch by ``amount`` semitones (integer; may be\n               negative). Timing unchanged; out-of-range pitches clamped.\n  invert     - mirror pitches about the first note's pitch (up-motion becomes\n               down-motion). ``amount`` is ignored.\n  retrograde - play the motif backwards in time (onset order reversed,\n               durations preserved). ``amount`` is ignored.\n  augment    - scale start times and durations by ``amount`` (a factor > 1\n               stretches/slows, 0 < ``amount`` < 1 compresses/speeds up).\n               Requires ``amount`` > 0.\n\n``amount`` therefore means semitones for transpose and a time factor for\naugment. Returns a short summary of what was written.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -8374,7 +8440,7 @@
     },
     {
       "name": "trigger_session_record",
-      "description": "Start Session recording into armed tracks; record_length in beats records\n    a fixed-length loop (e.g. 16.0 = 4 bars) then auto-switches to playback.",
+      "description": "Start Session recording into armed tracks; record_length in beats records\na fixed-length loop (e.g. 16.0 = 4 bars) then auto-switches to playback.",
       "inputSchema": {
         "properties": {
           "record_length": {
@@ -8414,7 +8480,7 @@
     },
     {
       "name": "undo",
-      "description": "Revert the most recent undoable Live-set action.\n\n    This mutates the set and may remove newly created content or restore deleted\n    content. It has no target parameter: Live chooses the top undo-history entry.\n    Use redo to reapply an accidental undo. Prefer batch_commands for related\n    edits so one undo reverts the group.\n    ",
+      "description": "Revert the most recent undoable Live-set action.\n\nThis mutates the set and may remove newly created content or restore deleted\ncontent. It has no target parameter: Live chooses the top undo-history entry.\nUse redo to reapply an accidental undo. Prefer batch_commands for related\nedits so one undo reverts the group.\n",
       "inputSchema": {
         "properties": {},
         "title": "undoArguments",
@@ -8441,7 +8507,7 @@
     },
     {
       "name": "write_automation",
-      "description": "Write clip automation for a device parameter. points = [{\"time\": beats, \"value\": v}, ...].\n    Replaces any existing envelope for that parameter on the clip.",
+      "description": "Write clip automation for a device parameter. points = [{\"time\": beats, \"value\": v}, ...].\nReplaces any existing envelope for that parameter on the clip.",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -8509,7 +8575,7 @@
     },
     {
       "name": "write_clip_envelope",
-      "description": "Write verified, bounded Session envelopes. Read existing envelopes before replace=true.\n    Native parameter values; times in clip beats. Linear curves approximate hold steps.\n    Arrangement editing requires copying the Session clip back. One Live Undo step.\n    ",
+      "description": "Write verified, bounded Session envelopes. Read existing envelopes before replace=true.\nNative parameter values; times in clip beats. Linear curves approximate hold steps.\nArrangement editing requires copying the Session clip back. One Live Undo step.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -8607,7 +8673,7 @@
     },
     {
       "name": "write_drum_grid",
-      "description": "Write drums from an ASCII grid (16th-note steps). REPLACES existing notes.\n\n    grid: one line per instrument: \"name: pattern\" where pattern chars are\n    'X' (accent, vel 105), 'x' (normal, 85), 'o' (soft, 55), '.' or '-' (rest).\n    Line length = number of 16th steps (16 = one 4/4 bar; 32 = two bars...).\n    Instruments: kick snare rim clap chat phat ohat ltom mtom htom crash ride perc shaker,\n    or a raw MIDI number (\"36: x...\").\n\n    Example (one bar of lofi):\n      kick:  X..x......X.....\n      snare: ....x.......x...\n      chat:  x.o.x.o.x.o.x.o.\n    ",
+      "description": "Write drums from an ASCII grid (16th-note steps). REPLACES existing notes.\n\ngrid: one line per instrument: \"name: pattern\" where pattern chars are\n'X' (accent, vel 105), 'x' (normal, 85), 'o' (soft, 55), '.' or '-' (rest).\nLine length = number of 16th steps (16 = one 4/4 bar; 32 = two bars...).\nInstruments: kick snare rim clap chat phat ohat ltom mtom htom crash ride perc shaker,\nor a raw MIDI number (\"36: x...\").\n\nExample (one bar of lofi):\n  kick:  X..x......X.....\n  snare: ....x.......x...\n  chat:  x.o.x.o.x.o.x.o.\n",
       "inputSchema": {
         "properties": {
           "track_index": {
@@ -8657,7 +8723,7 @@
     },
     {
       "name": "write_live_object",
-      "description": "Write exposed song/track/scene/clip/chain properties after read_live_object.\n        Only documented allowlisted fields; native units. Name guards required for\n        track/clip/chain; Arrangement writes require expected_start_time. Validated\n        whole batch, readback, rollback and one Undo. No arbitrary property access.\n        ",
+      "description": "Write exposed song/track/scene/clip/chain properties after read_live_object.\nOnly documented allowlisted fields; native units. Name guards required for\ntrack/clip/chain; Arrangement writes require expected_start_time. Validated\nwhole batch, readback, rollback and one Undo. No arbitrary property access.\n",
       "inputSchema": {
         "properties": {
           "target": {

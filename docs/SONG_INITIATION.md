@@ -34,6 +34,23 @@ notes or create a folder. Explicit `--report` saves findings. Exit codes are 0 f
 no threshold-level findings, 1 for findings and 2 for incomplete/operational errors.
 The `lint` configuration is documented in [LIVE_LINT.md](LIVE_LINT.md).
 
+Applying the workflow to the running set is explicit:
+
+```powershell
+uv run enableton song-init "F:\ableton songs\In Hell\configs\initiation.yaml" --live --apply --only names,colors
+```
+
+`--live` alone still lints. The Live adapter writes track/clip names and colours,
+song tempo and time signature, and note edits by ID for the quantize, overlap and
+velocity steps. The adapter writes track and clip names, colours, mute/solo/arm, clip looping and
+loop bounds, song tempo/signature/swing/loop/metronome, track and clip deletion,
+Session clip length, audio Warp state (including `warp_mode` via `set_clip`), track
+monitoring state, and note edits. Unsupported changes no
+longer abort a run: the step is recorded as `reported` with the platform reason and
+everything else is applied; `--strict` restores all-or-nothing preflight. Only
+grouping and Arrangement clip extent remain impossible, because Live exposes no
+group-creation call and no writable Arrangement length.
+
 Legacy snapshot planning and workspace commands:
 
 Run from the repository after `uv sync --locked`. Config path comes before flags.
@@ -49,10 +66,11 @@ uv run enableton song-init examples/song-init/initiation.yaml --snapshot example
 uv run enableton song-init examples/song-init/initiation.yaml --snapshot examples/song-init/snapshot.example.json --only workspace --apply --song-root "D:\Music\Songs" --song-name "My New Song"
 ```
 
-A full `--apply` with the snapshot adapter refuses unsupported mutations **before
-creating any folder**. Integrate a verified adapter to execute Live corrections.
-Do not use the example snapshot to target a real set; its IDs are fictional.
-There is no silent fallback from an unsupported write to UI automation.
+A full `--apply` applies every change the adapter can perform and records the rest
+per step as `skipped`, naming the platform limit; add `--strict` to refuse before
+any write or folder instead. Do not use the example snapshot to target a real set;
+its IDs are fictional. There is no silent fallback from an unsupported write to UI
+automation.
 
 ## Configuration schema
 
@@ -192,17 +210,17 @@ blocks, not an assertion that the snapshot CLI currently executes them.
 | `create_song_folder` | Implemented local workspace; dry-run has zero writes | Local filesystem only | Included; does not save/relink a Live project |
 | `cleanup_unused` | Audit stub; collection/save off; never deletes files | Current snapshot, sample paths, project inventory | Missing project-wide reference inventory, copy/relink and reliable save helper |
 | `rename_tracks` | Strip numbered defaults; `{type}_{name}`; preserve role | `get_track_info`, `set_track_name`, guarded `write_access_object` | Re-resolve IDs; prevent stale/duplicate target matches |
-| `fix_midi_overlaps` | Same-pitch `trim`; optional `shortest_wins`, `longest_wins`, monophonic | `get_access_notes`; new Session clip + `add_notes_to_clip` + Arrangement duplicate | Verified note writer with original clip backup; current in-place note helper failed in real Live |
+| `fix_midi_overlaps` | Same-pitch `trim`; optional `shortest_wins`, `longest_wins`, monophonic | `get_access_notes`; new Session clip + `add_notes_to_clip` + Arrangement duplicate | Verified writer; edits use remove/re-add because `apply_note_modifications` failed on Live 12.2.5, so edited note IDs change |
 | `quantize_timing` | Grid/strength/tolerance; default 1/16, .75, .03 beats | MIDI reads; `quantize_clip` for supported Session cases; replacement clip path | Custom target/tolerance writer; audio-transient/groove alignment is a separate process |
 | `normalize_clip_names` | Role, session BPM and actual Warp state; no native-BPM guesses | `set_clip_name`, Arrangement name tool, guarded clip property writer | Preserve source provenance; refresh indexes |
-| `remove_empty_tracks` | Disabled example; only known no clips/devices/automation/input | Track/device/clip reads; `delete_track` command | Last-moment emptiness check; returns/groups/master protected |
-| `remove_empty_clips` | Disabled example; zero notes or zero audio frames only | Clip/MIDI reads, `delete_clip`, `delete_arrangement_clip` | Distinguish missing/quiet audio from empty; guarded deletion |
-| `fix_clip_lengths` | Report only; explicit extend or nearest+allowTrim | Arrangement/timing reads | Guarded duplicate/reconstruction; Arrangement end_time is not a generic writable property |
+| `remove_empty_tracks` | Disabled example; only known no clips/devices/automation/input | Track/device/clip reads; guarded `delete_track` | Re-checks emptiness at write time; returns/groups/master protected |
+| `remove_empty_clips` | Disabled example; zero notes or zero audio frames only | Clip/MIDI reads; guarded `delete_clip` / `delete_arrangement_clip` | Distinguishes missing/quiet audio from empty; refuses when the slot changed |
+| `fix_clip_lengths` | Explicit extend or nearest+allowTrim | Session `loop_end` write; Arrangement reads | Session clips resize; Arrangement extent has no writable length and is reported |
 | `color_tracks_by_type` | Role-to-Live-color-index map | `write_access_object` track color | Optional clip-color adapter; preserve hierarchy |
-| `set_default_warp` | Disabled example; plans Warp state/mode request | `get_audio_clip_timing`, `set_clip_audio`, duplicate-only warp preview | Shared stem maps, source tempo/start/encoder delay validation; no general base-tempo setter |
+| `set_default_warp` | Disabled example; Warp state/mode request | `get_audio_clip_timing`; guarded `set_access_warp` for both views | Base tempo is read-only in Live and is reported, not written |
 | `normalize_velocities` | Clamp 40..112; optional scale | Extended MIDI reads + verified replacement writer | Role-aware dynamics can be added; do not flatten all drums to max velocity |
 | `check_missing_samples` | Report only; checks availability/path | Audio file paths, local filesystem; Live availability if exposed | No deletion or automatic relinking |
-| `organize_groups` | Report-only stub; optional planned grouping | Track/device reads | New guarded grouping/reorder/routing helper; not supported by current bridge |
+| `organize_groups` | Report-only; optional planned grouping | Track/device reads | Live has no group-creation API, so the step is reported as skipped |
 | `set_session_defaults` | Fill missing values only; force opt-in | Session read, `set_tempo`, `set_time_signature`, song property writer | Validated key mapping; Live always already has tempo, so this is not BPM detection |
 | `trim_overlapping_clips` | Report only | Arrangement clip reads/delete/duplicate | Guarded trim/rebuild and preserved originals; avoid overwriting neighboring clips |
 

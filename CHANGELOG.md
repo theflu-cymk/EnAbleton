@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Add guarded Live writers for track and clip deletion, Session clip resizing and
+  audio Warp state (`set_access_warp`, bridge protocol `1.8.1-ext.7`), plus track
+  monitoring state and clip `warp_mode` through `set_clip`.
+- Let planners insert notes without IDs and reconcile clips by note ID with readback.
+- Make `song-init --apply` apply every supported change and report platform limits as
+  skipped steps; `--strict` restores all-or-nothing preflight.
+- Widen the writable surface to mute/solo/arm, loop bounds, gain, pitch, looping, Warp,
+  signature, swing, loop and metronome; report grouping and Arrangement extent as
+  Live API limits instead of planning them.
+- Add note insert/delete bridge commands and MCP tools, the `LiveAdapter` apply path
+  and a repeatable live smoke check for the widened adapter.
 - Add conservative MIDI cleanup proposals and shared stem timing bindings; preserve source clips and pitch classes.
 
 - Extend remix creation to an end-to-end short-section loop: guarded clip/file

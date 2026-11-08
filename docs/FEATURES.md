@@ -1,19 +1,19 @@
 # Additions and abilities — v0.1.0-beta.1
 
-The first beta shipped 191 MCP tools. The current development catalog has 202:
-156 from pinned upstream 1.8.1 and 46 additions.
+The first beta shipped 191 MCP tools. The current development catalog has 204:
+156 from pinned upstream 1.8.1 and 48 additions.
 The generated [tool catalog](TOOL_CATALOG.md) includes every tool and annotation.
 
 | Area | Added capabilities | Practical limits |
 | --- | --- | --- |
 | Bass recipes | 13 original native patches: sub, 808, wobble, FM, Reese, YOI and riddim variants | Available instruments required; numeric starting points are not artist presets |
 | Rhythm and movement | Deterministic bass phrases, call/response, triplets, plucks, wobble, ducking and Drive envelopes | Session automation; kick-time ducking is not an audio-reactive compressor |
-| Production reference | 47 source-linked entries, artist-method catalogs, tutorial blueprints | Read-only evidence and original adaptations; no automatic learning across chats |
+| Production reference | 50 reference entries (45 with primary sources), artist-method catalogs, tutorial blueprints | Read-only evidence and original adaptations; no automatic learning across chats |
 | Mastering | Seven techniques and conditional dense-tearout/transparent/delivery plans | No automatic mastered export, LUFS measurement or sound-quality guarantee |
 | Nested devices | Read trees and parameters; guarded writes on regular tracks, returns and Main | Hidden third-party controls are unavailable |
 | Rack mixers | Chain volume, pan, sends, mute/solo and names | Uses inspected native units; automated controls are refused |
 | Object access | Allowlisted song, scene, track, clip and chain properties | Not arbitrary Python or unrestricted object writes |
-| MIDI editing | Complete-range reads and existing-note-ID edits in Session and Arrangement | Does not transcribe audio or rewrite MPE curves |
+| MIDI editing | Complete-range reads, note-ID edits, and verified insert/delete in Session and Arrangement | Does not transcribe audio or rewrite MPE curves |
 | Warp inspection | Every marker, hidden terminal marker, source seconds, beat coordinates and loop boundaries | Coordinates alone do not establish correct musical downbeats |
 | Warp analysis | BPM candidates, confidence labels, half/double-time, attack-based downbeats, groove alignment, drift, loop seams, reference offsets | Heuristic PCM WAV analysis, bounded windows; review/audition needed |
 | Warp repair | Expiring previews, fingerprint checks, backups, explicit interior-marker moves on a duplicate, original-preservation checks | No automatic in-place fix, insertion/deletion or replacement of originals |

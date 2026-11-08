@@ -484,10 +484,7 @@ def _calibrate_db(send, owned, dindex, parameter, targets):
         found = []
         for row in rows:
             text = row.get("display", "")
-            if (
-                "inf" in text.lower()
-                or "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¹ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¾" in text
-            ):
+            if "inf" in text.lower() or "\u221e" in text:
                 continue
             match = re.fullmatch(r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*dB\s*", text, re.I)
             if not match:
@@ -529,10 +526,7 @@ def _set_display(send, owned, dindex, parameter, value):
     if (
         isinstance(value, str)
         and value.endswith(" dB")
-        and any(
-            x in str(p.get("display_min", "")).lower()
-            for x in ["inf", "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¹ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¾"]
-        )
+        and any(x in str(p.get("display_min", "")).lower() for x in ("inf", "\u221e"))
     ):
         _, values = _calibrate_db(send, owned, dindex, parameter, [float(value.split()[0])])
         value = values[0]
@@ -711,6 +705,7 @@ def build(send, project_dir, drum_kit="808 Core Kit", drum_map=None):
         manifest.pop("last_error", None)
         manifest["state"] = "building"
         save_project(root, manifest)
+        failure = None
         try:
             for role in roles:
                 owned = manifest["tracks"].get(role)
@@ -1090,7 +1085,7 @@ def build(send, project_dir, drum_kit="808 Core Kit", drum_map=None):
             manifest["active_roles"] = roles
             manifest["built_fingerprint"] = plan["fingerprint"]
             save_project(root, manifest)
-            return dict(
+            result = dict(
                 project_dir=str(root),
                 state="built",
                 tracks=manifest["tracks"],
@@ -1099,20 +1094,23 @@ def build(send, project_dir, drum_kit="808 Core Kit", drum_map=None):
                 evidence="Live command readback; musical audition still required",
             )
         except Exception as error:
-            manifest["state"] = "partial"
-            manifest["last_error"] = str(error)
-            save_project(root, manifest)
-            raise RuntimeError(
-                "Partial build journal saved; inspect before resuming: " + str(error)
-            ) from error
+            failure = error
         finally:
-            errors = _restore_arms(send, manifest)
-            manifest["arm_restore_errors"] = errors
-            if errors:
+            arm_errors = _restore_arms(send, manifest)
+            manifest["arm_restore_errors"] = arm_errors
+            if arm_errors:
                 manifest["state"] = "needs_recovery"
             save_project(root, manifest)
-            if errors:
-                raise RuntimeError("Original arm state needs recovery: " + str(errors))
+        if arm_errors:
+            raise RuntimeError("Original arm state needs recovery: " + str(arm_errors)) from failure
+        if failure is not None:
+            manifest["state"] = "partial"
+            manifest["last_error"] = str(failure)
+            save_project(root, manifest)
+            raise RuntimeError(
+                "Partial build journal saved; inspect before resuming: " + str(failure)
+            ) from failure
+        return result
 
 
 def inspect_project(send, project_dir):

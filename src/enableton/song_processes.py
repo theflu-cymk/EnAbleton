@@ -276,7 +276,10 @@ def set_default_warp(state, params, target):
             continue
         patch = {"warping": params.get("enabled", False), "warp_mode": mode}
         if "baseTempo" in params:
-            patch["source_bpm"] = number(params, "baseTempo", 120, 20, 999)
+            number(params, "baseTempo", 120, 20, 999)
+            result.notices.append(
+                "Live exposes no writable base tempo; baseTempo is validated but not applied."
+            )
         if any(clip.get(k) != v for k, v in patch.items()):
             result.changes.append(change("set_warp", clip, patch))
     return result
@@ -300,7 +303,8 @@ def check_missing_samples(state, params, target):
 def organize_groups(state, params, target):
     result = Result(
         notices=[
-            "Requires a guarded grouping/routing helper; current bridge cannot reliably reorder/group tracks."
+            "Live exposes no group-creation API (Track.group_track is read-only), "
+            "so grouping is reported as a skipped step instead of being written."
         ]
     )
     if params.get("apply", False):

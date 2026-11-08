@@ -18,22 +18,8 @@ from .remix_audio import (
     process_values,
     write_wave,
 )
+from .jsonio import atomic_json, read_json
 from .remix_workflow import plan_halftime_remix
-
-
-def read_json(path):
-    return json.loads(Path(path).read_text(encoding="utf-8-sig"))
-
-
-def atomic_json(path, value):
-    path = Path(path)
-    temporary = path.with_name(path.name + "." + uuid4().hex + ".tmp")
-    try:
-        temporary.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-        temporary.replace(path)
-    finally:
-        if temporary.exists():
-            temporary.unlink()
 
 
 def project(path, create=False):
@@ -55,20 +41,66 @@ def project(path, create=False):
     return root, data
 
 
+def _lock_pid(path):
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8")).get("pid")
+    except (OSError, ValueError):
+        return None
+
+
+def _process_alive(pid):
+    """Best-effort liveness check for a lock holder; None means unknown."""
+    if not isinstance(pid, int) or pid <= 0:
+        return False
+    if os.name == "nt":
+        import ctypes
+
+        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)
+        if not handle:
+            return False
+        try:
+            code = ctypes.c_ulong()
+            if not ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code)):
+                return None
+            return code.value == 259
+        finally:
+            ctypes.windll.kernel32.CloseHandle(handle)
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except OSError:
+        return None
+    return True
+
+
+def _acquire_lock(path):
+    """Create the lock exclusively; reclaim it only from a dead holder."""
+    flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
+    try:
+        return os.open(path, flags, 0o600)
+    except FileExistsError as error:
+        pid = _lock_pid(path)
+        if _process_alive(pid) is not False:
+            raise RuntimeError(
+                "Project operation already running, or interrupted lock needs inspection"
+            ) from error
+        path.unlink(missing_ok=True)
+        return os.open(path, flags, 0o600)
+
+
 @contextmanager
 def project_lock(root):
     path = Path(root) / "operation.lock"
-    try:
-        with path.open("x", encoding="utf-8") as f:
-            f.write(json.dumps(dict(pid=os.getpid())))
-    except FileExistsError as exc:
-        raise RuntimeError(
-            "Project operation already running, or interrupted lock needs inspection"
-        ) from exc
+    with os.fdopen(_acquire_lock(path), "w", encoding="utf-8") as handle:
+        json.dump(dict(pid=os.getpid()), handle)
+        handle.flush()
     try:
         yield
     finally:
-        path.unlink()
+        path.unlink(missing_ok=True)
 
 
 def save_project(root, data):

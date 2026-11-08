@@ -24,7 +24,8 @@ def build(destination):
     )
     source = upstream
     anchor = "from _Framework.ControlSurface import ControlSurface"
-    assert source.count(anchor) == 1
+    if source.count(anchor) != 1:
+        raise RuntimeError("Upstream 1.8.1 source changed: ControlSurface anchor is not unique")
     source = source.replace(
         anchor,
         anchor
@@ -35,7 +36,8 @@ def build(destination):
         "class AbletonMCP(WarpSupportMixin, AccessSupportMixin, SoundDesignSupportMixin, EnvelopeSupportMixin, ControlSurface):",
     )
     anchor = "    _ALL_COMMANDS = {**_MUTATING_COMMANDS, **_READONLY_COMMANDS}"
-    assert source.count(anchor) == 1
+    if source.count(anchor) != 1:
+        raise RuntimeError("Upstream 1.8.1 source changed: _ALL_COMMANDS anchor is not unique")
     extension = """
     # EXT compatibility commands retain guarded parameter batches and bounded envelopes.
     _READONLY_COMMANDS = dict(_READONLY_COMMANDS, **{
@@ -60,6 +62,9 @@ def build(destination):
         "set_access_mixer": lambda s, p: s._set_access_mixer(p),
         "modify_access_notes": lambda s, p: s._modify_access_notes(p),
         "repair_warp_duplicate": lambda s, p: s._repair_warp_duplicate(p),
+        "insert_access_notes": lambda s, p: s._insert_access_notes(p),
+        "delete_access_notes": lambda s, p: s._delete_access_notes(p),
+        "set_access_warp": lambda s, p: s._set_access_warp(p),
     })
 """
     source = source.replace(
@@ -78,6 +83,7 @@ def build(destination):
         "access_support.py",
         "warp_support.py",
         "warp_analysis.py",
+        "numbers.py",
     ):
         shutil.copy2(Path(__file__).parent / name, destination / name)
     manifest = {

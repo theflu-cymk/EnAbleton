@@ -31,7 +31,7 @@ def register_access(mcp, dispatch):
                 "Nested device trees and guarded parameter batches on tracks/returns/Main",
                 "Track and rack-chain mixer gain/pan/sends",
                 "Explicit song/track/scene/clip/chain scalar properties",
-                "Full-range Session and Arrangement MIDI reads and note-ID modifications",
+                "Full-range Session and Arrangement MIDI reads, note-ID edits, and verified insert/delete",
             ],
             "upstream": [
                 "transport/recording",
@@ -127,11 +127,34 @@ def register_access(mcp, dispatch):
         """Modify existing notes by note_id in Session or Arrangement without
         recreating the clip. Each entry needs note_id plus pitch/start_time/duration/
         velocity/mute/probability/deviation/release fields to change. Read all notes
-        first; names and Arrangement start guard required. Keeps note identities;
-        does not add/delete notes or rewrite MPE expression curves. One Undo step.
+        first; names and Arrangement start guard required. Live reassigns the ID of
+        each edited note because the edit removes and re-adds it; other notes keep
+        their IDs and expression data. Does not add unrelated notes or rewrite MPE
+        expression curves. One Undo step.
         """
         _arrangement_guard(target)
         return dispatch("modify_access_notes", dict(target, notes=notes))
+
+    @mcp.tool(annotations={"readOnlyHint": False, "destructiveHint": True})
+    def insert_live_clip_notes(target: dict, notes: list[dict]) -> dict:
+        """Insert new notes into a MIDI clip without replacing existing content.
+        Each note needs pitch, start_time and duration; velocity defaults to 100.
+        Optional mute/probability/velocity_deviation/release_velocity are validated.
+        Name and Arrangement start guards required. Verified by readback; one Undo
+        step. Does not create MPE expression curves.
+        """
+        _arrangement_guard(target)
+        return dispatch("insert_access_notes", dict(target, notes=notes))
+
+    @mcp.tool(annotations={"readOnlyHint": False, "destructiveHint": True})
+    def delete_live_clip_notes(target: dict, notes: list[dict]) -> dict:
+        """Delete existing notes by note_id from a Session or Arrangement MIDI clip.
+        Untouched notes keep their identity and expression data. Identical pitch and
+        start-time pairs are refused before any write because Live addresses notes by
+        window, not by ID. Verified by readback; one Undo step.
+        """
+        _arrangement_guard(target)
+        return dispatch("delete_access_notes", dict(target, notes=notes))
 
 
 def _arrangement_guard(target):

@@ -182,8 +182,10 @@ class SoundDesignSupportMixin(object):
                 raise RuntimeError(
                     "Parameter batch failed and rollback was partial; use Live Undo: "
                     + ", ".join(failures)
-                )
-            raise RuntimeError("Parameter batch failed; previous values restored: " + str(error))
+                ) from error
+            raise RuntimeError(
+                "Parameter batch failed; previous values restored: " + str(error)
+            ) from error
         finally:
             self._song.end_undo_step()
         return {

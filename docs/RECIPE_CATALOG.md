@@ -1,6 +1,6 @@
 # Production recipe catalog
 
-47 source-linked reference entries. These include executable patch references and read-only methods; availability and evidence labels matter.
+50 reference entries, 45 with primary sources. These include executable patch references and read-only methods; availability and evidence labels matter.
 
 | Reference | Category | Status | Summary |
 | --- | --- | --- | --- |

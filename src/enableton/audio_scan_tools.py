@@ -1,6 +1,7 @@
 """Read-only repair diagnostics exposed to MCP and CLI."""
 
 import json
+from pathlib import Path
 import subprocess
 import sys
 
@@ -13,7 +14,10 @@ def scan_audio_file(path, start_seconds=0, max_seconds=30):
     max_seconds = finite(max_seconds, "max_seconds")
     if start_seconds < 0 or not 0 < max_seconds <= 120:
         raise ValueError("Invalid window; maximum 120 seconds")
-    request = dict(path=str(path), start_seconds=start_seconds, max_seconds=max_seconds)
+    source = Path(path).expanduser()
+    if not source.is_absolute():
+        raise ValueError("Absolute local audio file required")
+    request = dict(path=str(source), start_seconds=start_seconds, max_seconds=max_seconds)
     try:
         result = subprocess.run(
             [sys.executable, "-m", "enableton.audio_scan_worker"],
