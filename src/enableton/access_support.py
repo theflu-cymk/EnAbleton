@@ -52,6 +52,7 @@ PROPERTIES = {
         "pitch_coarse": (-48, 48),
         "pitch_fine": (-50, 50),
         "warping": bool,
+        "warp_mode": (0, 6),
     },
     "chain": {"name": str, "mute": bool, "solo": bool},
 }

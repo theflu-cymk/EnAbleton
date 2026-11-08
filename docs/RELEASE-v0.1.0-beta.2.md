@@ -1,7 +1,7 @@
 # EnAbleton v0.1.0-beta.2 (draft)
 
 Draft notes for the next beta. This tree is not tagged yet: Python version
-`0.1.0b1`, bridge protocol `1.8.1-ext.7`.
+`0.1.0b1`, bridge protocol `1.8.1-ext.8`.
 
 ## Included
 
@@ -22,11 +22,11 @@ Draft notes for the next beta. This tree is not tagged yet: Python version
 
 - 225 unit tests pass; `ruff check` and `ruff format --check` are clean.
 - MCP transport verification: 204 tools, no Live mutations.
-- Release check: `bridge_protocol 1.8.1-ext.7`, 8 installed files verified,
+- Release check: `bridge_protocol 1.8.1-ext.8`, 8 installed files verified,
   `song_modified: false`.
 - Live smoke run on Windows with Ableton Live 12.2.5: 22/22 checks on a scratch track
   that the run created and deleted; the user's tracks and tempo were unchanged.
-  Warp writes are covered by unit tests and capability checks; they need the ext.7
+  Warp writes are covered by unit tests and capability checks; they need the ext.8
   script activation (restart Live) for on-Live confirmation.
 
 ## Limits
@@ -38,5 +38,5 @@ does not automate the GUI and does not certify every Live version. See
 
 ## Install
 
-Follow [INSTALLATION.md](INSTALLATION.md), then restart Live so the ext.7 bridge loads.
+Follow [INSTALLATION.md](INSTALLATION.md), then restart Live so the ext.8 bridge loads.
 No PyPI publication is configured; assets are the wheel, sdist and checksums.

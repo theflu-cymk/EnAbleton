@@ -3,7 +3,7 @@
 ## Unreleased
 
 - Add guarded Live writers for track and clip deletion, Session clip resizing and
-  audio Warp state (`set_access_warp`, bridge protocol `1.8.1-ext.7`), plus track
+  audio Warp state (`set_access_warp`, bridge protocol `1.8.1-ext.8`), plus track
   monitoring state and clip `warp_mode` through `set_clip`.
 - Let planners insert notes without IDs and reconcile clips by note ID with readback.
 - Make `song-init --apply` apply every supported change and report platform limits as

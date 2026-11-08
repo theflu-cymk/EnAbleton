@@ -463,6 +463,19 @@ class WarpCommandTests(unittest.TestCase):
 
         self.assertEqual(self.undo, ["begin", "end"])
 
+    def test_clip_read_exposes_warp_mode(self):
+        """Object reads must return warp_mode so callers can verify Warp writes."""
+
+        self.clip.warping = True
+
+        self.clip.warp_mode = 4
+
+        read = self.bridge._read_access_object(dict(self.target, object_type="clip"))
+
+        self.assertEqual(read["properties"]["warp_mode"], 4)
+
+        self.assertNotIn("warp_mode", read["unavailable"])
+
     def test_warp_refuses_midi_and_bad_values(self):
         self.clip.is_audio_clip = False
 
