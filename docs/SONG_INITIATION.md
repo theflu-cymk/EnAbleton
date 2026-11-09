@@ -23,6 +23,18 @@ Warp and trimming repairs remain reported until verified helpers exist.
 
 ## Commands
 
+`enableton` with no arguments is the preparation screen. It lists `adopt`,
+`name`, `label`, `voice`, `level`, `lock`, `frame`, `map` and `check`, plus
+`all`. A number or an id runs that step against the open set. `--plan` previews.
+`enableton start` prints the same screen. Song-folder creation stays off unless
+you run `enableton prep workspace --song-root ... --song-name ...`.
+
+```powershell
+uv run enableton
+uv run enableton start
+uv run enableton lock --plan
+```
+
 Preferred live audit:
 
 ```powershell
@@ -34,13 +46,13 @@ notes or create a folder. Explicit `--report` saves findings. Exit codes are 0 f
 no threshold-level findings, 1 for findings and 2 for incomplete/operational errors.
 The `lint` configuration is documented in [LIVE_LINT.md](LIVE_LINT.md).
 
-Applying the workflow to the running set is explicit:
+Applying the workflow is the default:
 
 ```powershell
-uv run enableton song-init "F:\ableton songs\In Hell\configs\initiation.yaml" --live --apply --only names,colors
+uv run enableton song-init "F:\ableton songs\In Hell\configs\initiation.yaml" --live --only names,colors
 ```
 
-`--live` alone still lints. The Live adapter writes track/clip names and colours,
+`--plan` previews. `enableton lint` stays read-only. The Live adapter writes track/clip names and colours,
 song tempo and time signature, and note edits by ID for the quantize, overlap and
 velocity steps. The adapter writes track and clip names, colours, mute/solo/arm, clip looping and
 loop bounds, song tempo/signature/swing/loop/metronome, track and clip deletion,
@@ -56,17 +68,17 @@ Legacy snapshot planning and workspace commands:
 Run from the repository after `uv sync --locked`. Config path comes before flags.
 
 ```powershell
-# Default is dry-run: no folders, files, logs or Live changes are written.
-uv run enableton song-init examples/song-init/initiation.yaml --snapshot examples/song-init/snapshot.example.json --dry-run --song-root "D:\Music\Songs" --song-name "My New Song"
+# Preview: no folders, files, logs or Live changes are written.
+uv run enableton song-init examples/song-init/initiation.yaml --snapshot examples/song-init/snapshot.example.json --plan --song-root "D:\Music\Songs" --song-name "My New Song"
 
-# Select one step or a subset, retaining YAML order.
+# Select one step or a subset, retaining YAML order. This writes.
 uv run enableton song-init examples/song-init/initiation.yaml --snapshot examples/song-init/snapshot.example.json --only names,colors
 
-# Actually create only the user-chosen song workspace. No Ableton connection.
-uv run enableton song-init examples/song-init/initiation.yaml --snapshot examples/song-init/snapshot.example.json --only workspace --apply --song-root "D:\Music\Songs" --song-name "My New Song"
+# Create only the song workspace. No Ableton connection.
+uv run enableton song-init examples/song-init/initiation.yaml --snapshot examples/song-init/snapshot.example.json --only workspace --song-root "D:\Music\Songs" --song-name "My New Song"
 ```
 
-A full `--apply` applies every change the adapter can perform and records the rest
+A run writes every change the adapter can perform and records the rest
 per step as `skipped`, naming the platform limit; add `--strict` to refuse before
 any write or folder instead. Do not use the example snapshot to target a real set;
 its IDs are fictional. There is no silent fallback from an unsupported write to UI
@@ -337,6 +349,97 @@ Append one entry to `STEPS`:
 Nothing else needs to change: `describe()`, `build_config()`, the CLI and the
 tests read the same list, and `tests/unit/test_initial_prep.py` fails if a process
 is unregistered, an ID repeats, or a report-only step starts applying.
+
+## Prepare tracks for editing
+
+`prepare-tracks` is the step that makes an imported song editable. Lint stays
+the diagnostic. Initiate stays the conservative workspace preset. Preparation
+does not quantize, trim, rewarp, or move faders.
+
+```powershell
+uv run enableton prepare-tracks --live
+uv run enableton prepare-tracks --live --plan
+```
+
+The plan reads devices, clip names, filenames and, when those have no role,
+MIDI pitch. A shared trailing song title is left off the role name. Each
+working track keeps its position, so routing that points at it still points at
+the audible track. The duplicate is named `ORIGINAL |` plus the new name,
+muted, taken out of solo, disarmed, and given the archive color. Live can fold
+only a group track, so a regular original is muted and reported unfolded.
+Group tracks, returns and empty tracks are skipped. A second run does not
+duplicate a track that already has its original. Generic `Track 1` clips take
+the working name; a clip that already has a name is left as it is.
+
+`plan_track_preparation` is an optional preview. `apply_track_preparation`
+writes unless `confirm` is false, and it refuses while Live is playing or
+recording. Each duplicate and each rename is its own undo.
+
+## Placeholders and measured audio repair
+
+Both commands write when run. `--plan` previews. Neither one starts playback,
+and both refuse to write while Live is playing or recording.
+
+```powershell
+uv run enableton assign-instruments --live
+uv run enableton repair-audio --live
+```
+
+`assign-instruments` looks at MIDI tracks that have active notes and no
+instrument. Audio effects alone do not count as an instrument. A loaded
+instrument, including an unknown plug-in, is left in place. Drums get Impulse,
+because an empty Drum Rack is silent. Bass gets Operator. Keys get Electric,
+or Wavetable when Electric is not installed. Other roles get Wavetable. The
+device is the default patch, so the part can be heard and then replaced.
+`Main` is the normal mix output and does not block a placeholder. A track is
+skipped when its output is an external port rather than `Main`, `No Output`,
+or another track in the set. When Live does not report that routing, the plan
+says the routing was not confirmed.
+
+`repair-audio` reads the first 30 seconds of each Arrangement clip's source
+WAV. Those timestamps are source-file seconds, not Arrangement time, and warped
+playback is not checked. Samples that hit full scale lower that clip's gain by
+about 15 percent when the gain is still at unity (Live's clip gain value 0.4).
+A clip that is already above or below unity is left, because a second guess
+would move a deliberate level. The lower gain does not restore flattened peaks,
+and a limiter is not added. DC offset loads one Utility, then enables a
+parameter named `DC`, `DC Filter`, or `Dc` only when exactly one of those is a
+switch. If this Live build does not expose it, the value is not guessed. A clip
+with at least three level jumps loads one stock Compressor at 2:1, 20 ms
+attack, 200 ms release and a 10 dB knee. Threshold sits about 2 dB above the
+scanned RMS, held between -24 and -8 dB. Makeup stays off and output gain stays
+at 0 dB, so the track can get quieter. A Compressor or Glue Compressor already
+on the track is left unchanged. Fewer jumps stay reported, because they can be
+a musical change. Clicks and short silences stay reported: clip properties
+cannot write fades, dense edges often belong to percussion, and spectral repair
+is not available.
+
+`plan_instrument_assignment` and `plan_audio_repair` are optional previews.
+`apply_instrument_assignment` and `apply_audio_repair` write unless `confirm`
+is false. If a device load is not read back, the command stops and names the
+track before another load.
+
+## Align warped layers
+
+```powershell
+uv run enableton align-tracks --live
+uv run enableton align-tracks --live --plan
+```
+
+`align-tracks` is the startup choice for locking layers to the song. On
+arrangement audio that is already warped, drums and percussion get Beats, bass
+gets Tones, and tonal or full-mix layers get Complex Pro. When Complex Pro is
+not on that clip, Complex is used. Re-Pitch stays, because it changes pitch
+with the tempo. Warp that is off stays off: turning it on, moving warp markers,
+or sliding a clip start needs a reference and a rendered replacement.
+
+The other alignment methods stay with the user. The command cannot hear phase,
+so it does not flip polarity or load a Transient Shaper. It does not guess EQ,
+panning, reverb, delay, or automation. It does not build a rack, extract MIDI,
+or create a group. `plan_track_alignment` is an optional preview.
+`apply_track_alignment` writes unless `confirm` is false, and it refuses while
+Live is playing or recording. Each mode change is its own undo. It does not
+start playback.
 
 ### Safety before alignment edits
 

@@ -1,7 +1,7 @@
 # Additions and abilities
 
-Main is the current install. Its catalog has 234 MCP tools: 156 from pinned
-upstream 1.8.1 and 78 additions. The retired tag `v0.1.0-beta.1` shipped 191.
+Main is the current install. Its catalog has 242 MCP tools: 156 from pinned
+upstream 1.8.1 and 86 additions. The retired tag `v0.1.0-beta.1` shipped 191.
 The generated [tool catalog](TOOL_CATALOG.md) includes every tool and annotation.
 
 | Area | Added capabilities | Practical limits |
@@ -67,10 +67,22 @@ guesses.
 [Live lint](LIVE_LINT.md) reads the running set directly and returns structured
 findings, confidence, locations, fix availability and CI-style exit codes. Lint
 rules run independently of disabled cleanup steps. Explicit metadata fixes have
-name/start guards, readback and re-linting. Musical/destructive repairs remain
-reported until verified helpers exist. The [workflow](SONG_INITIATION.md) retains
-configurable song folders and snapshot planning. These workflow commands are
-CLI additions. Main's MCP catalog has 234 tools; the retired beta.1 catalog had 191.
+name/start guards, readback and re-linting. The [workflow](SONG_INITIATION.md)
+writes when run and keeps configurable song folders. These workflow commands are
+CLI additions. `enableton` with no arguments shows nine preparation steps and
+whether Live is connected. `all` runs them in order. One id runs that step.
+Other text is handed to the assistant. `--plan` previews.
+Main's MCP catalog has 242 tools; the retired beta.1 catalog had 191.
+`adopt` duplicates each content track and mutes the copy as `ORIGINAL | ...`.
+The working track keeps its notes, Warp and faders. `name` writes `NN Label`
+and a role colour. `label` names clips. `voice` loads a stock placeholder on a
+MIDI track that has notes and no instrument. `level` lowers unity clip gain
+for full-scale samples and enables Utility's DC switch. Clicks, gaps and level
+jumps are unsupported. `lock` sets Beats, Tones, or Complex Pro on other
+arrangement audio that is already warped. Markers and clip starts stay. Warp
+that is off, with no render, is unsupported. `prepare-tracks`,
+`assign-instruments`, `repair-audio`, `align-tracks` and `lint` remain as
+aliases.
 
 ## Unreleased remix creation
 

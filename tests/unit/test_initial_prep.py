@@ -14,7 +14,9 @@ from enableton.song_processes import REGISTRY
 
 class PhaseTests(unittest.TestCase):
     def test_phases_are_ordered_and_complete(self):
-        self.assertEqual(initial_prep.PHASES, ("protect", "audit", "align", "name", "verify"))
+        self.assertEqual(
+            initial_prep.PHASES, ("protect", "identify", "audible", "time", "navigate", "gate")
+        )
         seen = [step["phase"] for step in initial_prep.describe()]
         self.assertEqual(seen, sorted(seen, key=initial_prep.PHASES.index))
         self.assertEqual(set(seen), set(initial_prep.PHASES))
@@ -38,31 +40,30 @@ class SafetyDefaultTests(unittest.TestCase):
     def enabled(self):
         return {step["id"] for step in initial_prep.STEPS if step["enabled"]}
 
-    def test_tempo_grid_and_destructive_steps_are_off_by_default(self):
-        for step_id in (
-            "session-defaults",
-            "empty-clips",
-            "empty-tracks",
-            "note-overlaps",
-            "midi-grid",
-            "velocities",
-            "warp",
-        ):
-            self.assertNotIn(step_id, self.enabled())
-            self.assertIn(step_id, {step["id"] for step in initial_prep.STEPS})
+    def test_check_is_the_only_step_off_by_default(self):
+        self.assertEqual(
+            self.enabled(), {"adopt", "name", "label", "voice", "level", "lock", "frame", "map"}
+        )
+        check = next(step for step in initial_prep.STEPS if step["id"] == "check")
+        self.assertFalse(check["enabled"])
+        self.assertEqual(check["process"], "prep_check")
 
-    def test_inventory_and_naming_are_on_by_default(self):
-        self.assertTrue({"workspace", "inventory", "missing-media", "layers"} <= self.enabled())
-
-    def test_report_only_steps_never_apply(self):
-        for step in initial_prep.STEPS:
-            if step["process"] in {"fix_clip_lengths", "organize_groups", "trim_overlapping_clips"}:
-                self.assertFalse(step["params"].get("apply", False), step["id"])
-
-    def test_warp_requires_a_reference(self):
-        warp = next(step for step in initial_prep.STEPS if step["id"] == "warp")
-        self.assertIsNone(warp["params"]["reference"])
-        self.assertEqual(warp["process"], "unwrap_layers")
+    def test_steps_follow_the_nine_operations(self):
+        self.assertEqual(
+            [step["id"] for step in initial_prep.STEPS],
+            [
+                "adopt",
+                "name",
+                "label",
+                "voice",
+                "level",
+                "lock",
+                "frame",
+                "map",
+                "check",
+            ],
+        )
+        self.assertTrue(all(step["process"] == f"prep_{step['id']}" for step in initial_prep.STEPS))
 
 
 class ConfigTests(unittest.TestCase):

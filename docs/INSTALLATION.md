@@ -23,7 +23,12 @@ git clone https://github.com/theflu-cymk/EnAbleton.git E:\projects\Ableton
 cd E:\projects\Ableton
 uv sync --locked
 uv run enableton --version
+uv tool install --from . enableton
 ```
+
+`uv tool install --from . enableton` puts `enableton` on your PATH, so it runs
+from any directory. `uv run enableton` stays the command inside this checkout.
+The no-argument screen does not read the current directory.
 
 Do not put a GitHub token into the URL or client configuration. Use Git's normal
 credential manager for private-repository authentication. On macOS choose an

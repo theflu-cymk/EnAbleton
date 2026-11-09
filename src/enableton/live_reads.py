@@ -7,6 +7,7 @@ READS = {
     "get_arrangement_clips",
     "get_access_notes",
     "get_audio_clip_timing",
+    "read_access_object",
 }
 
 

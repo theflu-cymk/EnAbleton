@@ -5,15 +5,17 @@ Entry point: when a run starts, ask whether to PREPARE or LINT the song.
 - ``lint``    reads the running set and reports; it never writes.
 - ``prepare`` lints first, then applies the enabled steps below in order.
 
-Phases mirror the documented run-down:
+Phases follow the nine preparation operations:
 
-1 protect  inventory the set and create the song folder; originals are never targeted
-2 audit    read-only rules for media, routing, arrangement, MIDI and audio
-3 align    render-first Warp removal against a reference layer
-4 name     ``NN Label`` names plus a role colour per layer
-5 verify   report-only length/overlap/group checks, then re-lint
+1 protect   a muted ORIGINAL copy
+2 identify  track and clip names
+3 audible   placeholder instruments, clip gain and DC
+4 time      warp mode and bar lengths
+5 navigate  section locators
+6 gate      read-only lint
 
-Add a step by appending to ``STEPS``; nothing else needs to change.
+Song-folder creation is not one of these steps. It stays off unless
+``enableton prep workspace`` is called. Add a step by appending to ``STEPS``.
 """
 
 from copy import deepcopy
@@ -32,7 +34,7 @@ __all__ = [
     "write_config",
 ]
 
-PHASES = ("protect", "audit", "align", "name", "verify")
+PHASES = ("protect", "identify", "audible", "time", "navigate", "gate")
 
 MODES = ("lint", "prepare")
 
@@ -41,123 +43,35 @@ ENTRY_QUESTION = (
     "then applies the enabled initial-preparation steps."
 )
 
-STEPS = [
-    {
-        "id": "workspace",
-        "phase": "protect",
-        "process": "create_song_folder",
-        "enabled": True,
-        "params": {},
-        "note": "Creates the song folder only; the Live set is untouched.",
-    },
-    {
-        "id": "inventory",
-        "phase": "protect",
-        "process": "cleanup_unused",
-        "enabled": True,
-        "params": {"collect": False, "save": False},
-        "note": "Read-only inventory; never deletes user files.",
-    },
-    {
-        "id": "missing-media",
-        "phase": "audit",
-        "process": "check_missing_samples",
-        "enabled": True,
-        "params": {},
-        "note": "Missing or unresolved audio is reported, never relinked.",
-    },
-    {
-        "id": "session-defaults",
-        "phase": "audit",
-        "process": "set_session_defaults",
-        "enabled": False,
-        "params": {"tempo": 120, "numerator": 4, "denominator": 4, "force": False},
-        "note": "Off by default: keep the existing tempo and grid unless measured.",
-    },
-    {
-        "id": "empty-clips",
-        "phase": "audit",
-        "process": "remove_empty_clips",
-        "enabled": False,
-        "params": {},
-        "note": "Review the selection first; missing media is not empty.",
-    },
-    {
-        "id": "empty-tracks",
-        "phase": "audit",
-        "process": "remove_empty_tracks",
-        "enabled": False,
-        "params": {},
-        "note": "Groups, returns, master, inputs and automation stay protected.",
-    },
-    {
-        "id": "note-overlaps",
-        "phase": "audit",
-        "process": "fix_midi_overlaps",
-        "enabled": False,
-        "params": {},
-        "target": {"types": ["midi"]},
-        "note": "Same-pitch overlaps only, and only after the lint review.",
-    },
-    {
-        "id": "midi-grid",
-        "phase": "audit",
-        "process": "quantize_timing",
-        "enabled": False,
-        "params": {},
-        "target": {"types": ["midi"]},
-        "note": "Swing, pickups and fast fills are intentional; opt in per part.",
-    },
-    {
-        "id": "velocities",
-        "phase": "audit",
-        "process": "normalize_velocities",
-        "enabled": False,
-        "params": {"mode": "clamp", "min": 40, "max": 112},
-        "target": {"types": ["midi"]},
-        "note": "Off by default; accents are content, not noise.",
-    },
-    {
-        "id": "lengths",
-        "phase": "verify",
-        "process": "fix_clip_lengths",
-        "enabled": True,
-        "params": {"mode": "report", "toleranceBeats": 0.04, "allowTrim": False},
-        "note": "Report only; never forces equal lengths or trims real tails.",
-    },
-    {
-        "id": "warp",
-        "phase": "align",
-        "process": "unwrap_layers",
-        "enabled": False,
-        "params": {"reference": None, "renders": {}},
-        "note": "Needs a reference; renders are bounced at project tempo first.",
-    },
-    {
-        "id": "layers",
-        "phase": "name",
-        "process": "apply_layer_naming",
-        "enabled": True,
-        "params": {},
-        "note": "NN Label names and one colour per role; empty tracks skipped.",
-    },
-    {
-        "id": "grouping",
-        "phase": "verify",
-        "process": "organize_groups",
-        "enabled": True,
-        "params": {"apply": False},
-        "note": "Report only: Live exposes no group-creation API.",
-    },
-    {
-        "id": "arrangement-overlaps",
-        "phase": "verify",
-        "process": "trim_overlapping_clips",
-        "enabled": True,
-        "params": {"apply": False},
-        "note": "Destructive trimming needs a guarded duplicate workflow.",
-    },
-]
+
+def _steps():
+    from .prep import OPS
+
+    notes = {
+        "adopt": "Muted ORIGINAL copy. The working track name, notes, Warp and faders stay.",
+        "name": "NN Label and a role colour. An ambiguous role is left unchanged.",
+        "label": "Clip names use the owning track number, role, content and length.",
+        "voice": "Stock placeholder on a MIDI track that has notes and no instrument.",
+        "level": "Unity clip gain and Utility DC only. Level jumps are not dynamics.",
+        "lock": "Warp mode from a reference. Markers and clip starts stay.",
+        "frame": "Bar-align loop bounds. Seconds when unwarped, beats when warped.",
+        "map": "Named section locators. An existing locator is not moved.",
+        "check": "Lint findings. This step writes nothing.",
+    }
+    return [
+        {
+            "id": op["id"],
+            "phase": op["phase"],
+            "process": f"prep_{op['id']}",
+            "enabled": op["writes"],
+            "params": {},
+            "note": notes[op["id"]],
+        }
+        for op in OPS
+    ]
+
+
+STEPS = _steps()
 
 LINT = {
     "failOn": "warning",

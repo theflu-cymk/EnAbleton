@@ -21,11 +21,11 @@ uv run enableton lint "F:\ableton songs\In Hell\configs\initiation.yaml" --live 
 uv run enableton lint examples/song-init/initiation.yaml --snapshot examples/song-init/snapshot.example.json
 ```
 
-`enableton song-init CONFIG --live` defaults to the same lint mode. Legacy
-`--snapshot --dry-run` still plans the configured correction steps; legacy
-`--snapshot --only workspace --apply` creates a folder. Neither legacy operation
-certifies that the live song has been cleaned. `--apply`/`--only` are workflow
-options; lint uses `--fix`/`--rules`/`--track`/`--clip`.
+`enableton lint` is `enableton check`. Both stay read-only unless `--fix` is
+set. Rules, severities, `--fix`, `--rules`, `--track`, `--clip` and exit codes
+0, 1 and 2 are unchanged. `enableton song-init CONFIG --live` writes the enabled
+workflow steps. `--plan` previews. `--snapshot --only workspace` creates a
+folder; add `--plan` to preview that folder.
 
 ## Results and exit codes
 

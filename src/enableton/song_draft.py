@@ -104,6 +104,26 @@ FAMILIES = (
             "get_drum_pads",
         ),
     },
+    {
+        "name": "track_preparation",
+        "purpose": "Name and color working tracks from their content, and mute the untouched originals.",
+        "tools": ("plan_track_preparation", "apply_track_preparation"),
+    },
+    {
+        "name": "instrument_assignment",
+        "purpose": "Load a stock placeholder on a MIDI track that has notes and no instrument, so the part can be heard and replaced.",
+        "tools": ("plan_instrument_assignment", "apply_instrument_assignment"),
+    },
+    {
+        "name": "audio_repair",
+        "purpose": "Lower unity clip gain for full-scale samples, enable Utility DC, and add a gentle Compressor when level jumps repeat.",
+        "tools": ("plan_audio_repair", "apply_audio_repair"),
+    },
+    {
+        "name": "track_alignment",
+        "purpose": "Set each warped layer's Warp mode from its content. Markers, clip starts, and the mix stay.",
+        "tools": ("plan_track_alignment", "apply_track_alignment"),
+    },
 )
 
 
@@ -533,8 +553,8 @@ def guide_draft(answers=None):
         "live_changes": False,
         "playback_started": False,
         "next_action": (
-            "Review the sketch. apply_song_draft requires confirm=true, refuses playback, "
-            "and does not start the transport. Confirm drum pitches with get_drum_pads."
+            "apply_song_draft writes this sketch. It refuses playback and does not start "
+            "the transport. Pass confirm=false to preview. Check drum pitches with get_drum_pads."
         ),
     }
 
@@ -712,9 +732,9 @@ def _locator_exists(times, beat):
     return any(abs(time - beat) < 1e-3 for time in times)
 
 
-def apply_draft(dispatch, plan, confirm=False):
+def apply_draft(dispatch, plan, confirm=True):
     if confirm is not True:
-        raise ValueError("confirm=true is required before creating tracks")
+        return {"applied": False, "live_changes": False, "playback_started": False}
     if not isinstance(plan, dict) or plan.get("status") != "planned":
         raise ValueError("only a planned song draft can be applied")
     _check_notes(plan)
@@ -791,9 +811,9 @@ def register_song_draft(mcp, dispatch):
 
     @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False})
     def plan_song_draft(config: dict) -> dict:
-        """Plan a 16, 32 or 64 bar Session sketch in 4/4. Role tracks are Drums, Bass,
-        Chords, and Lead when energy is high. Drum pitches are General MIDI guesses:
-        confirm them with get_drum_pads. No Live writes.
+        """Optional preview of a 16, 32 or 64 bar Session sketch in 4/4. Role tracks
+        are Drums, Bass, Chords, and Lead when energy is high. Drum pitches are
+        General MIDI guesses: check them with get_drum_pads. No Live writes.
         """
         return plan_draft(config)
 
@@ -805,12 +825,12 @@ def register_song_draft(mcp, dispatch):
         return refine_draft(plan, feedback)
 
     @mcp.tool(annotations={"readOnlyHint": False, "destructiveHint": True})
-    def apply_song_draft(plan: dict, confirm: bool = False) -> dict:
+    def apply_song_draft(plan: dict, confirm: bool = True) -> dict:
         """Create the planned MIDI tracks at the end of the song, one Session clip
         each, and Arrangement locators that are not already within 0.001 beats.
-        Requires confirm=true. Refuses while the transport plays or the meter is
-        not 4/4. Does not start playback, delete Arrangement clips, rename an
-        existing locator, or change the meter. Tempo changes only when the plan
+        Writes unless confirm is false. Refuses while the transport plays or the
+        meter is not 4/4. Does not start playback, delete Arrangement clips, rename
+        an existing locator, or change the meter. Tempo changes only when the plan
         sets apply_tempo. Tracks, clips and notes are one undo step. Locators
         are separate commands.
         """

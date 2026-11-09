@@ -77,17 +77,25 @@ class ModeTests(unittest.TestCase):
 
     def test_prepare_mode_audits_before_applying(self):
         calls = []
+        ran = []
         with tempfile.TemporaryDirectory() as temp:
-            with patch(
-                "enableton.song_init.main", side_effect=lambda argv: calls.append(argv) or 0
+            with (
+                patch(
+                    "enableton.song_init.main",
+                    side_effect=lambda argv: calls.append(list(argv)) or 0,
+                ),
+                patch(
+                    "enableton.prep.run_all",
+                    side_effect=lambda source, options=None: ran.append(options or {}) or [],
+                ),
             ):
                 code = cli.main(workflow(temp, "prepare"))
         self.assertEqual(code, 0)
-        self.assertEqual(len(calls), 2)
+        self.assertEqual(len(calls), 1)
         self.assertIn("--lint", calls[0])
         self.assertNotIn("--apply", calls[0])
-        self.assertIn("--apply", calls[1])
-        self.assertNotIn("--lint", calls[1])
+        self.assertEqual(len(ran), 1)
+        self.assertFalse(ran[0].get("plan"))
 
     def test_prepare_stops_when_the_audit_cannot_capture(self):
         calls = []

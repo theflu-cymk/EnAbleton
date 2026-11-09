@@ -76,9 +76,11 @@ class SongInitTests(unittest.TestCase):
     def test_complete_example_and_registry(self):
         root = Path(__file__).resolve().parents[2]
         example = load_config(root / "examples/song-init/initiation.yaml")
-        self.assertEqual(len(REGISTRY), 18)
+        self.assertEqual(len(REGISTRY), 27)
         self.assertIn("apply_layer_naming", REGISTRY)
         self.assertIn("unwrap_layers", REGISTRY)
+        self.assertIn("prep_adopt", REGISTRY)
+        self.assertIn("prep_check", REGISTRY)
         self.assertGreaterEqual(len(example["steps"]), 16)
         self.assertTrue(all(s["process"] in REGISTRY for s in example["steps"]))
 
@@ -242,7 +244,7 @@ class SongInitTests(unittest.TestCase):
         finally:
             REGISTRY.pop("test_audit")
 
-    def test_cli_folder_only_apply_and_default_dry_run(self):
+    def test_cli_folder_writes_unless_plan(self):
         root = Path(__file__).resolve().parents[2]
         snapshot = root / "examples/song-init/snapshot.example.json"
         yaml_path = root / "examples/song-init/initiation.yaml"
@@ -262,9 +264,9 @@ class SongInitTests(unittest.TestCase):
                 "--song-name",
                 "CLI Song",
             ]
-            self.assertEqual(main(args), 0)
+            self.assertEqual(main(args + ["--plan"]), 0)
             self.assertFalse((Path(directory) / "cli-song").exists())
-            self.assertEqual(main(args + ["--apply"]), 0)
+            self.assertEqual(main(args), 0)
             self.assertTrue((Path(directory) / "cli-song" / "song.json").is_file())
 
 

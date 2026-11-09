@@ -6,7 +6,7 @@ device control, and warp diagnostics with reversible repair previews.
 **Current install: the main branch.** Python version: `0.1.0b1`.
 Bridge protocol: `1.8.1-ext.15`.
 Built on [`mcp-server-ableton-live==1.8.1`](https://github.com/wstierhout/ableton-live-mcp),
-with **234 MCP tools: 156 upstream controls and 78 EnAbleton additions**.
+with **242 MCP tools: 156 upstream controls and 86 EnAbleton additions**.
 The tagged prerelease `v0.1.0-beta.1` (191 tools, protocol `1.8.1-ext.5`) is retired.
 This is a beta, not an Ableton-endorsed product or an unrestricted Live API.
 
@@ -41,7 +41,7 @@ render smooth audio, build owned Live lanes, capture a preview and compare at
 matched loudness. Changed source MIDI or pulse controls can be prepared and rebuilt
 without duplicate tracks. Start with `uv run enableton remix-guide`; the complete
 loop uses `remix-prepare`, `remix-build`, `remix-preview` and `remix-compare`.
-The current development catalog has 234 tools (156 upstream, 78 additions).
+The current development catalog has 242 tools (156 upstream, 86 additions).
 Arrangement audio import, rack blend macros, Serum parameter aliases and a 4/4
 song-draft guide are in that catalog. `describe_tool_families` maps the new
 names onto the existing ones.
@@ -53,9 +53,20 @@ names onto the existing ones.
 [Reusable prompt](docs/prompts/SONG_INITIATION_PROMPT.md)
 
 ```powershell
+# nine preparation steps for the open set; Live is probed and is not required
+uv run enableton
+uv run enableton start
 uv run enableton lint "F:\ableton songs\In Hell\configs\initiation.yaml" --live
 # default initial preparation: asks prepare or lint first
 uv run enableton initiate --song-root "F:\ableton songs" --song-name "In Hell"
+# name tracks, mute originals; add --plan to preview
+uv run enableton prepare-tracks --live
+# load stock placeholders for MIDI tracks that have notes and no instrument
+uv run enableton assign-instruments --live
+# lower unity gain, enable Utility DC, and load one gentle Compressor
+uv run enableton repair-audio --live
+# set Warp modes for layers that are already warped; add --plan to preview
+uv run enableton align-tracks --live
 ```
 
 Reads the running set and reports actual naming, MIDI, media, Warp, timing and

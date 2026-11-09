@@ -7,6 +7,11 @@ independent consistency checks, as well as clip details. Batches contain at most
 48 read commands; all Live access stays on Live's main thread. No parallel Live
 writes, stale-state cache, disabled guards, or changed permission settings.
 
+The bridge handshake (`get_script_info`) is read once per connection and
+re-read after any failed command, so a reloaded control surface is still
+refused before the next write. That cache holds a read-only guard, never a
+clip, track or property value.
+
 `collect_live(connection, track_indices=[2, 3, 4])` captures only those current,
 zero-based track positions. It validates their existence, and still rechecks
 their identities and Arrangement boundaries. Full-set checks use the default

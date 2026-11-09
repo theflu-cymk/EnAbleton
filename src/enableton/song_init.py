@@ -387,21 +387,20 @@ def main(argv=None):
     import argparse
     from . import song_processes  # Explicit registration
 
-    parser = argparse.ArgumentParser(description="Lint a running Live set or plan a song workflow")
+    parser = argparse.ArgumentParser(
+        description="Apply a song workflow. --plan previews. --lint stays read-only"
+    )
     parser.add_argument("config", type=Path)
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--snapshot", type=Path, help="Normalized JSON snapshot for offline use")
     source.add_argument(
-        "--live", action="store_true", help="Read the running Ableton set; defaults to lint"
+        "--live", action="store_true", help="Read the running Ableton set and apply the workflow"
     )
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument(
-        "--dry-run", action="store_true", help="No set/filesystem writes except explicit --report"
-    )
-    mode.add_argument(
-        "--apply",
+        "--plan",
         action="store_true",
-        help="Apply the workflow: --live writes through the bridge, --snapshot uses the legacy adapter",
+        help="Preview the workflow. No set or folder writes except an explicit --report",
     )
     mode.add_argument("--fix", action="store_true", help="Explicit Live lint metadata fixes only")
     parser.add_argument(
@@ -441,13 +440,16 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         config = load_config(args.config)
-        live_apply = args.live and args.apply
-        lint_mode = (args.live or args.lint or args.fix) and not live_apply
+        lint_mode = bool(args.lint or args.fix or args.rules or args.track or args.clip)
+        if not lint_mode and args.fail_on:
+            raise ValueError("Lint options require --lint")
         if lint_mode:
             from .song_lint import run_lint, write_report
 
-            if args.apply or args.only:
-                raise ValueError("Lint uses --fix and --rules; --apply/--only are workflow flags")
+            if args.only:
+                raise ValueError(
+                    "Lint uses --fix and --rules; --plan and --only are workflow flags"
+                )
             if args.song_root or args.song_name:
                 raise ValueError(
                     "Live lint does not create folders; song-root/name are workspace workflow options"
@@ -474,48 +476,43 @@ def main(argv=None):
                 write_report(args.report, report)
             print(json.dumps(report, indent=2))
             return report["exitCode"]
-        if live_apply:
+        overrides = {}
+        for key, value in (("root", args.song_root), ("name", args.song_name)):
+            if value is not None:
+                overrides[key] = value
+        only = [v for item in args.only for v in item.split(",")]
+        if args.live:
             from .server import dispatch
             from .song_apply import LiveAdapter
             from .song_lint import collect_live
 
             adapter = LiveAdapter(dispatch, collect_live(include_session=True))
-            overrides = {}
-            for key, value in (("root", args.song_root), ("name", args.song_name)):
-                if value is not None:
-                    overrides[key] = value
             report = run_pipeline(
                 config,
                 adapter,
-                dry_run=False,
-                only=[v for item in args.only for v in item.split(",")],
+                dry_run=args.plan,
+                only=only,
                 song_overrides=overrides,
                 strict=args.strict,
             )
             print(json.dumps(report, indent=2))
             return 0
-        if (
-            args.rules
-            or args.fail_on
-            or args.include_session
-            or args.report
-            or args.track
-            or args.clip
-        ):
-            raise ValueError("Lint options require --lint or --live")
         adapter = SnapshotAdapter(json.loads(args.snapshot.read_text(encoding="utf-8")))
-        overrides = {}
-        for key, value in (("root", args.song_root), ("name", args.song_name)):
-            if value is not None:
-                overrides[key] = value
         report = run_pipeline(
             config,
             adapter,
-            dry_run=not args.apply,
-            only=[v for item in args.only for v in item.split(",")],
+            dry_run=args.plan,
+            only=only,
             song_overrides=overrides,
         )
         print(json.dumps(report, indent=2))
     except (ValueError, OSError, RuntimeError, UnsupportedOperations, yaml.YAMLError) as error:
         parser.error(str(error))
     return 0
+
+
+# Load after register exists. Do not read prep.OPS here: this import can run
+# while prep itself is still loading.
+from . import prep as _prep
+
+del _prep

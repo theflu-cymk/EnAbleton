@@ -1127,18 +1127,34 @@ def apply_metadata_fixes(report, connection):
             else 1
         )
     )
+    for item in fixes:
+        if set(item["fix"]["patch"]) - {"name", "color_index"}:
+            raise ValueError("Unsupported automatic property")
+    # One guarded read per target, batched on the main thread. Every guard is
+    # checked before the first write, so a stale target still blocks the batch.
+    guards = []
+    owners = []
+    for item in fixes:
+        fix = item["fix"]
+        guards.append({"type": "get_track_info", "params": {"track_index": fix["track_index"]}})
+        owners.append((fix, "track"))
+        if fix["kind"] == "set_clip":
+            guards.append(
+                {"type": "read_access_object", "params": dict(fix["locator"], object_type="clip")}
+            )
+            owners.append((fix, "clip"))
+    for (fix, kind), (value, error) in zip(owners, read_many(connection.send_command, guards)):
+        if error is not None:
+            raise RuntimeError(
+                "Fix guard read failed; nothing was written: " + str(error)
+            ) from error
+        if kind == "track" and value.get("name") != fix["expected_track_name"]:
+            raise ValueError("Track moved/renamed since lint capture; rerun lint")
     commands = []
     for item in fixes:
         fix = item["fix"]
-        if set(fix["patch"]) - {"name", "color_index"}:
-            raise ValueError("Unsupported automatic property")
-        info = connection.send_command("get_track_info", {"track_index": fix["track_index"]})
-        if info["name"] != fix["expected_track_name"]:
-            raise ValueError("Track moved/renamed since lint capture; rerun lint")
         if fix["kind"] == "set_clip":
             target = dict(fix["locator"])
-            # Read validates track/clip name and Arrangement start on Live's main thread.
-            connection.send_command("read_access_object", dict(target, object_type="clip"))
         else:
             target = dict(
                 track_index=fix["track_index"], expected_track_name=fix["expected_track_name"]
@@ -1171,10 +1187,11 @@ def apply_metadata_fixes(report, connection):
         for f in fixes
         if f["fix"]["kind"] == "set_track" and "name" in f["fix"]["patch"]
     }
+    reads = []
     for item in fixes:
         fix = item["fix"]
         if fix["kind"] == "set_track":
-            actual = connection.send_command("get_track_info", {"track_index": fix["track_index"]})
+            reads.append({"type": "get_track_info", "params": {"track_index": fix["track_index"]}})
         else:
             loc = dict(fix["locator"])
             loc["expected_track_name"] = final_names.get(
@@ -1182,11 +1199,16 @@ def apply_metadata_fixes(report, connection):
             )
             if "name" in fix["patch"]:
                 loc["expected_clip_name"] = fix["patch"]["name"]
-            actual = connection.send_command("read_access_object", dict(loc, object_type="clip"))[
-                "properties"
-            ]
+            reads.append({"type": "read_access_object", "params": dict(loc, object_type="clip")})
+    for item, (actual, error) in zip(fixes, read_many(connection.send_command, reads)):
+        fix = item["fix"]
+        if error is not None:
+            raise RuntimeError(
+                "Metadata readback failed; rerun lint and inspect Live Undo: " + str(error)
+            ) from error
+        seen = actual if fix["kind"] == "set_track" else actual["properties"]
         for field, value in fix["patch"].items():
-            if actual[field] != value:
+            if seen[field] != value:
                 raise RuntimeError("Metadata readback failed; rerun lint and inspect Live Undo")
     return [f["id"] for f in fixes]
 

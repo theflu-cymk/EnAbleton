@@ -181,8 +181,8 @@ class ApplyTests(unittest.TestCase):
     def test_confirm_and_transport_guards_send_nothing_dangerous(self):
         plan = plan_draft({"genre": "pop", "energy": "medium", "key": "C", "bars": 16})
         live = FakeLive()
-        with self.assertRaisesRegex(ValueError, "confirm=true"):
-            apply_draft(live, plan, confirm=False)
+        preview = apply_draft(live, plan, confirm=False)
+        self.assertFalse(preview["live_changes"])
         self.assertEqual(live.calls, [])
         live.playing = True
         with self.assertRaisesRegex(ValueError, "Stop playback"):
@@ -290,6 +290,14 @@ class FamilyTests(unittest.TestCase):
             "guide_song_draft",
             "guide_halftime_remix_workflow",
             "get_drum_pads",
+            "plan_track_preparation",
+            "apply_track_preparation",
+            "plan_instrument_assignment",
+            "apply_instrument_assignment",
+            "plan_audio_repair",
+            "apply_audio_repair",
+            "plan_track_alignment",
+            "apply_track_alignment",
         ):
             self.assertIn(name, names)
         self.assertNotIn("map_rack_magnitude", names)

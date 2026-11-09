@@ -9,9 +9,14 @@ from . import __version__
 
 
 def main(argv=None):
+    from .prep import route
+
+    routed = route(argv)
+    if routed is not None:
+        return routed
     parser = argparse.ArgumentParser(prog="enableton", description=__doc__)
     parser.add_argument("--version", action="version", version=f"EnAbleton {__version__}")
-    commands = parser.add_subparsers(dest="command", required=True)
+    commands = parser.add_subparsers(dest="command", required=False)
     commands.add_parser("serve", help="Run the stdio MCP server")
     build = commands.add_parser("build-bridge", help="Generate the pinned Live Remote Script")
     build.add_argument("--output", type=Path, required=True)
@@ -25,10 +30,8 @@ def main(argv=None):
     doctor = commands.add_parser("doctor", help="Read-only installation and running-version check")
     doctor.add_argument("--user-library", type=Path, required=True)
     doctor.add_argument("--json", action="store_true", help="Emit JSON (the default)")
-    workflow = commands.add_parser("song-init", help="Lint Live or plan a YAML song workflow")
+    workflow = commands.add_parser("song-init", help="Apply a YAML song workflow. --plan previews")
     workflow.add_argument("workflow_args", nargs=argparse.REMAINDER)
-    lint = commands.add_parser("lint", help="Read and lint the current Live set")
-    lint.add_argument("workflow_args", nargs=argparse.REMAINDER)
     initiate = commands.add_parser(
         "initiate", help="Prepare or lint a song from the default initial-preparation preset"
     )
@@ -43,6 +46,11 @@ def main(argv=None):
     initiate.add_argument("--fail-on", choices=("none", "info", "warning", "error"))
     initiate.add_argument("--report", type=Path, help="JSON report for the audit pass")
     initiate.add_argument("--keep-config", type=Path, help="Write the generated YAML here")
+    initiate.add_argument(
+        "--plan",
+        action="store_true",
+        help="Preview the prepare steps. The set is not changed",
+    )
     scan = commands.add_parser(
         "scan-audio", help="Scan PCM WAV and suggest targeted repairs; no audio edits"
     )
@@ -172,13 +180,21 @@ def main(argv=None):
         audit_code = workflow_main(common + audit)
         if audit_code not in (0, 1):
             return audit_code
-        return workflow_main(
-            common + ["--apply"] + session + (["--fail-on", args.fail_on] if args.fail_on else [])
-        )
-    if args.command in {"song-init", "lint"}:
+        from .prep import process_exit, run_all
+
+        if args.snapshot:
+            source = json.loads(args.snapshot.read_text(encoding="utf-8"))
+        else:
+            from .server import dispatch
+
+            source = dispatch
+        results = run_all(source, {"plan": bool(args.plan)})
+        print(json.dumps(results, indent=2, allow_nan=False))
+        return process_exit(results)
+    if args.command == "song-init":
         from .song_init import main as workflow_main
 
-        return workflow_main(args.workflow_args + (["--lint"] if args.command == "lint" else []))
+        return workflow_main(args.workflow_args)
     if args.command == "serve":
         from .server import mcp
 
@@ -189,6 +205,10 @@ def main(argv=None):
 
         print(json.dumps(build_bridge(args.output), indent=2))
         return 0
+    if args.command is None:
+        from .song_start import run
+
+        return run(None)
     library = args.user_library.expanduser().resolve()
     if not library.is_dir():
         parser.error(

@@ -40,7 +40,7 @@ async def main():
         f"Generated from EnAbleton {__version__}: {len(rows)} tools "
         f"({upstream} upstream, {additions} additions).",
         "",
-        "Annotations describe intended effects; always inspect targets before edits.",
+        "Annotations describe intended effects. Write tools edit when called.",
         "",
     ]
     for origin in ("EnAbleton", "upstream"):
@@ -49,7 +49,10 @@ async def main():
             if row["origin"] != origin:
                 continue
             annotation = row.get("annotations", {})
-            intent = "Read-only" if annotation.get("readOnlyHint") else "Write / inspect before use"
+            if annotation.get("readOnlyHint"):
+                intent = "Preview (optional)" if row["name"].startswith("plan_") else "Read-only"
+            else:
+                intent = "Writes"
             description = " ".join(row.get("description", "").split()).replace("|", "/")
             lines.append(f"| `{row['name']}` | {intent} | {description} |")
         lines.append("")

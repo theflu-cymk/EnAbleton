@@ -18,9 +18,28 @@ async def main():
     )
     async with stdio_client(params) as (read, write):
         async with ClientSession(read, write) as session:
-            await session.initialize()
+            result = await session.initialize()
+            instructions = result.instructions or ""
+            server_info = getattr(result, "serverInfo", None)
+            server_instructions = getattr(server_info, "instructions", None) or ""
+            assert server_instructions, "serverInfo.instructions missing"
+            handshake = server_instructions
+            assert "writes by default" in handshake, handshake
+            for op_id in (
+                "adopt",
+                "name",
+                "label",
+                "voice",
+                "level",
+                "lock",
+                "frame",
+                "map",
+                "check",
+            ):
+                assert op_id in handshake, op_id
+            assert "writes by default" in (server_instructions or instructions)
             tools = {tool.name: tool for tool in (await session.list_tools()).tools}
-            assert len(tools) == 234, len(tools)
+            assert len(tools) == 242, len(tools)
             for name in (
                 "batch_commands",
                 "undo",
@@ -50,6 +69,14 @@ async def main():
                 "refine_song_draft",
                 "apply_song_draft",
                 "describe_tool_families",
+                "plan_track_preparation",
+                "apply_track_preparation",
+                "plan_instrument_assignment",
+                "apply_instrument_assignment",
+                "plan_audio_repair",
+                "apply_audio_repair",
+                "plan_track_alignment",
+                "apply_track_alignment",
             ):
                 assert name in tools, name
             for name, arguments in (
@@ -142,6 +169,12 @@ async def main():
             ):
                 assert tools[name].annotations.readOnlyHint
             assert tools["plan_remix_midi_cleanup"].annotations.readOnlyHint
+            assert tools["plan_instrument_assignment"].annotations.readOnlyHint
+            assert tools["plan_audio_repair"].annotations.readOnlyHint
+            assert tools["plan_track_alignment"].annotations.readOnlyHint
+            assert tools["apply_instrument_assignment"].annotations.destructiveHint
+            assert tools["apply_audio_repair"].annotations.destructiveHint
+            assert tools["apply_track_alignment"].annotations.destructiveHint
             assert not tools["prepare_remix_session"].annotations.readOnlyHint
             assert tools["build_remix_session"].annotations.destructiveHint
             assert tools["preview_remix_session"].annotations.destructiveHint
@@ -167,7 +200,7 @@ async def main():
             ):
                 assert not tools[name].annotations.readOnlyHint
                 assert tools[name].annotations.destructiveHint
-            print("234 tools verified; no Live mutations requested.")
+            print("242 tools verified; no Live mutations requested.")
 
 
 if __name__ == "__main__":

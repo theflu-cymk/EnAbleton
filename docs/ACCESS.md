@@ -3,7 +3,7 @@
 This extension expands the 1.8.1 server rather than enabling an unrestricted
 Python interpreter inside Live. Every bridge command runs on Live's main
 thread. Writes are explicit; installing the extension never changes a song.
-Tool count: 234 (156 upstream, 78 additions). Recipes are retained, and every
+Tool count: 242 (156 upstream, 86 additions). Recipes are retained, and every
 upstream 1.8.1 tool is present; see [TOOL_CATALOG.md](TOOL_CATALOG.md) for the
 generated list and the annotated reference at <https://abletonmcp.com/tools/>.
 

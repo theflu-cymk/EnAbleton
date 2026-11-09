@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+- `enableton` with no arguments shows nine preparation steps for the open set:
+  adopt, name, label, voice, level, lock, frame, map and check. `all` runs them
+  in order. A direct English request is printed for the assistant. The command
+  writes by default. `--plan` previews. `prepare-tracks`, `assign-instruments`,
+  `repair-audio`, `align-tracks` and `lint` remain as aliases. `uv tool install
+  --from . enableton` installs the command for any directory.
+- `prepare-tracks`, `assign-instruments`, `repair-audio`, `align-tracks`, and
+  `song-init` write when they run. `--plan` previews. MCP `apply_*` tools write
+  unless `confirm` is false.
+- Add `align-tracks` to the startup menu. Arrangement audio that is already
+  warped gets Beats for drums and percussion, Tones for bass, and Complex Pro
+  (or Complex) for tonal and full-mix layers. Re-Pitch stays. Warp markers,
+  clip starts, polarity, EQ, sends, automation, racks, and groups stay. It
+  does not start playback.
+- Add `assign-instruments` and `repair-audio`. MIDI tracks that have notes and
+  no instrument get a stock placeholder chosen from their content, so the part
+  can be heard and then replaced. Arrangement audio is scanned for the first 30
+  seconds of each source file: unity clip gain is lowered when samples hit full
+  scale, and Utility's DC switch is enabled when this Live build exposes it.
+  Three or more level jumps load one gentle Compressor (2:1, makeup off) when
+  the track does not already have one. Clicks, gaps, and sparse jumps stay
+  reported. Both commands write when run. Neither command starts playback.
+- Add `prepare-tracks` for a new song. Working tracks are renamed from their
+  content and colored by role. Each one is duplicated first; the copy is muted,
+  disarmed and named `ORIGINAL | ...`, and folded when it is a group. Notes,
+  Warp and faders stay. The command writes when run.
 - Retire the AbletonMCP control surface. Install from main; `v0.1.0-beta.1` is
   not the install target. The generated script names itself EnAbleton in Live's
   log and status bar (bridge protocol `1.8.1-ext.15`, still accepting `ext.1`
@@ -23,8 +49,8 @@
   `start_marker`/`end_marker` (bridge protocol `1.8.1-ext.9`). `start_time` is
   get-only, so a move is a duplicate at the destination followed by a delete.
 - Add the default initial-preparation preset behind `enableton initiate`: it asks
-  prepare or lint, then runs phase-ordered protect, audit, align, name and verify
-  steps that default to report-only.
+  prepare or lint, then runs the nine preparation steps. `check` stays off.
+  Song-folder creation stays off unless `prep workspace` is called.
 - Add role-based layer naming and colours (`NN Label`, one colour per role) as a
   registered step, and make render-first, reference-aligned Warp removal the default.
 - Correct clip extent units: `loop_end` and `end_marker` are settable, and unwarped

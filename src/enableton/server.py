@@ -6,9 +6,31 @@ from pathlib import Path
 from ableton_live_mcp import tools  # registers the upstream tools
 from ableton_live_mcp.app import mcp
 from ableton_live_mcp.connection import AbletonConnection, get_ableton_connection
+import mcp.server.session as _mcp_session
+import mcp.types as _mcp_types
 from .bass_tools import register
 from .bridge_version import COMPATIBLE_VERSIONS, UPSTREAM_VERSION
+from .prep import instructions as prep_instructions
 from .wire import install as install_wire
+
+# FastMCP exposes instructions as a read-only property. The handshake reads
+# the low-level server attribute, which is also InitializeResult.instructions.
+# This SDK's serverInfo object does not receive that field unless we copy it.
+_INSTRUCTIONS = prep_instructions()
+mcp._mcp_server.instructions = _INSTRUCTIONS
+_InitializeResult = _mcp_types.InitializeResult
+
+
+def _initialize_result(*args, **kwargs):
+    info = kwargs.get("serverInfo")
+    text = kwargs.get("instructions") or _INSTRUCTIONS
+    if text and info is not None and not getattr(info, "instructions", None):
+        kwargs["serverInfo"] = info.model_copy(update={"instructions": text})
+        kwargs["instructions"] = text
+    return _InitializeResult(*args, **kwargs)
+
+
+_mcp_session.types.InitializeResult = _initialize_result
 
 # Frame the socket before this module replaces send_command. The wrapper below
 # calls that framed sender; installing afterwards would skip the newline.
@@ -18,18 +40,49 @@ install_wire()
 # differ between implementations. Catalog and offline tools remain usable.
 _upstream_send = AbletonConnection.send_command
 
+# The handshake is read once per connection. Reloading the control surface in
+# Live tears the socket down, which fails the next send and clears this below,
+# so a stale bridge is still refused. Only reads are cached, never a write.
+_handshake = {"connection": None, "info": None}
+
+
+def _forget_handshake():
+    _handshake["connection"] = None
+    _handshake["info"] = None
+
+
+def _handshake_info(connection, refresh=False):
+    if (
+        not refresh
+        and _handshake["info"] is not None
+        and _handshake["connection"] is connection
+    ):
+        return _handshake["info"]
+    info = _upstream_send(connection, "get_script_info", {})
+    _handshake["connection"] = connection
+    _handshake["info"] = info
+    return info
+
+
+def _require_version(info):
+    if (
+        info.get("version") not in COMPATIBLE_VERSIONS
+        or info.get("upstream_version") != UPSTREAM_VERSION
+    ):
+        raise RuntimeError(
+            "The new server is installed, but Live still has an older bridge loaded. Fully quit Live, select only EnAbleton, and set Input and Output to None before making Live calls."
+        )
+
 
 def _version_checked_send(self, command_type, params=None):
-    if command_type != "get_script_info":
-        info = _upstream_send(self, "get_script_info", {})
-        if (
-            info.get("version") not in COMPATIBLE_VERSIONS
-            or info.get("upstream_version") != UPSTREAM_VERSION
-        ):
-            raise RuntimeError(
-                "The new server is installed, but Live still has an older bridge loaded. Fully quit Live, select only EnAbleton, and set Input and Output to None before making Live calls."
-            )
-    return _upstream_send(self, command_type, params)
+    try:
+        if command_type == "get_script_info":
+            return _handshake_info(self, refresh=True)
+        _require_version(_handshake_info(self))
+        return _upstream_send(self, command_type, params)
+    except Exception:
+        _forget_handshake()
+        raise
 
 
 AbletonConnection.send_command = _version_checked_send
@@ -37,18 +90,19 @@ AbletonConnection.send_command = _version_checked_send
 
 def dispatch(command, args):
     connection = get_ableton_connection()
-    # One fresh capability/version check; bypass the wrapper's duplicate check only
-    # after validating the same compatibility conditions here. Never cache writes.
-    info = _upstream_send(connection, "get_script_info", {})
-    if (
-        info.get("version") not in COMPATIBLE_VERSIONS
-        or info.get("upstream_version") != UPSTREAM_VERSION
-        or command not in info.get("capabilities", [])
-    ):
-        raise RuntimeError(
-            "This bridge capability is not loaded. Save and fully restart Ableton Live, then retry; no command was sent."
-        )
-    return _upstream_send(connection, command, args)
+    # One capability/version check per connection; the wrapper's duplicate check
+    # is bypassed only after validating the same conditions here.
+    try:
+        info = _handshake_info(connection)
+        _require_version(info)
+        if command not in info.get("capabilities", []):
+            raise RuntimeError(
+                "This bridge capability is not loaded. Save and fully restart Ableton Live, then retry; no command was sent."
+            )
+        return _upstream_send(connection, command, args)
+    except Exception:
+        _forget_handshake()
+        raise
 
 
 @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False})
@@ -123,6 +177,18 @@ register_plugin_aliases(mcp, dispatch)
 from .song_draft import register_song_draft
 
 register_song_draft(mcp, dispatch)
+from .track_prep import register_track_prep
+
+register_track_prep(mcp, dispatch)
+from .assign_instruments import register_instruments
+
+register_instruments(mcp, dispatch)
+from .audio_repair import register_audio_repair
+
+register_audio_repair(mcp, dispatch)
+from .align_tracks import register_track_alignment
+
+register_track_alignment(mcp, dispatch)
 
 
 @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False})

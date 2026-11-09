@@ -1,7 +1,7 @@
 {
   "enableton_version": "0.1.0b1",
   "upstream_version": "1.8.1",
-  "tool_count": 234,
+  "tool_count": 242,
   "tools": [
     {
       "name": "add_notes_to_clip",
@@ -784,6 +784,27 @@
       "module": "enableton.extended_tools"
     },
     {
+      "name": "apply_audio_repair",
+      "description": "Lower unity clip gain, enable Utility DC, and load one gentle Compressor\nwhere the measurement supports it. Writes unless confirm is false. Refuses\nwhile playing or recording. Does not add a limiter, write fades, or change\nnotes, Warp, track faders, or a compressor that is already loaded. A missing\nparameter is left unset.\n",
+      "inputSchema": {
+        "properties": {
+          "confirm": {
+            "default": true,
+            "title": "Confirm",
+            "type": "boolean"
+          }
+        },
+        "title": "apply_audio_repairArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.audio_repair"
+    },
+    {
       "name": "apply_bass_movement",
       "description": "Write rhythmic wobble/growl/yoi/pluck/sweep/machinegun/duck automation to a Session clip, then verify readback. low/high normalized within native parameter range. parameter_name=track_volume controls mixer gain. Duck requires explicit kick_times in this clip's beat timeline; not audio-reactive sidechain. Existing target envelopes require replace=true. No Arrangement mutation.",
       "inputSchema": {
@@ -882,6 +903,27 @@
       "module": "enableton.bass_tools"
     },
     {
+      "name": "apply_instrument_assignment",
+      "description": "Load a stock placeholder on each MIDI track that still has notes and no\ninstrument. Writes unless confirm is false. Refuses while playing or recording.\nThe placeholder is there so the part can be heard; replace it. Does not change\nnotes, Warp, or faders.\n",
+      "inputSchema": {
+        "properties": {
+          "confirm": {
+            "default": true,
+            "title": "Confirm",
+            "type": "boolean"
+          }
+        },
+        "title": "apply_instrument_assignmentArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.assign_instruments"
+    },
+    {
       "name": "apply_recipe",
       "description": "Scaffold a genre starter in one call: set the tempo, add Drums, Bass, and\nChords MIDI tracks, try to load fitting instruments, and write generated\nparts. `name` is one from list_recipes (e.g. \"lofi_beat\", \"house_groove\").\ntempo/key/scale/bars override the recipe defaults. Adds new tracks; it does\nnot overwrite existing ones.",
       "inputSchema": {
@@ -966,7 +1008,7 @@
     },
     {
       "name": "apply_song_draft",
-      "description": "Create the planned MIDI tracks at the end of the song, one Session clip\neach, and Arrangement locators that are not already within 0.001 beats.\nRequires confirm=true. Refuses while the transport plays or the meter is\nnot 4/4. Does not start playback, delete Arrangement clips, rename an\nexisting locator, or change the meter. Tempo changes only when the plan\nsets apply_tempo. Tracks, clips and notes are one undo step. Locators\nare separate commands.\n",
+      "description": "Create the planned MIDI tracks at the end of the song, one Session clip\neach, and Arrangement locators that are not already within 0.001 beats.\nWrites unless confirm is false. Refuses while the transport plays or the\nmeter is not 4/4. Does not start playback, delete Arrangement clips, rename\nan existing locator, or change the meter. Tempo changes only when the plan\nsets apply_tempo. Tracks, clips and notes are one undo step. Locators\nare separate commands.\n",
       "inputSchema": {
         "properties": {
           "plan": {
@@ -975,7 +1017,7 @@
             "type": "object"
           },
           "confirm": {
-            "default": false,
+            "default": true,
             "title": "Confirm",
             "type": "boolean"
           }
@@ -992,6 +1034,48 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.song_draft"
+    },
+    {
+      "name": "apply_track_alignment",
+      "description": "Set Warp modes on arrangement audio that is already warped. Writes unless\nconfirm is false. Refuses while playing or recording. Does not enable Warp,\nmove markers, slide clips, or change notes, faders, polarity, EQ, sends,\nautomation, racks, or groups.\n",
+      "inputSchema": {
+        "properties": {
+          "confirm": {
+            "default": true,
+            "title": "Confirm",
+            "type": "boolean"
+          }
+        },
+        "title": "apply_track_alignmentArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.align_tracks"
+    },
+    {
+      "name": "apply_track_preparation",
+      "description": "Duplicate each working track, mute the untouched copy, fold it when it is a\ngroup, then rename and color the working track from its content. Writes unless\nconfirm is false. Refuses while playing or recording. Notes, Warp and faders stay.\n",
+      "inputSchema": {
+        "properties": {
+          "confirm": {
+            "default": true,
+            "title": "Confirm",
+            "type": "boolean"
+          }
+        },
+        "title": "apply_track_preparationArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.track_prep"
     },
     {
       "name": "apply_warp_repair",
@@ -6063,6 +6147,21 @@
       "module": "enableton.access_tools"
     },
     {
+      "name": "plan_audio_repair",
+      "description": "Optional preview of repairs for the first 30 seconds of each Arrangement\naudio clip's source WAV. Full-scale samples can lower clip gain. DC offset\ncan enable Utility's DC switch when Live exposes it. Three or more level\njumps can add one gentle Compressor. Clicks and silence gaps are listed.\nDoes not write or start playback.\n",
+      "inputSchema": {
+        "properties": {},
+        "title": "plan_audio_repairArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.audio_repair"
+    },
+    {
       "name": "plan_halftime_remix_workflow",
       "description": "Plan a reusable rock/dubstep/riddim flip: source-relative riff MIDI, held roots,\nhalf-time drums, smooth pulses, audio-link choices and verification. No Live writes.\nPhysical Hz/ms/dB suggestions are not native device values. Read docs/REMIX_WORKFLOW.md.\n",
       "inputSchema": {
@@ -6085,6 +6184,21 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.remix_workflow"
+    },
+    {
+      "name": "plan_instrument_assignment",
+      "description": "Optional preview of a stock placeholder for each MIDI track that has notes\nand no instrument. Does not replace a loaded instrument, including an unknown\nplug-in. Does not write or start playback.\n",
+      "inputSchema": {
+        "properties": {},
+        "title": "plan_instrument_assignmentArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.assign_instruments"
     },
     {
       "name": "plan_remix_midi_cleanup",
@@ -6125,7 +6239,7 @@
     },
     {
       "name": "plan_song_draft",
-      "description": "Plan a 16, 32 or 64 bar Session sketch in 4/4. Role tracks are Drums, Bass,\nChords, and Lead when energy is high. Drum pitches are General MIDI guesses:\nconfirm them with get_drum_pads. No Live writes.\n",
+      "description": "Optional preview of a 16, 32 or 64 bar Session sketch in 4/4. Role tracks\nare Drums, Bass, Chords, and Lead when energy is high. Drum pitches are\nGeneral MIDI guesses: check them with get_drum_pads. No Live writes.\n",
       "inputSchema": {
         "properties": {
           "config": {
@@ -6146,6 +6260,36 @@
       },
       "origin": "EnAbleton",
       "module": "enableton.song_draft"
+    },
+    {
+      "name": "plan_track_alignment",
+      "description": "Optional preview of Warp modes for arrangement audio that is already warped.\nDrums and percussion use Beats, bass uses Tones, and tonal or full-mix layers\nuse Complex Pro. Re-Pitch and unwarped clips stay. Does not move markers or\nclip starts, flip polarity, load EQ or sends, or start playback.\n",
+      "inputSchema": {
+        "properties": {},
+        "title": "plan_track_alignmentArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.align_tracks"
+    },
+    {
+      "name": "plan_track_preparation",
+      "description": "Optional preview of content names, role colors and muted originals.\nDoes not write, play, or change notes, Warp or faders. A regular track cannot\nbe folded; the preview says so instead of grouping tracks Live cannot group.\n",
+      "inputSchema": {
+        "properties": {},
+        "title": "plan_track_preparationArguments",
+        "type": "object"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "origin": "EnAbleton",
+      "module": "enableton.track_prep"
     },
     {
       "name": "prepare_remix_session",
