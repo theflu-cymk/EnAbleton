@@ -7,6 +7,28 @@ import tempfile
 
 from . import __version__
 
+# Commands this parser owns that prep.route would otherwise answer with the
+# nine-step preparation screen.
+_PARSER_COMMANDS = ("client-config", "uninstall")
+
+
+def _user_library(parser, args):
+    """Return the confirmed User Library, discovering it when it was not given."""
+
+    if args.user_library is not None:
+        library = args.user_library.expanduser().resolve()
+        if not library.is_dir():
+            parser.error(
+                "--user-library must point to the existing User Library shown in Live Settings"
+            )
+        return library
+    from .setup import discover_library
+
+    try:
+        return Path(discover_library()["user_library"])
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
+
 
 def main(argv=None):
     import sys
@@ -14,10 +36,7 @@ def main(argv=None):
     from .prep import route
 
     argv = sys.argv[1:] if argv is None else list(argv)
-    # prep.route answers every command it does not recognize with the nine-step
-    # preparation screen, so a command this parser owns is dispatched before the
-    # router sees it.
-    routed = None if argv[:1] == ["client-config"] else route(argv)
+    routed = None if argv[:1] and argv[0] in _PARSER_COMMANDS else route(argv)
     if routed is not None:
         return routed
     parser = argparse.ArgumentParser(prog="enableton", description=__doc__)
@@ -29,13 +48,29 @@ def main(argv=None):
     install = commands.add_parser(
         "install", help="Install the EnAbleton Remote Script with backups"
     )
-    install.add_argument("--user-library", type=Path, required=True)
+    install.add_argument(
+        "--user-library",
+        type=Path,
+        help="Live Settings, Library, User Library; discovered when omitted",
+    )
     install.add_argument(
         "--replace", action="store_true", help="Allow a reviewed existing script to be replaced"
     )
     doctor = commands.add_parser("doctor", help="Read-only installation and running-version check")
-    doctor.add_argument("--user-library", type=Path, required=True)
+    doctor.add_argument(
+        "--user-library",
+        type=Path,
+        help="Live Settings, Library, User Library; discovered when omitted",
+    )
     doctor.add_argument("--json", action="store_true", help="Emit JSON (the default)")
+    uninstall = commands.add_parser(
+        "uninstall", help="Back up and remove the installed Remote Script; no set is deleted"
+    )
+    uninstall.add_argument(
+        "--user-library",
+        type=Path,
+        help="Live Settings, Library, User Library; discovered when omitted",
+    )
     client_config = commands.add_parser(
         "client-config", help="Print an MCP client config; never edits client settings"
     )
@@ -246,16 +281,27 @@ def main(argv=None):
         from .song_start import run
 
         return run(None)
-    library = args.user_library.expanduser().resolve()
-    if not library.is_dir():
-        parser.error(
-            "--user-library must point to the existing User Library shown in Live Settings"
-        )
+    library = _user_library(parser, args)
     remote = library / "Remote Scripts" / "EnAbleton"
     if args.command == "doctor":
         from .doctor import main as doctor_main
 
         return doctor_main(remote)
+    if args.command == "uninstall":
+        import sys
+
+        from .setup import uninstall_bridge
+
+        try:
+            print(
+                json.dumps(
+                    uninstall_bridge(remote, Path.home() / ".enableton" / "backups"), indent=2
+                )
+            )
+            return 0
+        except (OSError, ValueError) as error:
+            print(json.dumps({"error": str(error)}), file=sys.stderr)
+            return 2
     from .bridge_builder import build as build_bridge
     from .installer import install_bridge
 
