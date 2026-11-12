@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add `enableton setup`, a read-only first-run check. It prints the resolved
+  User Library, whether the installed Remote Script still matches its manifest,
+  the entry for an optional `--client`, and the exact commands that remain. It
+  builds, copies and launches nothing; exit 0 means installed and matching, 1
+  means a command is still needed.
 - Add `enableton uninstall`, which moves the installed Remote Script into a
   timestamped backup, lists locally modified or missing files, and never
   deletes a Live set. `install`, `doctor` and `uninstall` now discover the
