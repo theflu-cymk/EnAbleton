@@ -113,7 +113,7 @@ class SongInitTests(unittest.TestCase):
             adapter = MemoryAdapter(state())
             report = run_pipeline(cfg, adapter, dry_run=False)
             folder = root / "my-song"
-            self.assertEqual(report["songFolder"], str(folder))
+            self.assertEqual(report["songFolder"], str(folder.resolve()))
             self.assertEqual(json.loads((folder / "song.json").read_text())["name"], "My Song")
             self.assertTrue((folder / "audio").is_dir())
             self.assertEqual(len(list((folder / "reports").glob("*.json"))), 1)
@@ -143,7 +143,7 @@ class SongInitTests(unittest.TestCase):
             cfg = config(Path(directory))
             cfg["song"].update(name="In Hell", folderName="In Hell")
             report = run_pipeline(cfg, SnapshotAdapter(state()), dry_run=False, only=["workspace"])
-            self.assertEqual(Path(report["songFolder"]), Path(directory) / "In Hell")
+            self.assertEqual(Path(report["songFolder"]), (Path(directory) / "In Hell").resolve())
             self.assertTrue((Path(directory) / "In Hell" / "song.json").is_file())
             self.assertFalse((Path(directory) / "in-hell").exists())
             for name in [" In Hell", "In Hell ", "In  Hell", "../In Hell"]:
