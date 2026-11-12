@@ -61,9 +61,10 @@ def _handshake_info(connection, refresh=False):
 
 
 def _require_version(info):
-    if info.get("version") not in COMPATIBLE_VERSIONS or info.get(
-        "upstream_version"
-    ) != UPSTREAM_VERSION:
+    if (
+        info.get("version") not in COMPATIBLE_VERSIONS
+        or info.get("upstream_version") != UPSTREAM_VERSION
+    ):
         raise RuntimeError(
             "The new server is installed, but Live still has an older bridge loaded. Fully quit Live, select only EnAbleton, and set Input and Output to None before making Live calls."
         )
