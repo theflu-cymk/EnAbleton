@@ -30,6 +30,12 @@ uv tool install --from . enableton
 from any directory. `uv run enableton` stays the command inside this checkout.
 The no-argument screen does not read the current directory.
 
+To see where setup stands without changing anything, run `uv run enableton
+setup`. It prints the resolved User Library, whether an installed Remote Script
+still matches its manifest, the entry for `--client claude-desktop` or `--client
+cursor`, and the exact commands that remain. It builds, copies and launches
+nothing. Exit 0 means installed and matching; exit 1 means a command is needed.
+
 Do not put a GitHub token into the URL or client configuration. Use Git's normal
 credential manager for private-repository authentication. On macOS choose an
 appropriate absolute checkout directory and use the equivalent commands.
