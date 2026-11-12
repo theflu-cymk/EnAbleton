@@ -57,6 +57,23 @@ Live's scan path so it cannot listen on port 9877 beside EnAbleton.
 
 ## 3. Configure your MCP client
 
+### Generated entry for Claude Desktop and Cursor
+
+```powershell
+uv run enableton client-config claude-desktop
+uv run enableton client-config cursor
+uv run enableton client-config cursor --output .\cursor-mcp.json
+```
+
+This prints one `mcpServers.EnAbleton` entry whose `command` is the interpreter
+running this installation, so the client does not depend on `uv` or `enableton`
+being first on its `PATH`. The file each client reads is named on stderr; add the
+entry there and restart the client. `--output` writes a new file only. The
+command never edits, merges into or reformats an existing client configuration,
+so review the file yourself. The manual entries below remain valid.
+
+### Manual entries
+
 Use the absolute repository path. The `--directory` option makes the command
 independent of the client's working directory. Start with one Ableton MCP server
 entry rather than parallel old/new configurations.
