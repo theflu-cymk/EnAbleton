@@ -432,9 +432,7 @@ def _apply_one(send, action, known_count=None):
     if source.get("name") != action["source_name"]:
         raise RuntimeError("track changed before prepare; nothing was duplicated")
     # The caller proves the count when it already holds one; otherwise read it.
-    before = (
-        known_count if known_count is not None else send("get_session_info", {})["track_count"]
-    )
+    before = known_count if known_count is not None else send("get_session_info", {})["track_count"]
     send("duplicate_track", {"track_index": index})
     count = send("get_session_info", {})["track_count"]
     if count != before + 1:
