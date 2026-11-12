@@ -43,6 +43,11 @@ Do not guess it from Documents or OneDrive: customized locations are common.
 uv run enableton install --user-library "C:\path\shown\in\Live\User Library"
 ```
 
+`--user-library` may be omitted: the usual per-platform locations are checked
+and the command lists the paths it checked instead of guessing when none or
+several exist. A customized location is common, so pass the path when the
+discovery result is wrong.
+
 This builds the Remote Script from the pinned upstream package and installs it
 at `<User Library>/Remote Scripts/EnAbleton`. It validates staged hashes and
 syntax, preserves an existing installation in `~/.enableton/backups`, and rolls
@@ -111,6 +116,24 @@ upstream source, so use EnAbleton's doctor for the extended script.
 
 First MCP request: “Read tempo and track names; do not edit or start playback.”
 Then inspect `describe_live_access` and `describe_warp_workflow`.
+
+## Uninstall
+
+```powershell
+uv run enableton uninstall --user-library "C:\path\shown\in\Live\User Library"
+```
+
+Moves `<User Library>/Remote Scripts/EnAbleton` into a timestamped folder under
+`~/.enableton/backups` and prints the restore path. Files that no longer match
+the installed manifest are listed before the move, so local edits are reported
+rather than deleted. No Live set, source media or other Remote Script is
+touched. Fully restart Live afterwards: EnAbleton disappears from the Control
+Surface list.
+
+`--user-library` is optional for `install`, `doctor` and `uninstall`. The usual
+per-platform locations are checked, and the command lists the paths it checked
+and asks for the Live Settings path instead of guessing when none or several
+exist. A customized location is common, so pass the path when it differs.
 
 ## Updates and rollback
 
