@@ -164,9 +164,7 @@ class FakeLive:
         if kind == "batch":
             results = []
             for command in params["commands"]:
-                results.append(
-                    {"result": self.send_command(command["type"], command["params"])}
-                )
+                results.append({"result": self.send_command(command["type"], command["params"])})
             return {"executed": len(results), "results": results}
         raise AssertionError("Unexpected command: " + kind)
 

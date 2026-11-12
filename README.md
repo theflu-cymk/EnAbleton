@@ -92,7 +92,10 @@ The AbletonMCP control surface is retired. Do not enable it, and do not leave
 its Remote Script where Live can select it. Two bridges must not share port
 9877. Hardware-controller rows stay as they are.
 
-Add this stdio server to an MCP client, then restart/reconnect that client:
+`uv run enableton client-config claude-desktop` (or `cursor`) prints the entry
+with this installation's interpreter and names the client's config file. Add it
+there and restart the client. Manual entry, if you prefer a checkout-relative
+command:
 
 ```json
 {

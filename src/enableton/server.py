@@ -52,11 +52,7 @@ def _forget_handshake():
 
 
 def _handshake_info(connection, refresh=False):
-    if (
-        not refresh
-        and _handshake["info"] is not None
-        and _handshake["connection"] is connection
-    ):
+    if not refresh and _handshake["info"] is not None and _handshake["connection"] is connection:
         return _handshake["info"]
     info = _upstream_send(connection, "get_script_info", {})
     _handshake["connection"] = connection

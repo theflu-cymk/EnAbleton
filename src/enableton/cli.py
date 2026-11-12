@@ -9,9 +9,15 @@ from . import __version__
 
 
 def main(argv=None):
+    import sys
+
     from .prep import route
 
-    routed = route(argv)
+    argv = sys.argv[1:] if argv is None else list(argv)
+    # prep.route answers every command it does not recognize with the nine-step
+    # preparation screen, so a command this parser owns is dispatched before the
+    # router sees it.
+    routed = None if argv[:1] == ["client-config"] else route(argv)
     if routed is not None:
         return routed
     parser = argparse.ArgumentParser(prog="enableton", description=__doc__)
@@ -30,6 +36,13 @@ def main(argv=None):
     doctor = commands.add_parser("doctor", help="Read-only installation and running-version check")
     doctor.add_argument("--user-library", type=Path, required=True)
     doctor.add_argument("--json", action="store_true", help="Emit JSON (the default)")
+    client_config = commands.add_parser(
+        "client-config", help="Print an MCP client config; never edits client settings"
+    )
+    client_config.add_argument("client", choices=("claude-desktop", "cursor"))
+    client_config.add_argument(
+        "--output", type=Path, help="Write this entry to a new file instead of only printing it"
+    )
     workflow = commands.add_parser("song-init", help="Apply a YAML song workflow. --plan previews")
     workflow.add_argument("workflow_args", nargs=argparse.REMAINDER)
     initiate = commands.add_parser(
@@ -78,6 +91,30 @@ def main(argv=None):
         from .remix_cli import run
 
         return run(args)
+    if args.command == "client-config":
+        import sys
+
+        from .client_config import build_client_config, client_config_path, client_display
+
+        try:
+            raw = json.dumps(build_client_config(args.client), indent=2, allow_nan=False)
+            if args.output:
+                try:
+                    with args.output.open("x", encoding="utf-8") as output:
+                        output.write(raw + "\n")
+                except FileExistsError as error:
+                    raise ValueError(f"{args.output} already exists; choose a new path") from error
+            print(raw)
+            print(
+                "enableton: add this entry to "
+                f"{client_config_path(args.client)} and restart {client_display(args.client)}. "
+                "Existing entries are not merged; review the file before saving.",
+                file=sys.stderr,
+            )
+            return 0
+        except (OSError, RuntimeError, ValueError) as error:
+            print(json.dumps({"error": str(error)}), file=sys.stderr)
+            return 2
     if args.command in {"remix-plan", "remix-guide", "remix-refine"}:
         import sys
         from .remix_workflow import (

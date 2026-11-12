@@ -68,6 +68,4 @@ class DispatchChecks(unittest.TestCase):
         info["version"] = "old"
         with self.assertRaises(RuntimeError):
             fn("edit", {})
-        self.assertEqual(
-            calls, ["get_script_info", "edit", "edit", "get_script_info"]
-        )
+        self.assertEqual(calls, ["get_script_info", "edit", "edit", "get_script_info"])

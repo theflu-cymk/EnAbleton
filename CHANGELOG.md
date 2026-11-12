@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add `enableton client-config claude-desktop|cursor`, which prints one
+  `mcpServers.EnAbleton` entry launched by the interpreter running this
+  installation and names the file the client reads on stderr. `--output` writes
+  a new file only; an existing client configuration is never edited or merged.
+- Add the MVP product documents (`docs/product/`), the producer agent profile
+  and the shared Copilot instructions, adopted from the reviewed handoff bundle.
 - `enableton` with no arguments shows nine preparation steps for the open set:
   adopt, name, label, voice, level, lock, frame, map and check. `all` runs them
   in order. A direct English request is printed for the assistant. The command
