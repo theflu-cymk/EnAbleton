@@ -9,7 +9,7 @@ from . import __version__
 
 # Commands this parser owns that prep.route would otherwise answer with the
 # nine-step preparation screen.
-_PARSER_COMMANDS = ("client-config", "uninstall")
+_PARSER_COMMANDS = ("client-config", "setup", "uninstall")
 
 
 def _user_library(parser, args):
@@ -70,6 +70,17 @@ def main(argv=None):
         "--user-library",
         type=Path,
         help="Live Settings, Library, User Library; discovered when omitted",
+    )
+    setup_check = commands.add_parser(
+        "setup", help="Read-only first-run check: state and the next commands"
+    )
+    setup_check.add_argument(
+        "--user-library",
+        type=Path,
+        help="Live Settings, Library, User Library; discovered when omitted",
+    )
+    setup_check.add_argument(
+        "--client", choices=("claude-desktop", "cursor"), help="Include this client's entry"
     )
     client_config = commands.add_parser(
         "client-config", help="Print an MCP client config; never edits client settings"
@@ -282,6 +293,12 @@ def main(argv=None):
 
         return run(None)
     library = _user_library(parser, args)
+    if args.command == "setup":
+        from .guided_setup import report
+
+        result = report(library, args.client)
+        print(json.dumps(result, indent=2, allow_nan=False))
+        return 0 if result["ready"] else 1
     remote = library / "Remote Scripts" / "EnAbleton"
     if args.command == "doctor":
         from .doctor import main as doctor_main

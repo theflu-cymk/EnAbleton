@@ -43,14 +43,17 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(len(text), len(set(text)))
         self.assertIn(str(Path(r"C:\Users\producer") / "Music" / "Ableton" / "User Library"), text)
         self.assertIn(
-            str(Path(r"C:\Users\producer\OneDrive") / "Music" / "Ableton" / "User Library"), text
+            str(Path(r"C:\Users\producer\OneDrive") / "Music" / "Ableton" / "User Library"),
+            text,
         )
 
     def test_macos_and_linux_use_their_own_roots(self):
-        mac = [str(p) for p in candidate_libraries(home="/Users/p", platform="darwin")]
-        self.assertEqual(mac, ["/Users/p/Music/Ableton/User Library"])
-        linux = [str(p) for p in candidate_libraries(home="/home/p", platform="linux")]
-        self.assertIn("/home/p/Music/Ableton/User Library", linux)
+        mac_home = Path("/Users/p")
+        mac = [str(p) for p in candidate_libraries(home=mac_home, platform="darwin")]
+        self.assertEqual(mac, [str(mac_home / "Music" / "Ableton" / "User Library")])
+        linux_home = Path("/home/p")
+        linux = [str(p) for p in candidate_libraries(home=linux_home, platform="linux")]
+        self.assertIn(str(linux_home / "Music" / "Ableton" / "User Library"), linux)
 
     def test_single_existing_library_is_returned(self):
         home = "/home/producer"
