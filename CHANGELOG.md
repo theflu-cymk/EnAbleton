@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add `enableton uninstall`, which moves the installed Remote Script into a
+  timestamped backup, lists locally modified or missing files, and never
+  deletes a Live set. `install`, `doctor` and `uninstall` now discover the
+  User Library when `--user-library` is omitted and fail with the checked
+  paths instead of guessing when none or several exist.
 - Add `enableton client-config claude-desktop|cursor`, which prints one
   `mcpServers.EnAbleton` entry launched by the interpreter running this
   installation and names the file the client reads on stderr. `--output` writes
