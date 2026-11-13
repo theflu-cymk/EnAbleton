@@ -11,6 +11,28 @@ from .port import DEFAULT_PORT, client_port
 from .wire import install as install_wire
 
 
+_UPSTREAM_HINT = "and run `ableton-live-mcp doctor`"
+
+
+def _connection_error(error):
+    """Report our own guidance, not the upstream wording for the retired script.
+
+    The pinned package's connection error tells the reader to select AbletonMCP
+    and to run its doctor. Both are wrong for this installation, and it names no
+    port, so the user cannot tell a missing bridge from a port mismatch.
+    """
+
+    detail = str(error).replace("AbletonMCP", "EnAbleton").replace(_UPSTREAM_HINT, "")
+    return {
+        "connection_error": (
+            "No EnAbleton bridge answered. Start Live, select only EnAbleton as the Control "
+            "Surface with Input and Output set to None, fully restart Live if the script was just "
+            "installed or replaced, then rerun enableton doctor."
+        ),
+        "connection_detail": " ".join(detail.split()).replace(" ,", ",").rstrip(" ,.") + ".",
+    }
+
+
 def main(folder):
     folder = Path(folder)
     try:
@@ -78,7 +100,7 @@ def main(folder):
                 "Rebuild and reinstall with the same port before Live calls."
             )
     except Exception as error:
-        result.update(ok=False, connection_error=str(error))
+        result.update(ok=False, **_connection_error(error))
     finally:
         disconnect_ableton()
     print(json.dumps(result, indent=2))
