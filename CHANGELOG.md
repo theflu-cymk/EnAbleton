@@ -138,7 +138,7 @@ AbletonMCPEXT extensions. Python version: `0.1.0b1`.
 - 13 native bass recipes and 47 searchable production references.
 - Artist-method/tutorial catalogs, rhythmic phrases, bass modulation and
   seven mastering techniques with provenance and verification limits.
-- Guarded nested device, Main/return chain-mixer and object access.
+- Guarded nested device, Main/return, chain-mixer and object access.
 - Full-range Session/Arrangement MIDI inspection and note-ID edits.
 - Complete warp-marker inspection and bounded source-audio diagnostics.
 - Duplicate-only warp repair previews with stale-target checks and journals.
