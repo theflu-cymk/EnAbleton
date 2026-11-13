@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Refuse Live calls when the running session reports an Ableton Live build
+  below 12.0. The generated bridge now reports the build it is running inside,
+  `doctor` prints it, and the refusal names the version and says no command was
+  sent. Only that floor is claimed; editions and individual 12.x builds remain
+  unverified, and a bridge that cannot report a build is unverified rather than
+  refused.
 - Add `enableton setup`, a read-only first-run check. It prints the resolved
   User Library, whether the installed Remote Script still matches its manifest,
   the entry for an optional `--client`, and the exact commands that remain. It

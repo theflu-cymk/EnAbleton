@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 from ableton_live_mcp.connection import get_ableton_connection, disconnect_ableton
 from . import __version__
+from .compat import evaluate
 from .wire import install as install_wire
 
 
@@ -54,7 +55,18 @@ def main(folder):
             result["session"] = {
                 k: session.get(k) for k in ("tempo", "tracks", "track_count") if k in session
             }
-        result["ok"] = result["installed_matches"] and result["running_matches"]
+            # None means the bridge could not report a build; it is not a refusal.
+            result["live"] = evaluate(session.get("live_version"))
+            if result["live"]["supported"] is False:
+                result["next"] = (
+                    "Update Ableton Live. This session is below the supported "
+                    f"Live {result['live']['minimum']}; Live calls are refused and no set was changed."
+                )
+        result["ok"] = (
+            result["installed_matches"]
+            and result["running_matches"]
+            and result.get("live", {}).get("supported") is not False
+        )
     except Exception as error:
         result.update(ok=False, connection_error=str(error))
     finally:

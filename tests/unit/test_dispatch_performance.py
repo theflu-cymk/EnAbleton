@@ -2,6 +2,8 @@ import ast
 from pathlib import Path
 import unittest
 
+from enableton.compat import require_supported
+
 
 class DispatchChecks(unittest.TestCase):
     def dispatch(self, info):
@@ -34,6 +36,9 @@ class DispatchChecks(unittest.TestCase):
             _upstream_send=send,
             COMPATIBLE_VERSIONS={"valid"},
             UPSTREAM_VERSION="1.8.1",
+            # The extracted guard calls the real Live floor check; these handshakes
+            # carry no live_version, so it stays unverified and lets the call pass.
+            require_supported=require_supported,
         )
         exec(compile(ast.Module(body=body, type_ignores=[]), "server", "exec"), env)
         return env["dispatch"], calls, failing

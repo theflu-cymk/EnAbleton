@@ -48,12 +48,23 @@ def build(destination):
     if source.count(anchor) != 1:
         raise RuntimeError("Upstream 1.8.1 source changed: _ALL_COMMANDS anchor is not unique")
     extension = """
+    @staticmethod
+    def _reported_live_version(script):
+        # The client refuses Live calls below its documented floor. Reading the
+        # build is best effort: an unreadable one reports nothing, and the client
+        # then treats compatibility as unverified instead of guessing.
+        try:
+            return script._live_version()
+        except Exception:
+            return ""
+
     # EXT compatibility commands retain guarded parameter batches and bounded envelopes.
     _READONLY_COMMANDS = dict(_READONLY_COMMANDS, **{
         "get_script_info": lambda s, p: {
             "version": "__EXT_VERSION__", "upstream_version": BRIDGE_VERSION,
             "enableton_version": "__DIST_VERSION__", "name": "EnAbleton",
             "capabilities": list(s._ALL_COMMANDS),
+            "live_version": s._reported_live_version(s),
         },
         "get_sound_design_parameters": lambda s, p: s._get_sound_design_parameters(p),
         "get_clip_envelope": lambda s, p: s._get_clip_envelope(p),
