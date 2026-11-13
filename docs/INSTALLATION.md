@@ -159,6 +159,9 @@ Backups and reports are local and are never included in release assets.
 - **Connection refused:** Live must be running with EnAbleton selected and
   dialogs dismissed. Check only one bridge is enabled.
 - **Wrong running version:** fully restart Live; do not rely on toggling rows.
+- **Refused: Live below 12.0:** the command names the build it found and says no
+  command was sent. Update Ableton Live; the catalog, recipe and offline tools
+  keep working without Live.
 - **Unknown capability:** reconnect the client after installing the matching
   script; do not send newer write commands to an old bridge.
 - **Tool timeout:** inspect state before retrying. An interrupted operation may
