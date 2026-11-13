@@ -1,42 +1,75 @@
-# EnAbleton v0.1.0-beta.2 (draft)
+# EnAbleton v0.1.0-beta.2
 
-Draft notes for the next beta. This tree is not tagged yet: Python version
-`0.1.0b1`, bridge protocol `1.8.1-ext.8`.
+Second beta of the MVP. Python version `0.1.0b2`, Git tag `v0.1.0-beta.2`,
+bridge protocol `1.8.1-ext.15`, 242 tools (156 upstream, 86 additions).
 
-## Included
+This supersedes the earlier draft of this file, which described 204 tools and
+protocol `ext.8`. Those numbers were never released.
 
-- 204 MCP tools: 156 pinned upstream 1.8.1 controls plus 48 EnAbleton additions.
-- Guarded Live writes for track and clip deletion, Session clip resizing, audio Warp
-  state (warping, warp_mode, gain, pitch coarse/fine), track monitoring state and clip
-  `warp_mode` via `set_clip`.
-- Note lifecycle by ID in Session and Arrangement: full-range reads, in-place
-  modification, verified insert and verified delete.
-- Song-initiation `--apply` now applies every supported change per step and records
-  platform limits as skipped steps with a reason; `--strict` keeps all-or-nothing
-  preflight.
-- Carried from beta.1: bass recipes, production references, mastering plans, nested
-  device and rack control, warp diagnostics, duplicate-only warp repair, the remix
-  workflow, audio problem scans and live lint.
+## What this beta is
 
-## Validation
+A locally installed MCP server plus a generated Ableton Live Remote Script. It
+prepares an open Live set, inspects and edits devices, clips, notes and warp
+data with guarded writes, and reports what it cannot do rather than guessing.
+Install it from this repository at the tag below; no PyPI publication is
+configured.
 
-- 225 unit tests pass; `ruff check` and `ruff format --check` are clean.
-- MCP transport verification: 204 tools, no Live mutations.
-- Release check: `bridge_protocol 1.8.1-ext.8`, 8 installed files verified,
-  `song_modified: false`.
-- Live smoke run on Windows with Ableton Live 12.2.5: 22/22 checks on a scratch track
-  that the run created and deleted; the user's tracks and tempo were unchanged.
-  Warp writes are covered by unit tests and capability checks; they need the ext.8
-  script activation (restart Live) for on-Live confirmation.
+## Supported platform
 
-## Limits
+Windows with Ableton Live 12 or later. macOS is untested and unsupported for
+this beta. Live builds below 12.0 are refused before any command is sent, and
+editions and individual 12.x builds remain unverified. See
+[LIMITATIONS.md](LIMITATIONS.md).
 
-Live exposes no group-creation API and no writable Arrangement clip extent. Audio base
-tempo, Warp on MIDI clips and hidden plug-in parameters stay unavailable. EnAbleton
-does not automate the GUI and does not certify every Live version. See
-[LIMITATIONS.md](LIMITATIONS.md) and [ACCESS.md](ACCESS.md).
+## Changes since v0.1.0-beta.1
+
+- Refuse Live calls below the documented Live 12 floor, before a command is
+  sent; the bridge reports the build it runs inside and `doctor` shows it.
+- `enableton setup`: read-only first-run check with the commands still needed.
+- `enableton uninstall`: timestamped backup, modified files listed, no Live set
+  touched.
+- User Library discovery for `install`, `doctor` and `uninstall`; an explicit
+  path still wins.
+- `enableton client-config claude-desktop|cursor`: per-installation MCP entry.
+- `enableton` with no arguments shows nine preparation steps; `--plan`
+  previews and `all` runs them in order.
+- Fixed loopback port 9877 with an `ENABLETON_PORT` / `--port` override baked
+  into the generated script, and a mismatch reported by `doctor`.
+- Proprietary end-user licence, terms of sale with no refunds, and a
+  local-only privacy statement.
 
 ## Install
 
-Follow [INSTALLATION.md](INSTALLATION.md), then restart Live so the ext.8 bridge loads.
-No PyPI publication is configured; assets are the wheel, sdist and checksums.
+```powershell
+git clone https://github.com/theflu-cymk/EnAbleton.git E:\projects\Ableton
+cd E:\projects\Ableton
+git checkout v0.1.0-beta.2
+uv sync --locked
+uv run enableton setup
+uv run enableton install
+```
+
+Save the set, fully quit Live, then select only **EnAbleton** in
+Settings → Tempo & MIDI with Input and Output set to None. Run
+`uv run enableton doctor` before editing anything. Full steps and
+troubleshooting are in [INSTALLATION.md](INSTALLATION.md).
+
+## Evidence in this beta
+
+What is verified: unit tests over fake Live objects, an MCP transport test (242
+tools), installation, hashing, backup and rollback paths, and lint/format/CI on
+Windows and Linux. What is not verified: any of it running against a real Live
+installation. The three workflows in the release checklist have not been
+recorded on a Live host, so no compatibility or audio-quality claim is made. See
+[product/WORKFLOWS.md](product/WORKFLOWS.md).
+
+## Licensing
+
+EnAbleton is licensed, not sold: [../LICENSE](../LICENSE). Sale terms, the
+no-refund policy and the support channel are in [TERMS.md](TERMS.md). Data
+handling is in [PRIVACY.md](PRIVACY.md). Upstream MIT notices are preserved in
+[../THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
+
+Assets for this tag include the Python wheel, source distribution and SHA-256
+checksums. This is a prerelease: the licence, the support address and the
+governing-law line may change before a stable release.

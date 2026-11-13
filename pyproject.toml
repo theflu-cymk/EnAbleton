@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "enableton"
-version = "0.1.0b1"
+version = "0.1.0b2"
 description = "Versioned Ableton Live MCP extensions for production recipes, nested control, and reversible warp diagnostics"
 readme = "README.md"
 requires-python = ">=3.12,<3.15"
-license = "MIT"
+license = "LicenseRef-Proprietary"
 authors = [{name = "theflu-cymk"}]
 keywords = ["ableton", "mcp", "music-production", "warp", "dubstep"]
 classifiers = [

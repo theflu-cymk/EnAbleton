@@ -11,10 +11,14 @@ import shutil
 import sys
 import ableton_live_mcp
 from .bridge_version import VERSION, UPSTREAM_VERSION
+from .port import client_port, parse as parse_port
 from . import __version__
 
 
-def build(destination):
+def build(destination, port=None):
+    """Generate the bridge. ``port`` defaults to the configured loopback port."""
+
+    port = client_port() if port is None else parse_port(port)
     if ableton_live_mcp.__version__ != UPSTREAM_VERSION:
         raise RuntimeError("This adapter requires exactly mcp-server-ableton-live==1.8.1")
     upstream = (
@@ -113,6 +117,14 @@ def build(destination):
         timeout_anchor,
         '    _COMMAND_TIMEOUTS = {"create_audio_clip": 60.0, "create_arrangement_audio_clip": 60.0}',
     )
+    # The port is baked in rather than read from Live's environment: a Remote
+    # Script started by Live does not inherit an interactive shell's variables,
+    # so an unpatched build would listen on 9877 while the client waited
+    # elsewhere. Rebuilding is the only way to change it.
+    port_anchor = 'DEFAULT_PORT = int(os.environ.get("ABLETON_MCP_PORT", "9877"))'
+    if source.count(port_anchor) != 1:
+        raise RuntimeError("Upstream 1.8.1 source changed: DEFAULT_PORT anchor is not unique")
+    source = source.replace(port_anchor, f"DEFAULT_PORT = {port}")
 
     def _with_newline(call):
         if not call.endswith(")"):
@@ -146,6 +158,7 @@ def build(destination):
         "enableton_version": __version__,
         "upstream_version": UPSTREAM_VERSION,
         "extension_version": VERSION,
+        "port": port,
         "upstream_sha256": hashlib.sha256(upstream.encode()).hexdigest(),
         "generated_sha256": hashlib.sha256(source.encode()).hexdigest(),
         "files": {

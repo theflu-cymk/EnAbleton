@@ -8,6 +8,8 @@ from pathlib import Path
 import shutil
 import tempfile
 
+from .port import DEFAULT_PORT
+
 
 def sha256_file(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -104,12 +106,14 @@ def install_bridge(stage, remote, backup_root, replace=False):
             else "previous installation restored"
         )
         raise RuntimeError(f"Install failed; {status}. Backup: {backup}. {error}") from error
+    port = manifest.get("port") or DEFAULT_PORT
     report = {
         "version": manifest.get("enableton_version"),
         "bridge_protocol": manifest["extension_version"],
+        "port": port,
         "backup": str(backup),
         "installed_files_verified": len(applied),
-        "activation": "Save and fully restart Live. Select only EnAbleton. Input and Output: None. The AbletonMCP control surface is retired and must not listen on port 9877.",
+        "activation": f"Save and fully restart Live. Select only EnAbleton. Input and Output: None. This script listens on loopback port {port}. The AbletonMCP control surface is retired and must not listen on the same port.",
         "song_modified": False,
     }
     (backup / "installation.json").write_text(json.dumps(report, indent=2), encoding="utf-8")

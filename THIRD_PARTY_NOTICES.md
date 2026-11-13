@@ -11,7 +11,9 @@ License: MIT. Copyright 2025 Siddharth Ahuja and 2026 wstierhout.
 Its source-derived Remote Script is generated locally from that exact package,
 with EnAbleton mixins and command dispatch added. The upstream cache is never
 modified. The license is preserved in `src/enableton/licenses/ableton-live-mcp-MIT.txt`
-and in the distributed wheel. The root license retains upstream copyright notices.
+and in the distributed wheel. The root `LICENSE` is EnAbleton's own end-user
+licence and grants nothing in the upstream package; upstream notices are kept
+in this file and in `src/enableton/licenses/`.
 
 ## Production references
 

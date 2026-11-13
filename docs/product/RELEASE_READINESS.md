@@ -4,6 +4,22 @@ Use this as the release owner's evidence checklist. An unchecked blocker means
 the release is not ready. Record evidence locations and reviewer/date during
 execution; this file is a template and makes no claim that any gate has passed.
 
+## Status at `v0.1.0-beta.2`
+
+| Gate | State |
+| --- | --- |
+| D-1 product shape approved | Done: technical MCP tool, `DECISIONS.md`. |
+| Supported platform stated | Done: Windows, Live 12 or later; enforced by `compat.py`. |
+| User Library discovery, install, uninstall, setup check | Done and covered by tests. |
+| Unsupported Live rejected before writes | Done and covered by tests. |
+| Fixed port with documented override | Done: `ENABLETON_PORT` / `--port`, mismatch reported. |
+| Generated Claude Desktop / Cursor entry | Done; not validated against installed client versions. |
+| EULA, privacy, no-refund terms, support channel | Written; legal review and a support email remain. |
+| Version consistency | Done: `0.1.0b2` in package, lock file, catalog and release notes. |
+| Three workflows with real-Live evidence | **Outstanding**, needs a Live host; see `WORKFLOWS.md`. |
+| Demo video | **Outstanding**, external deliverable. |
+| One-user beta completed | **Outstanding.** |
+
 ## Product and scope
 
 - [ ] D-1 product shape is approved; the released experience matches that scope.

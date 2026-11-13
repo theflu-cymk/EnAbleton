@@ -9,21 +9,19 @@ running Ableton installation or current behavior on a Live host.
 | Area | Evidence in this checkout |
 | --- | --- |
 | Product shape | Python MCP server/extension over the pinned `mcp-server-ableton-live` package; `src/enableton/server.py`, `pyproject.toml`, README. The Live-side script is generated from the pinned upstream package by `src/enableton/bridge_builder.py`. |
-| Versions | `pyproject.toml` and `src/enableton/__init__.py` report EnAbleton `0.1.0b1`; `src/enableton/bridge_version.py` reports upstream `1.8.1` and protocol `1.8.1-ext.15`. README says 242 tools (156 upstream, 86 additions), and `docs/TOOL_CATALOG.md` is generated from `0.1.0b1` with those counts. These versions are distinct. |
+| Versions | `pyproject.toml` and `src/enableton/__init__.py` report EnAbleton `0.1.0b2`; `src/enableton/bridge_version.py` reports upstream `1.8.1` and protocol `1.8.1-ext.15`. README says 242 tools (156 upstream, 86 additions), and `docs/TOOL_CATALOG.md` is generated from `0.1.0b2` with those counts. These versions are distinct. |
 | Installer and setup | CLI `install` and `doctor` accept an optional `--user-library` and try the usual per-platform locations first; `install` supports reviewed replacement. `installer.py` validates a generated manifest, verifies hashes, backs up an existing install and attempts rollback. Installation reports `song_modified: false`. `INSTALLATION.md` gives a manual Live restart and Control Surface selection. |
 | Diagnostics and configuration | `doctor` checks installation/running-version state, and `setup` prints the same on-disk state read-only with the commands still needed. `install`, `doctor` and `uninstall` accept an optional `--user-library` and try the usual per-platform locations first. `uninstall` moves the installed script into a timestamped backup and reports locally modified or missing files. The CLI still has no first-run configurator and no port-selection option. `INSTALLATION.md` documents loopback port 9877. These are gaps against the requested UX, not claims about every upstream mechanism. |
 | MCP clients | `INSTALLATION.md` names Claude Desktop and Cursor among compatible stdio clients; `examples/mcp.json` is a static JSON example and currently includes a sample absolute path. `enableton client-config claude-desktop\|cursor` now prints a per-installation entry and a new-file `--output` target; it does not edit client settings (see `CHANGELOG.md`). |
 | Existing capabilities | Source and catalogs cover guarded track/clip/device operations, arrangement/song workflows, warp inspection/repair, installation and diagnostics. `docs/FEATURES.md` and `docs/TOOL_CATALOG.md` describe limits and tool effects. The supplied three launch workflows still need end-to-end product definitions and acceptance evidence. |
 | Tests and build | `tests/unit/` contains unit tests for installation, integrity, Live adapters, workflows and package behavior; `tests/integration/test_transport.py` covers MCP transport. `AGENTS.md` specifies unit, transport and Ruff commands for code changes and wheel/resource checks before release. This planning task does not run code or Live tests. |
-| Release/docs assets | Root README, `CHANGELOG.md`, `docs/INSTALLATION.md`, `docs/RELEASING.md`, `docs/LIMITATIONS.md`, `LICENSE`, `SECURITY.md`, notices and generated catalog are present. README contains a quick-start section; installation docs contain troubleshooting. No EULA, privacy policy, refund policy, support email/contact or demo video was found in the repository. |
+| Release/docs assets | Root README, `CHANGELOG.md`, `docs/INSTALLATION.md`, `docs/RELEASING.md`, `docs/LIMITATIONS.md`, `LICENSE`, `SECURITY.md`, notices and generated catalog are present. README contains a quick-start section; installation docs contain troubleshooting. A single-user EULA (`LICENSE`), sale terms with a no-refund policy and a repository-issue support channel (`docs/TERMS.md`), a local-only privacy statement (`docs/PRIVACY.md`) and the three workflow definitions (`docs/product/WORKFLOWS.md`) were added for `v0.1.0-beta.2`. A dedicated support email and a demo video are still missing. |
 | Repository state | At inspection, `git status --short` showed no existing changes; recent history includes commits through 2026-11-09. No root/docs MISSION or SPEC file was found. |
 
 ## Important discrepancies and unknowns
 
-- `docs/RELEASE-v0.1.0-beta.2.md` is explicitly a draft and describes 204
-  tools/protocol `ext.8`; current README, generated tool catalog and protocol
-  source identify `0.1.0b1`, 242 tools and `ext.15`. Treat beta.2 as stale
-  planning material, not evidence of current release status.
+- `docs/RELEASE-v0.1.0-beta.2.md` now describes the current release: `0.1.0b2`,
+  242 tools, protocol `ext.15`. The earlier 204-tool draft was never released.
 - `docs/INSTALLATION.md` identifies Windows Live 12 as the current
   development-host baseline, and `docs/LIMITATIONS.md` names Live 12.2.5 Suite.
   This is not a compatibility matrix or an approved product promise.

@@ -2,6 +2,9 @@
 
 - The development host is Windows with Live 12.2.5 Suite. Upstream 1.8.1 is
   pinned; capabilities vary by Live edition/version and device availability.
+  Only Windows is supported for this beta: macOS is untested and unsupported,
+  and Linux is not supported. Editions and individual 12.x builds are
+  unverified; the Live 12 floor is the only enforced compatibility claim.
 - Live calls are refused when the running session reports a build below Live
   12.0, before any command is sent. The generated bridge reports the build it is
   running inside; `doctor` shows it. Only that floor is claimed: editions and

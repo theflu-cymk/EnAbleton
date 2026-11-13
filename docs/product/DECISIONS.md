@@ -1,26 +1,34 @@
 # Product decision log and owner inputs
 
-This log separates the recommended project direction from approved decisions.
-No owner approval is inferred by these documents.
+Decisions are recorded with the owner's answer and the artifact that carries it.
+Where the answer left a detail open, the assumption in use is named here so it
+can be corrected rather than discovered later.
 
-| ID | Decision or input needed | Current position | Owner / status |
+| ID | Decision | Answer | Evidence and any open detail |
 | --- | --- | --- | --- |
-| D-1 | First MVP product shape: technical MCP tool or producer-facing app | Recommend technical MCP tool. It matches the current Python package, MCP server, generated Remote Script, installer and docs. A producer-facing app has distinct UX, packaging and support scope and must not be silently included. | Product owner — **open; decide in Phase 0** |
-| D-2 | Exact supported Live versions, editions, OS versions and client versions | Existing docs identify Windows Live 12 / Live 12.2.5 Suite as development context, not a complete supported matrix. | Product + engineering — **open; test and approve before compatibility claims** |
-| D-3 | Port behavior | Current installation docs state loopback port 9877. Whether a configurable port is safe and supportable is unverified. If it remains fixed, diagnostics and marketing must say so. | Engineering + product — **open** |
-| D-4 | Release channel and intended audience | Recommend a consented, one-user beta before public Gumroad availability; beta is not a public launch. | Product owner — **open** |
-| D-5 | Legal terms | `LICENSE` is present, but that does not supply an EULA, refund policy or product-specific legal review. Do not draft binding promises from assumptions. | Legal/product owner — **must provide/review** |
-| D-6 | Privacy statement and data handling | Confirm local data flows, logs, retention and any optional external processing. Tool catalog describes an optional Replicate audio upload. | Privacy/legal + engineering — **must review before publication** |
-| D-7 | Support contact, service level and refund terms | No support email/contact, response commitment or refund terms were found. | Product/support owner — **must supply** |
-| D-8 | Workflow owners and proof standard | Three workflows are fixed by the supplied checklist; owners, target scenarios, success thresholds and approved test material remain to be assigned. | Product + engineering — **open** |
-| D-9 | Safe copy/save behavior and backup retention | Installer currently documents local backups. Product-level save/copy UX, project backup responsibility and retention policy require definition. | Engineering + product — **open** |
-| D-10 | Demo-video producer, location, consent and publication | A real workflow demo is required; no video is included in this repository. Choose owner and only use consented material. | Marketing/product — **open** |
-| D-11 | Release version and labeling | Current package and generated bridge expose separate version concerns. Choose the next product version only after scope and release policy are approved; keep package and generated Remote Script product versions consistent. | Release owner — **open for MVP release** |
+| D-1 | MVP product shape | **Technical MCP tool.** No producer-facing app is in scope. | `PRD.md`, `CURRENT_STATE.md`; the CLI and MCP server are the product. |
+| D-2 | Supported Live versions, editions, OS and clients | **Windows only for now, Ableton Live 12 or later.** macOS and Linux are unsupported until someone tests them. Editions and individual 12.x builds remain unverified. | `INSTALLATION.md`, `LIMITATIONS.md`, `README.md`; the floor is enforced in `src/enableton/compat.py`. macOS nil: no support claim to withdraw. |
+| D-3 | Port behaviour | **Fixed loopback port 9877, overridable.** `ENABLETON_PORT` (or `--port`) changes it for both sides; the value is baked into the generated script, because Live does not inherit a shell's environment. A mismatch is reported, not retried. | `src/enableton/port.py`, `bridge_builder.py`, `doctor.py`, `tests/unit/test_port.py`, `INSTALLATION.md`. |
+| D-4 | Release channel and audience | **Small, consented beta before public sale.** No public launch, no free distribution. | `RELEASE_READINESS.md`; one-user beta gate stays unchecked until it runs. |
+| D-5 | Legal terms | **Standard proprietary product licence, no refunds.** EnAbleton's own code is licensed, not sold, under a single-user EULA. Upstream MIT notices are preserved separately. | `LICENSE`, `docs/TERMS.md`, `THIRD_PARTY_NOTICES.md`. **Open detail:** the governing-law line names the purchase page's jurisdiction; a lawyer has not reviewed the text. |
+| D-6 | Privacy statement | **Default local-only statement.** No telemetry, no accounts, no background uploads; the one optional audio-question tool uploads only when explicitly invoked. | `docs/PRIVACY.md`. |
+| D-7 | Support contact and response time | **Repository issue tracker, response within five business days, no refunds.** | `docs/TERMS.md`, README. **Open detail:** a dedicated support email must be added before public sale; the issue tracker is a licence-holder channel, not a public address. |
+| D-8 | Workflow owners and proof standard | **Three fixed workflows with a real-Live evidence bar**, defined in `WORKFLOWS.md`. | `WORKFLOWS.md`. Evidence is outstanding because it needs a Live host. |
+| D-9 | Safe copy/save and backup retention | **Never overwrite the open set without asking. Installer and uninstall backups under `~/.enableton/backups`, kept 30 days, pruned by hand.** | `INSTALLATION.md`, `PRIVACY.md`, `installer.py`. Retention is documented policy; pruning is manual, so no code silently deletes a backup. |
+| D-10 | Demo video | **Recorded by the owner from the owner's own material, with consent for anything not original, published with the release.** | `WORKFLOWS.md`, `RELEASE_READINESS.md`. External deliverable; no video is in the repository. |
+| D-11 | Release version and labelling | **`0.1.0b2` / `v0.1.0-beta.2`** — the second MVP beta, not the v0.2.0 melody-matching roadmap. | `pyproject.toml`, `src/enableton/__init__.py`, `docs/RELEASE-v0.1.0-beta.2.md`, regenerated catalog. |
 
-## Decision protocol
+## What remains open
 
-Record each decision with its owner, date, evidence and impact on the PRD or
-roadmap. Until D-1 is resolved, the recommended MCP boundary is a planning
-assumption only. Until D-2 and D-6 are resolved, do not claim broad
-compatibility or make categorical privacy promises. A missing D-5/D-7 input is
-a public-launch blocker, not permission to invent policy or contact details.
+Nothing in this log is waiting on the owner for a product decision. Three items
+still need external input or a machine with Live:
+
+1. D-5: legal review of the licence wording, and the governing-law line.
+2. D-7: a monitored support email address for the purchase page.
+3. D-8 and D-10: real-Live evidence and the recorded demonstration.
+
+## Recording a change
+
+Add a row or amend the answer, state the evidence path, and note the date. Do
+not record an assumption as approval: name it as an assumption until the owner
+confirms it.
