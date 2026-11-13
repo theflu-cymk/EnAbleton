@@ -23,6 +23,7 @@ from .align_tracks import preferred_mode, resolve_mode
 from .assign_instruments import candidates_for, has_instrument, plan_assignments
 from .audio_repair import dc_decision, gain_decision
 from .clip_geometry import overlaps
+from .port import client_port
 from .layer_naming import ROLE_COLORS, ROLE_LABELS, layer_name
 from .song_init import Result, register
 from .track_prep import ARCHIVE_COLOR, _find_copy, infer_content
@@ -146,12 +147,12 @@ def instructions():
 
 
 def probe_live(timeout=1.5):
-    """Return True when something accepts TCP on 127.0.0.1:9877. Never raises."""
+    """Return True when something accepts TCP on the configured loopback port."""
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(timeout)
     try:
-        sock.connect(("127.0.0.1", 9877))
+        sock.connect(("127.0.0.1", client_port()))
         return True
     except OSError:
         return False

@@ -2,7 +2,9 @@
 
 ## Requirements and validation status
 
-- Ableton Live 12. The development host runs **Live 12.2.5 Suite on Windows**.
+- **Windows** with **Ableton Live 12 or later**. The development host runs Live
+  12.2.5 Suite. macOS is untested and unsupported for this beta, and Linux is
+  not supported. Live builds below 12.0 are refused before any command is sent.
 - A local MCP client supporting stdio: Codex, Claude Desktop, Cursor or another
   compatible client. This guide does not install or configure an LLM provider.
 - Git, uv and Python >=3.12,<3.15. The lock file pins Python dependencies.
@@ -59,6 +61,21 @@ at `<User Library>/Remote Scripts/EnAbleton`. It validates staged hashes and
 syntax, preserves an existing installation in `~/.enableton/backups`, and rolls
 back replaced files if installation fails. Existing files require `--replace`;
 locally modified manifest-tracked files are refused for manual review.
+
+The script listens on loopback port 9877. If that port is taken, build and
+install on another one; the value is baked into the generated script because
+Live does not inherit your shell's environment:
+
+```powershell
+$env:ENABLETON_PORT = "9878"
+uv run enableton install --replace
+```
+
+`--port 9878` works on `install` and `build-bridge` too. Set the same
+`ENABLETON_PORT` for the server process (or leave it unset and use the default),
+and run `enableton doctor`: it reports both the installed and the client port
+and fails the check when they differ. Editing the generated `__init__.py` by
+hand is not supported; rebuild instead.
 
 Save your Live set and **fully quit and restart Live**. Toggling a control-surface
 row can reuse cached Python modules. In **Settings → Tempo & MIDI**, select
@@ -171,4 +188,9 @@ Backups and reports are local and are never included in release assets.
 - **Unsupported audio:** added warp analysis currently accepts integer PCM WAV.
   Convert a copy externally; keep the original file intact.
 
-The bridge binds loopback by default. Do not expose or forward port 9877.
+- **Port in use or a mismatch:** `doctor` names the installed and client ports.
+  Rebuild with the same `--port` and reinstall with `--replace`. Do not edit the
+  generated script.
+
+The bridge binds loopback on port 9877, or the port it was built with. Do not
+expose or forward it.

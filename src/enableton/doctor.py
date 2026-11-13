@@ -7,6 +7,7 @@ import sys
 from ableton_live_mcp.connection import get_ableton_connection, disconnect_ableton
 from . import __version__
 from .compat import evaluate
+from .port import DEFAULT_PORT, client_port
 from .wire import install as install_wire
 
 
@@ -33,6 +34,9 @@ def main(folder):
         and hashlib.sha256((folder / "__init__.py").read_bytes()).hexdigest()
         == manifest["generated_sha256"],
     }
+    client = client_port()
+    installed = manifest.get("port") or DEFAULT_PORT
+    result["port"] = {"client": client, "installed": installed, "match": installed == client}
     if manifest.get("files"):
         result["installed_matches"] = result["installed_matches"] and all(
             (folder / name).is_file()
@@ -65,8 +69,14 @@ def main(folder):
         result["ok"] = (
             result["installed_matches"]
             and result["running_matches"]
+            and result["port"]["match"]
             and result.get("live", {}).get("supported") is not False
         )
+        if not result["port"]["match"]:
+            result["next"] = (
+                f"The installed script listens on port {installed} and this client uses {client}. "
+                "Rebuild and reinstall with the same port before Live calls."
+            )
     except Exception as error:
         result.update(ok=False, connection_error=str(error))
     finally:

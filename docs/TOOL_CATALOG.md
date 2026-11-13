@@ -1,6 +1,6 @@
 # MCP tool catalog
 
-Generated from EnAbleton 0.1.0b1: 242 tools (156 upstream, 86 additions).
+Generated from EnAbleton 0.1.0b2: 242 tools (156 upstream, 86 additions).
 
 Annotations describe intended effects. Write tools edit when called.
 

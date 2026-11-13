@@ -3,11 +3,15 @@
 An MCP extension layer for Ableton Live: production recipes, guarded nested
 device control, and warp diagnostics with reversible repair previews.
 
-**Current install: the main branch.** Python version: `0.1.0b1`.
-Bridge protocol: `1.8.1-ext.15`.
+**Current release: `v0.1.0-beta.2`** (the main branch follows it).
+Python version: `0.1.0b2`. Bridge protocol: `1.8.1-ext.15`.
+**Supported platform:** Windows with Ableton Live 12 or later. macOS is untested
+and unsupported for this beta. Live builds below 12.0 are refused before any
+command is sent.
 Built on [`mcp-server-ableton-live==1.8.1`](https://github.com/wstierhout/ableton-live-mcp),
 with **242 MCP tools: 156 upstream controls and 86 EnAbleton additions**.
-The tagged prerelease `v0.1.0-beta.1` (191 tools, protocol `1.8.1-ext.5`) is retired.
+The tagged prereleases `v0.1.0-beta.1` (191 tools, protocol `1.8.1-ext.5`) and
+earlier drafts are retired.
 This is a beta, not an Ableton-endorsed product or an unrestricted Live API.
 
 ## What it adds
@@ -89,8 +93,10 @@ uv run enableton install --user-library "C:\path\to\your\actual\User Library"
 Use the User Library path shown in Live Settings. Save your set, fully restart
 Live, and select **EnAbleton** as the Control Surface with Input/Output **None**.
 The AbletonMCP control surface is retired. Do not enable it, and do not leave
-its Remote Script where Live can select it. Two bridges must not share port
-9877. Hardware-controller rows stay as they are.
+its Remote Script where Live can select it. Two bridges must not share a port.
+The default loopback port is 9877; to use another, build and install with
+`--port 9878` (or set `ENABLETON_PORT=9878` for both sides) and rebuild rather
+than editing the generated script. Hardware-controller rows stay as they are.
 
 `uv run enableton client-config claude-desktop` (or `cursor`) prints the entry
 with this installation's interpreter and names the client's config file. Add it
@@ -143,7 +149,10 @@ uv build
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and [release policy](docs/RELEASING.md).
-MIT licensed; upstream notices are preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Licensed, not sold: [end-user licence](LICENSE). Sale terms, the no-refund
+policy and the support channel are in [TERMS.md](docs/TERMS.md); data handling
+is in [PRIVACY.md](docs/PRIVACY.md). Upstream MIT notices are preserved in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Audio problem scan
 

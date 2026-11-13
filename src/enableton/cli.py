@@ -45,8 +45,14 @@ def main(argv=None):
     commands.add_parser("serve", help="Run the stdio MCP server")
     build = commands.add_parser("build-bridge", help="Generate the pinned Live Remote Script")
     build.add_argument("--output", type=Path, required=True)
+    build.add_argument("--port", type=int, help="Loopback port baked into the script; default 9877")
     install = commands.add_parser(
         "install", help="Install the EnAbleton Remote Script with backups"
+    )
+    install.add_argument(
+        "--port",
+        type=int,
+        help="Loopback port baked into the script; default 9877 or ENABLETON_PORT",
     )
     install.add_argument(
         "--user-library",
@@ -286,7 +292,7 @@ def main(argv=None):
     if args.command == "build-bridge":
         from .bridge_builder import build as build_bridge
 
-        print(json.dumps(build_bridge(args.output), indent=2))
+        print(json.dumps(build_bridge(args.output, port=args.port), indent=2))
         return 0
     if args.command is None:
         from .song_start import run
@@ -324,7 +330,11 @@ def main(argv=None):
 
     with tempfile.TemporaryDirectory(prefix="enableton-stage-") as temp:
         stage = Path(temp) / "EnAbleton"
-        build_bridge(stage)
+        try:
+            build_bridge(stage, port=args.port)
+        except ValueError as error:
+            print(json.dumps({"error": str(error)}), file=sys.stderr)
+            return 2
         print(
             json.dumps(
                 install_bridge(

@@ -1,8 +1,10 @@
 # Security
 
 This is a beta tool with powerful control over a local DAW. The bridge listens
-on loopback port 9877 by default and has no network authentication. Do not
-expose, forward or publish that port. Use trusted local MCP clients.
+on loopback port 9877 by default, or the port baked in with `--port`, and has no
+network authentication. Do not expose, forward or publish that port. Use
+trusted local MCP clients. Data handling is described in
+[docs/PRIVACY.md](docs/PRIVACY.md).
 
 Do not include tokens, Live sets, samples or local reports in issues. Report
 security-sensitive details privately to the repository owner before disclosing

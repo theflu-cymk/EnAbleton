@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Support Windows only. macOS is untested and unsupported for this beta, and no
+  compatibility is claimed for editions or individual 12.x builds beyond the
+  enforced Live 12 floor.
+- Licence EnAbleton, not sell it: the root `LICENSE` is now a single-user
+  end-user licence, with sale terms and a no-refund policy in `docs/TERMS.md`
+  and a local-only `docs/PRIVACY.md`. Upstream MIT notices stay in
+  `THIRD_PARTY_NOTICES.md`.
+- Keep the loopback port fixed at 9877 but allow an override: `ENABLETON_PORT`
+  or `--port` is baked into the generated script and applied to the client,
+  and `doctor` reports a mismatch instead of timing out. Version `0.1.0b2`
+  (`v0.1.0-beta.2`).
 - Refuse Live calls when the running session reports an Ableton Live build
   below 12.0. The generated bridge now reports the build it is running inside,
   `doctor` prints it, and the refusal names the version and says no command was
