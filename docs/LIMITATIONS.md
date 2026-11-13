@@ -2,6 +2,11 @@
 
 - The development host is Windows with Live 12.2.5 Suite. Upstream 1.8.1 is
   pinned; capabilities vary by Live edition/version and device availability.
+- Live calls are refused when the running session reports a build below Live
+  12.0, before any command is sent. The generated bridge reports the build it is
+  running inside; `doctor` shows it. Only that floor is claimed: editions and
+  individual 12.x builds are unverified. A bridge that cannot report a build is
+  shown as unverified, not refused.
 - Beta warp analysis supports integer PCM WAV, uses bounded/decimated energy
   measurements, and reports uncertain/partial results explicitly. Its source
   peak estimate is not full-sample peak, true peak or LUFS.
