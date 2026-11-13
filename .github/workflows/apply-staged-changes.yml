@@ -1,6 +1,11 @@
 name: apply-staged-changes
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - feat/decisions-and-port
+    paths:
+      - '.staged/**'
 
 permissions:
   contents: write
@@ -18,7 +23,13 @@ jobs:
       - name: Apply staged patch files
         run: |
           set -euo pipefail
-          for patch in .staged/*.patch; do
+          shopt -s nullglob
+          patches=(.staged/*.patch)
+          if [ ${#patches[@]} -eq 0 ]; then
+            echo "no staged patches; nothing to do"
+            exit 0
+          fi
+          for patch in "${patches[@]}"; do
             echo "applying $patch"
             git apply -p1 --whitespace=nowarn "$patch"
           done
@@ -37,5 +48,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore: regenerate lock file and tool catalog for 0.1.0b2"
+          git commit -m "chore: apply staged changes, regenerate lock and catalog for 0.1.0b2"
           git push origin HEAD:feat/decisions-and-port
