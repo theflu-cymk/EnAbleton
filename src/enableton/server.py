@@ -10,6 +10,7 @@ import mcp.server.session as _mcp_session
 import mcp.types as _mcp_types
 from .bass_tools import register
 from .bridge_version import COMPATIBLE_VERSIONS, UPSTREAM_VERSION
+from .compat import require_supported
 from .prep import instructions as prep_instructions
 from .wire import install as install_wire
 
@@ -68,6 +69,9 @@ def _require_version(info):
         raise RuntimeError(
             "The new server is installed, but Live still has an older bridge loaded. Fully quit Live, select only EnAbleton, and set Input and Output to None before making Live calls."
         )
+    # The documented Live floor. A bridge that predates the report field leaves
+    # this unverified rather than refused; the installer ships a reporting one.
+    require_supported(info.get("live_version"))
 
 
 def _version_checked_send(self, command_type, params=None):
