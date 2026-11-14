@@ -1,24 +1,31 @@
-# EnAbleton
+# EnAbleton (archived)
+
+> **Archived.** This repository is read-only and receives no further changes. The live project is
+> **Enableton**, at [`theflu-cymk/ableton-engineer`](https://github.com/theflu-cymk/ableton-engineer).
+> Everything below describes the archived codebase and is kept for reference. Its tool counts,
+> version numbers, ports and setup steps do not apply to Enableton.
 
 An MCP extension layer for Ableton Live: production recipes, guarded nested
 device control, and warp diagnostics with reversible repair previews.
 
-**Current release: `v0.1.0-beta.2`** (the main branch follows it).
+**Final release before archiving: `v0.1.0-beta.2`** (the main branch follows it).
 Python version: `0.1.0b2`. Bridge protocol: `1.8.1-ext.15`.
-**Supported platform:** Windows with Ableton Live 12 or later. macOS is untested
+**Supported platform:** Windows with Ableton Live 12 or later.
+macOS is untested
 and unsupported for this beta. Live builds below 12.0 are refused before any
 command is sent.
 Built on [`mcp-server-ableton-live==1.8.1`](https://github.com/wstierhout/ableton-live-mcp),
 with **242 MCP tools: 156 upstream controls and 86 EnAbleton additions**.
-The tagged prereleases `v0.1.0-beta.1` (191 tools, protocol `1.8.1-ext.5`) and
+The tagged prereleases `v0.1.0-beta.1` (191 tools, protocol
+`1.8.1-ext.5`) and
 earlier drafts are retired.
-This is a beta, not an Ableton-endorsed product or an unrestricted Live API.
+This was a beta, not an Ableton-endorsed product or an unrestricted Live API.
 
 ## What it adds
 
 - **Production library:** 13 original native bass patches, rhythmic MIDI and
   modulation tools, seven mastering techniques, artist-method references and
-  50 searchable production reference entries, 45 with primary sources.
+50 searchable production reference entries, 45 with primary sources.
 - **Deeper control:** nested devices on tracks, returns and Main; formatted
   parameter inspection; guarded batches; rack-chain mixers; full-range Session
   and Arrangement MIDI reads and note-ID editing.
@@ -26,17 +33,16 @@ This is a beta, not an Ableton-endorsed product or an unrestricted Live API.
   candidate downbeats, groove-aware alignment, drift and loop-seam review,
   reference-event matching and warp-mode guidance.
 - **Reversible repair:** explicit marker moves on a non-overlapping duplicate,
-  with expiring previews, source/target fingerprints, timing backups, readback
+with expiring previews, source/target fingerprints, timing backups, readback
   checks and a preserved original.
 - **Operational safeguards:** bounded audio workers, cache invalidation,
   per-clip batch failures, capability/version checks and recoverable installation.
 
-[Next-release roadmap](docs/ROADMAP-v0.2.0.md) · [Feature catalog](docs/FEATURES.md) · [Recipe catalog](docs/RECIPE_CATALOG.md) · [Current tool catalog](docs/TOOL_CATALOG.md) ·
-[Installation](docs/INSTALLATION.md) · [Warp workflow](docs/WARP.md) ·
-[Limitations](docs/LIMITATIONS.md) · [Changelog](CHANGELOG.md)
+[Next-release
+roadmap](docs/ROADMAP-v0.2.0.md) · [Feature catalog](docs/FEATURES.md) · [Recipe catalog](docs/RECIPE_CATALOG.md) · [Current tool catalog](docs/TOOL_CATALOG.md) ·
+[Installation](docs/INSTALLATION.md) · [Warp workflow](docs/WARP.md) · [Limitations](docs/LIMITATIONS.md) · [Changelog](CHANGELOG.md)
 
 ## Reusable remix creation (unreleased)
-
 [Half-time remix guide](docs/REMIX_WORKFLOW.md) · [Starter config](examples/remix/rock-flip.json)
 
 Ask **“Guide a rock-to-dubstep or riddim flip, keeping the riff and chorus singer.”**
@@ -45,7 +51,7 @@ render smooth audio, build owned Live lanes, capture a preview and compare at
 matched loudness. Changed source MIDI or pulse controls can be prepared and rebuilt
 without duplicate tracks. Start with `uv run enableton remix-guide`; the complete
 loop uses `remix-prepare`, `remix-build`, `remix-preview` and `remix-compare`.
-The current development catalog has 242 tools (156 upstream, 86 additions).
+The development catalog had 242 tools (156 upstream, 86 additions).
 Arrangement audio import, rack blend macros, Serum parameter aliases and a 4/4
 song-draft guide are in that catalog. `describe_tool_families` maps the new
 names onto the existing ones.
@@ -74,14 +80,19 @@ uv run enableton align-tracks --live
 ```
 
 Reads the running set and reports actual naming, MIDI, media, Warp, timing and
-organization findings. Linting is read-only; explicit `--fix` supports guarded
+organization findings.
+Linting is read-only; explicit `--fix` supports guarded
 names/colors with readback and re-lint. Other repairs are reported, not silently
 pretended complete. Folder creation and cleanup planning remain separate stages.
 
-## Quick start
+## Quick start (historical)
+
+The commands below install the **archived** codebase and are kept for reference only. For the live
+project, install Enableton from [`theflu-cymk/ableton-engineer`](https://github.com/theflu-cymk/ableton-engineer).
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and Git.
-Python 3.12–3.14 is required; uv can provide it.
+Python
+3.12–3.14 is required; uv can provide it.
 
 ```powershell
 git clone https://github.com/theflu-cymk/EnAbleton.git E:\projects\Ableton
@@ -100,7 +111,8 @@ than editing the generated script. Hardware-controller rows stay as they are.
 
 `uv run enableton client-config claude-desktop` (or `cursor`) prints the entry
 with this installation's interpreter and names the client's config file. Add it
-there and restart the client. Manual entry, if you prefer a checkout-relative
+there and restart the client.
+Manual entry, if you prefer a checkout-relative
 command:
 
 ```json
@@ -117,24 +129,24 @@ command:
 ```powershell
 uv run enableton doctor --user-library "C:\path\to\your\actual\User Library" --json
 ```
-
 Ask: **“Read the current tempo and track names. Do not change the set.”**
 The full installation guide includes Codex configuration, upgrades and rollback.
 The repository is private; GitHub access is required to clone it. It is not
 published to PyPI, so `uvx enableton` is not an installation instruction.
 
 ## Honest limits
-
 Tempo/downbeat results are estimates; audible beat placement still needs
 listening. The added audio analyzer supports integer PCM WAV, not arbitrary
 audio formats. Installing tools never changes a Live set. Actual Live marker
 repair APIs remain capability-gated and require real readback; synthetic tests
-do not certify sound quality. GUI-only commands, hidden plug-in controls, audio
+do not certify sound quality.
+GUI-only commands, hidden plug-in controls, audio
 to MIDI conversion and track reordering are not added here.
 
 The reference website remains a separate project; the underlying recipe data is
 included here and searchable over MCP. No commercial audio, presets or Live sets
-are distributed. This server works with a compatible local MCP client; a skill
+are distributed.
+This server works with a compatible local MCP client; a skill
 file alone does not connect Grok or another hosted chatbot to your computer.
 
 ## Development
